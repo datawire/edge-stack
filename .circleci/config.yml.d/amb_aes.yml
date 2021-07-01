@@ -4,7 +4,6 @@ jobs:
   "aes-generate":
     executor: aes-linux
     steps:
-      - aes-post-checkout-git-config
       - job-generate
 
   "aes-chart":
