@@ -13,6 +13,8 @@ jobs:
 
   "aes-chart-publish":
     executor: aes-linux
+    environment:
+      PUBLISH_GIT_RELEASE: "true"
     steps:
       - job-chart-publish
 
