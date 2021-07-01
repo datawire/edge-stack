@@ -1,0 +1,194 @@
+# Default values for ambassador.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Manually set metadata for the Release.
+#
+# Defaults to .Chart.Name
+nameOverride: edge-stack
+# Defaults to .Release.Name-.Chart.Name unless .Release.Name contains "ambassador"
+fullnameOverride: ''
+# Defaults to .Release.Namespace
+namespaceOverride: ''
+
+# Emissary Chart Values.
+# all values under emissary-ingress key are passed to [the emissary chart](https://github.com/emissary-ingress/emissary/blob/master/charts/emissary-ingress/README.md)
+# Example:
+# setting `emissary-ingress.service.type=NodePort` will pass `service.type=NodePort` to the underlying emissary chart
+emissary-ingress: # +doc-gen:break
+  service:
+    type: LoadBalancer
+
+    # Note that target http ports need to match your ambassador configurations service_port
+    # https://www.getambassador.io/reference/modules/#the-ambassador-module
+    ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+        # protocol: TCP
+        # nodePort: 30080
+        # hostPort: 80
+    - name: https
+      port: 443
+      targetPort: 8443
+
+  serviceAccount:
+    create: true
+  nameOverride: edge-stack
+  singleNamespace: false
+  envRaw: |
+    - name: REDIS_URL
+      {{- if .Values.redisURL }}
+      value: {{ .Values.redisURL }}
+      {{- else }}
+      value: {{ include "ambassador.fullname" . }}-redis:6379
+      {{- end }}
+    {{- if and .Values.licenseKey.secretName }}
+    - name: AMBASSADOR_AES_SECRET_NAME
+      value: {{ .Values.licenseKey.secretName }}
+    {{- end }}
+  volumesRaw: |
+    - name: {{ include "ambassador.fullname" . }}-edge-stack-secrets
+      secret:
+        {{- if and .Values.licenseKey .Values.licenseKey.secretName }}
+        secretName: {{ .Values.licenseKey.secretName }}
+        {{- else }}
+        secretName: {{ include "ambassador.fullname" . }}-edge-stack
+        {{- end }}
+  volumeMountsRaw: |
+    {{- if and .Values.licenseKey.createSecret }}
+    - name: {{ include "ambassador.fullname" . }}-edge-stack-secrets
+      mountPath: /.config/ambassador
+      readOnly: true
+    {{- end }}
+
+
+  licenseKey:
+    createSecret: true
+
+  image:
+    repository: docker.io/datawire/aes
+    tag: 2.0.0-ea
+    pullPolicy: IfNotPresent
+
+rbac:
+  # Specifies whether RBAC resources should be created
+  create: true
+  # List of Pod Security Policies to use on the container.
+  # If security.podSecurityPolicy is set, it will be appended to the list
+  podSecurityPolicies: []
+  # Name of the RBAC resources defaults to the name of the release.
+  # Set nameOverride when installing Ambassador with cluster-wide scope in
+  # different namespaces with the same release name to avoid conflicts.
+  nameOverride:
+
+# values that apply to edge-stack and all other sub charts
+global:
+  rbac:
+    # Specifies whether RBAC resources should be created
+    create: true
+    # List of Pod Security Policies to use on the container.
+    # If security.podSecurityPolicy is set, it will be appended to the list
+    podSecurityPolicies: []
+    # Name of the RBAC resources defaults to the name of the release.
+    # Set nameOverride when installing Ambassador with cluster-wide scope in
+    # different namespaces with the same release name to avoid conflicts.
+    nameOverride:
+
+
+  crds:
+    enabled: true
+    create: true
+    keep: true
+
+################################################################################
+## Ambassador Edge Stack Configuration                                        ##
+################################################################################
+
+# The Ambassador Edge Stack is free for limited use without a license key.
+# Go to https://{ambassador-host}/edge_stack/admin/#dashboard to register
+# for a community license key.
+
+# Set createSecret: false is installing multiple releases of The Ambassador
+# Edge Stack in the same namespace.
+licenseKey:
+  value:
+  createSecret: true
+  secretName:
+  # Annotations to attach to the license-key-secret.
+  annotations: {}
+
+# The DevPortal is exposed at /docs/ endpoint in the AES container.
+# Setting this to true will automatically create routes for the DevPortal.
+createDevPortalMappings: true
+devportal:
+  docsPrefix: /documentation/
+
+# The Ambassador Edge Stack uses a redis instance for managing authentication,
+# rate limiting, and sharing minor configuration details between pods for
+# centralized management. These values configure the redis instance that ships
+# by default with The Ambassador Edge Stack.
+#
+# URL of your redis instance. Defaults to redis instance created below.
+redisURL:
+
+# Ambassador ships with a basic redis instance. Configure the deployment with the options below.
+redis:
+  create: true
+  image:
+    repository: redis
+    tag: 5.0.1
+    pullPolicy: IfNotPresent
+  # Annotations for Ambassador Pro's redis instance.
+  annotations:
+    deployment: {}
+    service: {}
+  resources: {}
+  # If you want to specify resources, uncomment the following
+  # lines and remove the curly braces after 'resources:'.
+  # These are placeholder values and must be tuned.
+  #   limits:
+  #     cpu: 100m
+  #     memory: 256Mi
+  #   requests:
+  #     cpu: 50m
+  #     memory: 128Mi
+  nodeSelector: {}
+  affinity: {}
+  tolerations: {}
+
+
+# Configures the AuthService that ships with the Ambassador Edge Stack.
+# Setting authService.create: false will not install the AES AuthService and
+# allow you to define your own.
+#
+# Typically when using the AES, you will want to keep this set to true and use
+# the External Filter to communicate with a custom authentication service.
+# https://www.getambassador.io/reference/filter-reference/#filter-type-external
+authService:
+  deploymentExtraName: auth
+  create: true
+  # Set additional configuration options. See https://www.getambassador.io/reference/services/auth-service for more information
+  optional_configurations: {}
+    # include_body:
+    #   max_bytes: 4096
+    #   allow_partial: true
+    # status_on_error:
+    #   code: 403
+    # failure_mode_allow: false
+    # retry_policy:
+    #   retry_on: "5xx"
+    #   num_retries: 2
+    # add_linkerd_headers: true
+    # timeout_ms: 30000
+
+
+# Configures the RateLimitService in the Ambassador Edge Stack.
+# Keep this enabled to configure RateLimits in AES.
+rateLimit:
+  create: true
+  deploymentExtraName: ratelimit
+
+deploymentTool: ''
+
+enableTestService: false
