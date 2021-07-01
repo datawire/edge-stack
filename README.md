@@ -1,4 +1,4 @@
-Ambassadro Edge Stack [![Build Status][build-status]][build-pages]
+Ambassador Edge Stack [![Build Status][build-status]][build-pages]
  [![Docker Repository][docker-latest]][docker-repo] ![Docker Pulls][docker-pulls] [![Join Slack][slack-join]][slack-url]
 ==========
 
