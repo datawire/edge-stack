@@ -4,14 +4,14 @@ CHART_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))edge-stack
 CHART_KUBECONFIG := /tmp/kubeconfig/k3dconfig
 CT_EXEC = docker run --rm -v $(CHART_KUBECONFIG):/root/.kube/config -v $(CHART_DIR):/charts --network host $(HELM_TEST_IMAGE) /charts/ci/ct.sh
 K3D_EXEC := KUBECONFIG=$(CHART_KUBECONFIG) k3d
-YQ := $(AES_HOME)/.circleci/yq
+YQ := $(EDGE_STACK_HOME)/.circleci/yq
 
 define _push_chart
-	CHART_NAME=$(1) $(AES_HOME)/charts/scripts/push_chart.sh
+	CHART_NAME=$(1) $(EDGE_STACK_HOME)/charts/scripts/push_chart.sh
 endef
 
 define _set_tag_and_repo
-	$(AES_HOME)/venv/bin/python $(AES_HOME)/charts/scripts/update_chart_image_values.py \
+	$(EDGE_STACK_HOME)/venv/bin/python $(EDGE_STACK_HOME)/charts/scripts/update_chart_image_values.py \
 		--values-file $(1) --tag $(2) --repo $(3)
 endef
 
@@ -80,11 +80,11 @@ chart/push-ci: chart/push-preflight
 .PHONY: chart/push-ci
 
 chart/clean:
-	@git restore $(CHART_DIR)/Chart.yaml $(CHART_DIR)/values.yaml
+	@cd $(EDGE_STACK_HOME) && git restore $(CHART_DIR)/Chart.yaml $(CHART_DIR)/values.yaml
 	@rm -f $(CHART_DIR)/*.tgz $(CHART_DIR)/index.yaml $(CHART_DIR)/tmp.yaml
 
 chart/push-preflight: create-venv $(YQ)
-	@$(AES_HOME)/venv/bin/python -m pip install ruamel.yaml
+	@$(EDGE_STACK_HOME)/venv/bin/python -m pip install ruamel.yaml
 .PHONY: chart/push-preflight
 
 #########################################################################################
@@ -92,7 +92,7 @@ chart/push-preflight: create-venv $(YQ)
 #########################################################################################
 
 release/chart/changelog:
-	@$(AES_HOME)/charts/scripts/update_chart_changelog.sh
+	@$(EDGE_STACK_HOME)/charts/scripts/update_chart_changelog.sh
 .PHONY: release/chart/changelog
 
 release/chart/ga-image-update: chart/push-preflight
@@ -101,8 +101,8 @@ release/chart/ga-image-update: chart/push-preflight
 	@[[ "${IMAGE_TAG}" =~ .*\-ea$$ ]] && sed -i.bak -E "s/^version: ([0-9]+\.[0-9]+\.[0-9]+).*/version: \1-ea/g" $(CHART_DIR)/Chart.yaml && rm $(CHART_DIR)/Chart.yaml.bak
 	$(call _set_tag_and_repo,$(CHART_DIR)/values.yaml,${IMAGE_TAG},"")
 	$(YQ) w -i $(CHART_DIR)/Chart.yaml 'appVersion' ${IMAGE_TAG}
-	IMAGE_TAG="${IMAGE_TAG}" CHART_NAME=`basename $(CHART_DIR)` $(AES_HOME)/charts/scripts/image_tag_changelog_update.sh
-	CHART_NAME=`basename $(CHART_DIR)` $(AES_HOME)/charts/scripts/update_chart_changelog.sh
+	IMAGE_TAG="${IMAGE_TAG}" CHART_NAME=`basename $(CHART_DIR)` $(EDGE_STACK_HOME)/charts/scripts/image_tag_changelog_update.sh
+	CHART_NAME=`basename $(CHART_DIR)` $(EDGE_STACK_HOME)/charts/scripts/update_chart_changelog.sh
 	$(call _docgen,$(CHART_DIR))
 .PHONY: release/chart/ga-image-update
 
@@ -111,9 +111,9 @@ release/chart/ga-push:
 .PHONY: release/chart/ga-push
 
 release/chart/bump-revision:
-	$(AES_HOME)/charts/scripts/bump_chart_version.sh patch $(CHART_DIR)/Chart.yaml
+	$(EDGE_STACK_HOME)/charts/scripts/bump_chart_version.sh patch $(CHART_DIR)/Chart.yaml
 .PHONY: release/chart/bump-revision
 
 release/chart/bump-minor:
-	$(AES_HOME)/charts/scripts/bump_chart_version.sh minor $(CHART_DIR)/Chart.yaml
+	$(EDGE_STACK_HOME)/charts/scripts/bump_chart_version.sh minor $(CHART_DIR)/Chart.yaml
 .PHONY: release/chart/bump-minor

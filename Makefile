@@ -34,5 +34,15 @@ generate:
 	cd $(EDGE_STACK_HOME)/.circleci && ./generate --always-make
 .PHONY: generate
 
+create-venv:
+	[[ -d $(EDGE_STACK_HOME)/venv ]] || python3 -m venv $(EDGE_STACK_HOME)/venv
+.PHONY: create-venv
+
+$(EDGE_STACK_HOME)/.circleci/yq: $(EDGE_STACK_HOME)/.circleci/yq.d/go.mod
+	cd $(<D) && go build -o $(abspath $@) github.com/mikefarah/yq/v3
+
+clean-manifests:
+	@cd $(EDGE_STACK_HOME) && git restore $(EDGE_STACK_HOME)/manifests/*/*.yaml
+.PHONY: clean-manifests
 
 include $(EDGE_STACK_HOME)/charts/charts.mk
