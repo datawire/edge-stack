@@ -1,19 +1,22 @@
-HELM_OUTPUT_DIR := build/helm/
+EDGE_STACK_HOME := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
-update-yaml/files += manifests/edge-stack/aes.yaml
-update-yaml/files += manifests/edge-stack/aes-crds.yaml
 
-manifests/edge-stack/aes.yaml: $(wildcard charts/edge-stack/templates/*.yaml) $(wildcard charts/edge-stack/charts/*.tgz) charts/edge-stack/values.yaml k8s-config/aes/values.yaml
+HELM_OUTPUT_DIR := $(EDGE_STACK_HOME)/build/helm/
+
+update-yaml/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml
+update-yaml/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-crds.yaml
+
+$(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml: $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml) $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/charts/*.tgz) $(EDGE_STACK_HOME)/charts/edge-stack/values.yaml $(EDGE_STACK_HOME)/k8s-config/aes/values.yaml
 	mkdir -p  $(@D)
-	helm template edge-stack -n ambassador -f k8s-config/aes/values.yaml charts/edge-stack/ > $@
+	helm template edge-stack -n ambassador -f $(EDGE_STACK_HOME)/k8s-config/aes/values.yaml $(EDGE_STACK_HOME)/charts/edge-stack/ > $@
 
 template-helm:
 	rm -rf $(HELM_OUTPUT_DIR)
 	mkdir -p $(HELM_OUTPUT_DIR)
-	helm template edge-stack --output-dir $(HELM_OUTPUT_DIR) --include-crds -n ambassador charts/edge-stack
+	helm template edge-stack --output-dir $(HELM_OUTPUT_DIR) --include-crds -n ambassador $(EDGE_STACK_HOME)/charts/edge-stack
 .PHONY: template-helm
 
-manifests/edge-stack/aes-crds.yaml: $(wildcard charts/edge-stack/templates/*.yaml) $(wildcard charts/edge-stack/charts/*.tgz) template-helm
+$(EDGE_STACK_HOME)/manifests/edge-stack/aes-crds.yaml: $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml) $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/charts/*.tgz) template-helm
 	cat $(sort $(wildcard $(HELM_OUTPUT_DIR)/edge-stack/charts/emissary-ingress/crds/*.yaml)) > $@
 	cat $(sort $(wildcard $(HELM_OUTPUT_DIR)/edge-stack/crds/*.yaml)) >> $@
 	rm -rf $(HELM_OUTPUT_DIR)
@@ -23,13 +26,13 @@ update-yaml:
 .PHONY: update-yaml
 
 push-manifests:
-	manifests/push_manifests.sh
+	$(EDGE_STACK_HOME)/manifests/push_manifests.sh
 .PHONY: push-manifests
 
 generate:
 	$(MAKE) update-yaml
-	cd .circleci && ./generate --always-make
+	cd $(EDGE_STACK_HOME)/.circleci && ./generate --always-make
 .PHONY: generate
 
 
-include charts/charts.mk
+include $(EDGE_STACK_HOME)/charts/charts.mk
