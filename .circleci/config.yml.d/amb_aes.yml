@@ -4,6 +4,7 @@ jobs:
   "aes-generate":
     executor: aes-linux
     steps:
+      - aes-post-checkout-git-config
       - job-generate
 
   "aes-chart":
@@ -22,11 +23,6 @@ jobs:
     executor: "aes-linux"
     steps:
       - job-manifests-publish
-
-  "aes-publish-rc-manifests":
-    executor: aes-linux
-    steps:
-      - job-publish-rc-manifests
 
 _anchors:
   # All of these filters assume that "Only build pull requests" is turned on at
@@ -71,27 +67,14 @@ workflows:
       - "aes-chart":
           name: "aes-dev-chart"
 
-  "AES: Release":
-    # Run this workflow on tags, not branches or PRs.
-    jobs:
-      # test
-      - "aes-generate":
-          <<: *filter-prerelease-only
-          name: "aes-release-generate"
-      - "aes-chart":
-          <<: *filter-prerelease-only
-          name: "aes-release-chart"
-      - "aes-publish-rc-manifests":
-          <<: *filter-rc-only
-          name: "aes-release-publish-rc-manifests"
-
   "AES: Chart Release":
     jobs:
       - "aes-chart-publish":
           <<: *filter-chart-release-only
           name: "aes-release-chart"
+
   "AES: Manifests Release":
     jobs:
       - "aes-manifest-publish":
           <<: *filter-chart-release-only
-          name: "aes-rc-manifests-publish"
+          name: "aes-release-manifests-publish"

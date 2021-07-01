@@ -5,6 +5,7 @@ jobs:
   "aes-generate":
     executor: aes-linux
     steps:
+    - aes-post-checkout-git-config
     - job-generate
   "aes-chart":
     executor: aes-linux
@@ -20,10 +21,6 @@ jobs:
     executor: "aes-linux"
     steps:
     - job-manifests-publish
-  "aes-publish-rc-manifests":
-    executor: aes-linux
-    steps:
-    - job-publish-rc-manifests
 _anchors:
   # chart release will create a tag IFF there are changes to the chart version
   "filter-chart-release-only": &filter-chart-release-only
@@ -61,19 +58,6 @@ workflows:
         name: "aes-dev-generate"
     - "aes-chart":
         name: "aes-dev-chart"
-  "AES: Release":
-    # Run this workflow on tags, not branches or PRs.
-    jobs:
-    - # test
-      "aes-generate":
-        !!merge <<: *filter-prerelease-only
-        name: "aes-release-generate"
-    - "aes-chart":
-        !!merge <<: *filter-prerelease-only
-        name: "aes-release-chart"
-    - "aes-publish-rc-manifests":
-        !!merge <<: *filter-rc-only
-        name: "aes-release-publish-rc-manifests"
   "AES: Chart Release":
     jobs:
     - "aes-chart-publish":
@@ -83,7 +67,7 @@ workflows:
     jobs:
     - "aes-manifest-publish":
         !!merge <<: *filter-chart-release-only
-        name: "aes-rc-manifests-publish"
+        name: "aes-release-manifests-publish"
 commands:
   job-chart:
     steps:
