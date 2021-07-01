@@ -72,9 +72,9 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 ## [2.0.0-ea] June 24, 2021
 [2.0.0-ea]: https://github.com/emissary-ingress/emissary/compare/v1.13.8...v2.0.0-ea
 
-We're pleased to introduce Edge Stack 2.0.0 as a developer preview. The 2.X family introduces a number of changes to allow Emissary to more gracefully handle larger installations, reduce global configuration to better handle multitenant or multiorganizational installations, reduce memory footprint, and improve performance. We welcome feedback!! Join us on <a href="https://a8r.io/slack">Slack</a> and let us know what you think.
+We're pleased to introduce Edge Stack 2.0.0 as a developer preview. The 2.X family introduces a number of changes to allow Edge Stack to more gracefully handle larger installations, reduce global configuration to better handle multitenant or multiorganizational installations, reduce memory footprint, and improve performance. We welcome feedback!! Join us on <a href="https://a8r.io/slack">Slack</a> and let us know what you think.
 
-### Emissary Ingress
+### Ambassador Edge Stack
 
 - Feature: The `Listener` CRD allows explicit definition of ports to listen on, the protocols and security model for each port, and which `Host`s should be associated with which `Listener`.
 - Bugfix: `requestPolicy.insecure.action` works independently across `Host`s ([#2888])
