@@ -58,7 +58,7 @@ metadata:
     product: aes
 rules:
 - apiGroups: [""]
-  resources: [ "pods" ]
+  resources: [ "pods"]
   verbs: [ "get", "list", "watch" ]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
@@ -171,12 +171,16 @@ rules:
     - endpoints
     verbs: ["get", "list", "watch"]
 
-  - apiGroups: [ "getambassador.io" ]
+  - apiGroups: [ "x.getambassador.io", "getambassador.io" ]
     resources: [ "*" ]
     verbs: ["get", "list", "watch", "update", "patch", "create", "delete" ]
 
   - apiGroups: [ "getambassador.io" ]
     resources: [ "mappings/status" ]
+    verbs: ["update"]
+
+  - apiGroups: [ "x.getambassador.io" ]
+    resources: [ "ambassadormappings/status" ]
     verbs: ["update"]
 
   - apiGroups: [ "networking.internal.knative.dev" ]
@@ -203,7 +207,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: edge-stack-edge-stack
+  name: edge-stack-aes
   labels:
     product: aes
     rbac.getambassador.io/role-group: edge-stack
@@ -401,7 +405,7 @@ spec:
       serviceAccountName: edge-stack-agent
       containers:
       - name: agent
-        image: docker.io/datawire/aes:1.13.7
+        image: docker.io/datawire/aes:2.0.0-ea
         imagePullPolicy: IfNotPresent
         command: [ "agent" ]
         env:
@@ -460,7 +464,7 @@ spec:
         
       containers:
         - name: aes
-          image: docker.io/datawire/aes:1.13.7
+          image: docker.io/datawire/aes:2.0.0-ea
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -565,44 +569,72 @@ spec:
           {}
       restartPolicy: Always
 ---
-# Source: edge-stack/charts/emissary-ingress/templates/crds.yaml
-# GENERATED FILE: edits made by hand will not be preserved.
+# Source: edge-stack/templates/aes-internal.yaml
+# Configure DevPortal
+apiVersion: x.getambassador.io/v3alpha1
+kind: AmbassadorMapping
+metadata:
+  # This Mapping name is referenced by convention, it's important to leave as-is.
+  name: edge-stack-devportal
+  namespace: ambassador
+  labels:
+    product: aes
+spec:
+  prefix: /docs/
+  hostname: "*"
+  rewrite: "/docs/"
+  service: "127.0.0.1:8500"
 ---
-# Source: edge-stack/charts/emissary-ingress/templates/crds.yaml
-# GENERATED FILE: edits made by hand will not be preserved.
+# Source: edge-stack/templates/aes-internal.yaml
+apiVersion: x.getambassador.io/v3alpha1
+kind: AmbassadorMapping
+metadata:
+  name: edge-stack-devportal-assets
+  namespace: ambassador
+  labels:
+    product: aes
+spec:
+  prefix: /documentation/(assets|styles)/(.*)(.css)
+  hostname: "*"
+  prefix_regex: true
+  regex_rewrite:
+    pattern: /documentation/(.*)
+    substitution: /docs/\1
+  service: "127.0.0.1:8500"
+  add_response_headers:
+    cache-control:
+      value: "public, max-age=3600, immutable"
+      append: false
 ---
-# Source: edge-stack/charts/emissary-ingress/templates/crds.yaml
-# GENERATED FILE: edits made by hand will not be preserved.
+# Source: edge-stack/templates/aes-internal.yaml
+apiVersion: x.getambassador.io/v3alpha1
+kind: AmbassadorMapping
+metadata:
+  # This Mapping name is what the demo uses. Sigh.
+  name: edge-stack-devportal-demo
+  namespace: ambassador
+  labels:
+    product: aes
+spec:
+  prefix: /docs/
+  hostname: "*"
+  rewrite: "/docs/"
+  service: "127.0.0.1:8500"
 ---
-# Source: edge-stack/charts/emissary-ingress/templates/crds.yaml
-# GENERATED FILE: edits made by hand will not be preserved.
----
-# Source: edge-stack/charts/emissary-ingress/templates/crds.yaml
-# GENERATED FILE: edits made by hand will not be preserved.
----
-# Source: edge-stack/charts/emissary-ingress/templates/crds.yaml
-# GENERATED FILE: edits made by hand will not be preserved.
----
-# Source: edge-stack/charts/emissary-ingress/templates/crds.yaml
-# GENERATED FILE: edits made by hand will not be preserved.
----
-# Source: edge-stack/charts/emissary-ingress/templates/crds.yaml
-# GENERATED FILE: edits made by hand will not be preserved.
----
-# Source: edge-stack/charts/emissary-ingress/templates/crds.yaml
-# GENERATED FILE: edits made by hand will not be preserved.
----
-# Source: edge-stack/charts/emissary-ingress/templates/crds.yaml
-# GENERATED FILE: edits made by hand will not be preserved.
----
-# Source: edge-stack/charts/emissary-ingress/templates/crds.yaml
-# GENERATED FILE: edits made by hand will not be preserved.
----
-# Source: edge-stack/charts/emissary-ingress/templates/crds.yaml
-# GENERATED FILE: edits made by hand will not be preserved.
----
-# Source: edge-stack/charts/emissary-ingress/templates/crds.yaml
-# GENERATED FILE: edits made by hand will not be preserved.
+# Source: edge-stack/templates/aes-internal.yaml
+apiVersion: x.getambassador.io/v3alpha1
+kind: AmbassadorMapping
+metadata:
+  # This Mapping name is referenced by convention, it's important to leave as-is.
+  name: edge-stack-devportal-api
+  namespace: ambassador
+  labels:
+    product: aes
+spec:
+  prefix: /openapi/
+  hostname: "*"
+  rewrite: ""
+  service: "127.0.0.1:8500"
 ---
 # Source: edge-stack/templates/aes-authservice.yaml
 apiVersion: getambassador.io/v2
@@ -618,69 +650,6 @@ spec:
   allow_request_body: false
   status_on_error:
     code: 504
----
-# Source: edge-stack/templates/aes-internal.yaml
-# Configure DevPortal
-apiVersion: getambassador.io/v2
-kind: Mapping
-metadata:
-  # This Mapping name is referenced by convention, it's important to leave as-is.
-  name: edge-stack-devportal
-  namespace: ambassador
-  labels:
-    product: aes
-spec:
-  prefix: /docs/
-  rewrite: "/docs/"
-  service: "127.0.0.1:8500"
----
-# Source: edge-stack/templates/aes-internal.yaml
-apiVersion: getambassador.io/v2
-kind: Mapping
-metadata:
-  name: edge-stack-devportal-assets
-  namespace: ambassador
-  labels:
-    product: aes
-spec:
-  prefix: /documentation/(assets|styles)/(.*)(.css)
-  prefix_regex: true
-  regex_rewrite:
-    pattern: /documentation/(.*)
-    substitution: /docs/\1
-  service: "127.0.0.1:8500"
-  add_response_headers:
-    cache-control:
-      value: "public, max-age=3600, immutable"
-      append: false
----
-# Source: edge-stack/templates/aes-internal.yaml
-apiVersion: getambassador.io/v2
-kind: Mapping
-metadata:
-  # This Mapping name is what the demo uses. Sigh.
-  name: edge-stack-devportal-demo
-  namespace: ambassador
-  labels:
-    product: aes
-spec:
-  prefix: /docs/
-  rewrite: "/docs/"
-  service: "127.0.0.1:8500"
----
-# Source: edge-stack/templates/aes-internal.yaml
-apiVersion: getambassador.io/v2
-kind: Mapping
-metadata:
-  # This Mapping name is referenced by convention, it's important to leave as-is.
-  name: edge-stack-devportal-api
-  namespace: ambassador
-  labels:
-    product: aes
-spec:
-  prefix: /openapi/
-  rewrite: ""
-  service: "127.0.0.1:8500"
 ---
 # Source: edge-stack/templates/aes-ratelimit.yaml
 apiVersion: getambassador.io/v2
@@ -700,7 +669,7 @@ metadata:
   name: "edge-stack-test-ready"
   labels:
     app.kubernetes.io/name: edge-stack
-    helm.sh/chart: emissary-ingress-6.7.10-dev.175-g183264553
+    helm.sh/chart: emissary-ingress-7.0.0-ea
     app.kubernetes.io/instance: edge-stack
     app.kubernetes.io/managed-by: getambassador.io
   annotations:
