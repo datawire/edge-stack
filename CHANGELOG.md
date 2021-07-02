@@ -20,9 +20,6 @@ of Emissary Ingress in addition to the additional capabilities mentioned above. 
 popular demand, we’re offering a free tier of our core features as part of the Ambassador
 Edge Stack, designed for startups.
 
-In general, references to "Ambassador" in this CHANGELOG and the rest of the Ambassador
-Edge Stack documentation refer both to the Ambassador Edge Stack and Emissary Ingress.
-
 ## UPCOMING BREAKING CHANGES
 
 #### TLS Termination and the `Host` CRD
@@ -69,6 +66,10 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## Next Release
+
+(no changes yet)
+
 ## [2.0.0-ea] June 24, 2021
 [2.0.0-ea]: https://github.com/emissary-ingress/emissary/compare/v1.13.8...v2.0.0-ea
 
@@ -94,7 +95,7 @@ We're pleased to introduce Edge Stack 2.0.0 as a developer preview. The 2.X fami
 ## [1.13.8] June 08, 2021
 [1.13.8]: https://github.com/emissary-ingress/emissary/compare/v1.13.7...v1.13.8
 
-### Emissary Ingress and Ambassador Edge Stack
+### Ambassador Edge Stack
 
 - Bugfix: Ambassador Agent now accurately reports up-to-date Endpoint information to Ambassador Cloud
 - Feature: Ambassador Agent reports ConfigMaps and Deployments to Ambassador Cloud to provide a better Argo Rollouts experience. See [Argo+Ambassador documentation](https://www.getambassador.io/docs/argo) for more info.
@@ -102,7 +103,7 @@ We're pleased to introduce Edge Stack 2.0.0 as a developer preview. The 2.X fami
 ## [1.13.7] June 03, 2021
 [1.13.7]: https://github.com/datawire/ambassador/compare/v1.13.6...v1.13.7
 
-### Emissary Ingress and Ambassador Edge Stack
+### Ambassador Edge Stack
 
 - Feature: Add AMBASSADOR_JSON_LOGGING to enable JSON for most of the Ambassador control plane. Some (but few) logs from gunicorn and the Kubernetes client-go package still log text.
 - Bugfix: Fixed a bug where the Consul resolver would not actually use Consul endpoints with TCPMappings.
@@ -116,7 +117,7 @@ We're pleased to introduce Edge Stack 2.0.0 as a developer preview. The 2.X fami
 ## [1.13.5] May 13, 2021
 [1.13.5]: https://github.com/datawire/ambassador/compare/v1.13.4...v1.13.5
 
-### Emissary Ingress and Ambassador Edge Stack
+### Ambassador Edge Stack
 
 - Bugfix: Fix a regression from 1.8.0 that prevented Ambassador module config keys `proper_case` and `preserve_external_request_id` from working correctly.
 - Bugfix: Fixed a regression in detecting the Ambassador Kubernetes service that could cause the wrong IP or hostname to be used in Ingress statuses (thanks, [Noah Fontes](https://github.com/impl)!
@@ -124,21 +125,21 @@ We're pleased to introduce Edge Stack 2.0.0 as a developer preview. The 2.X fami
 ## [1.13.4] May 11, 2021
 [1.13.4]: https://github.com/datawire/ambassador/compare/v1.13.3...v1.13.4
 
-### Emissary Ingress and Ambassador Edge Stack
+### Ambassador Edge Stack
 
 - Bugfix: Incorporate the Envoy 1.15.5 security update by adding the `reject_requests_with_escaped_slashes` option to the Ambassador module.
 
 ## [1.13.3] May 03, 2021
 [1.13.3]: https://github.com/datawire/ambassador/compare/v1.13.2...v1.13.3
 
-### Emissary Ingress and Ambassador Edge Stack
+### Ambassador Edge Stack
 
 - Bugfix: Fixed a regression that caused Ambassador to crash when loading the Edge Policy Console when any RateLimit resources exist ([#3348])
 
 ## [1.13.2] April 29, 2021
 [1.13.2]: https://github.com/datawire/ambassador/compare/v1.13.1...v1.13.2
 
-### Emissary Ingress and Ambassador Edge Stack
+### Ambassador Edge Stack
 
 - Bugfix: Fixed a regression that caused endpoint routing to not work when defining mappings in service annotations ([#3369])
 
@@ -147,7 +148,7 @@ We're pleased to introduce Edge Stack 2.0.0 as a developer preview. The 2.X fami
 ## [1.13.1] April 22, 2021
 [1.13.1]: https://github.com/datawire/ambassador/compare/v1.13.0...v1.13.1
 
-### Emissary Ingress and Ambassador Edge Stack
+### Ambassador Edge Stack
 
 - Bugfix: Potentially increased CPU Usage for deployments with large numbers of Hosts ([#3358])
 
@@ -156,10 +157,9 @@ We're pleased to introduce Edge Stack 2.0.0 as a developer preview. The 2.X fami
 ## [1.13.0] April 20, 2021
 [1.13.0]: https://github.com/datawire/ambassador/compare/v1.12.4...v1.13.0
 
-### Emissary Ingress and Ambassador Edge Stack
+### Ambassador Edge Stack
 
 *Note*: Support for the deprecated `v2alpha` `protocol_version` has been removed from the `AuthService` and `RateLimitService`.
-
 - Feature: Added support for the [Mapping AuthService setting] `auth_context_extensions`, allowing supplying custom per-mapping information to external auth services (thanks, [Giridhar Pathak](https://github.com/gpathak)!).
 - Feature: Added support in ambassador-agent for reporting [Argo Rollouts] and [Argo Applications] to Ambassador Cloud
 - Feature: The [Ambassador Module configuration] now supports the `diagnostics.allow_non_local` flag to expose admin UI internally only ([#3074] -- thanks, [Fabrice](https://github.com/jfrabaute)!)
