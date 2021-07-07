@@ -1,8 +1,8 @@
 apiVersion: v2
-appVersion: 2.0.0-ea
+appVersion: 2.0.1-ea
 description: A Helm chart for Ambassador Edge Stack
 name: edge-stack
-version: 7.0.0-ea
+version: 7.0.1-ea
 # TODO: change these to whatever the appropriate things are
 icon: https://www.getambassador.io/images/logo.png
 home: https://www.getambassador.io/
