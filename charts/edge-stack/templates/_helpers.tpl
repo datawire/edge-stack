@@ -30,6 +30,44 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 {{- end -}}
 
+
+{{/*
+Set the image that should be used for ambassador.
+Use fullImageOverride if present,
+Then if the image repository is explicitly set, use "repository:image"
+*/}}
+{{- define "ambassador.image" -}}
+{{- if .Values.image.fullImageOverride }}
+{{- .Values.image.fullImageOverride }}
+{{- else if hasKey .Values.image "repository"  -}}
+{{- printf "%s:%s" .Values.image.repository .Values.image.tag -}}
+{{- else -}}
+{{- printf "%s:%s" "docker.io/datawire/aes" .Values.image.tag -}}
+{{- end -}}
+{{- end -}}
+
+
+{{/*
+Set the image that should be used for the canary deployment.
+disabled if fullImageOverride is present
+*/}}
+{{- define "ambassador.canaryImage" -}}
+{{- if .Values.image.fullImageOverride }}
+{{- printf "%s" "" -}}
+{{- else if and .Values.canary.image.repository .Values.canary.image.tag -}}
+{{- printf "%s:%s" .Values.canary.image.repository .Values.canary.image.tag -}}
+{{- else if .Values.canary.image.tag -}}
+{{- if hasKey .Values.image "repository" -}}
+{{- printf "%s:%s" .Values.image.repository .Values.canary.image.tag -}}
+{{- else -}}
+{{- printf "%s:%s" "docker.io/datawire/aes" .Values.canary.image.tag -}}
+{{- end -}}
+{{- else -}}
+{{- printf "%s" "" -}}
+{{- end -}}
+{{- end -}}
+
+
 {{/*
 Create chart namespace based on override value.
 */}}
