@@ -7,6 +7,11 @@ numbering uses [semantic versioning](http://semver.org).
 
 (no changes yet)
 
+## v7.1.0-ea
+
+- Feature: New canarying features for Ambassador in the chart that allow creation of a secondary deployment/service to test new versions and environment variables.
+- Feature: Exposed `progressDeadlineSeconds` for the Ambassador and Ambassador Agent Deployments with new values
+
 ## v7.0.0-ea
 
 - Update Edge Stack chart image to version v2.0.0-ea: [CHANGELOG](https://github.com/datawire/edge-stack/blob/master/CHANGELOG.md)
