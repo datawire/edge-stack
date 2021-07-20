@@ -95,6 +95,18 @@ release/chart/changelog:
 	@$(EDGE_STACK_HOME)/charts/scripts/update_chart_changelog.sh
 .PHONY: release/chart/changelog
 
+release/chart/tag:
+	@set -e; { \
+		if [ -n "$(IS_DIRTY)" ]; then \
+			echo "release/chart/tag: tree must be clean" >&2 ;\
+			exit 1 ;\
+		fi; \
+		chart_ver=`grep 'version:' $(CHART_DIR)/Chart.yaml | awk ' { print $$2 }'` ; \
+		chart_ver=chart-v$${chart_ver} ; \
+		git tag -m "Tagging $${chart_ver}" -a $${chart_ver} ; \
+		git push origin $${chart_ver} ; \
+	}
+
 release/chart/ga-image-update: chart/push-preflight
 	@[ -n "${IMAGE_TAG}" ] || (echo "IMAGE_TAG must be set" && exit 1)
 	([[ "${IMAGE_TAG}" =~ .*\.0$$ ]] && $(MAKE) release/chart/bump-minor) || $(MAKE) release/chart/bump-revision
