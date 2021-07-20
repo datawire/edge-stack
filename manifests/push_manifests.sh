@@ -17,6 +17,9 @@ abort() {
 
 TOP_DIR=${CURR_DIR}/../
 if [[ -z "${VERSION}" ]] ; then
+    VERSION=`cat ${TOP_DIR}/VERSION`
+fi
+if [[ -z "${VERSION}" ]] ; then
     abort "VERSION must be set"
 fi
 version=${VERSION}
