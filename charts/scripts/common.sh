@@ -139,7 +139,7 @@ get_chart_version () {
     if [[ ! -f "${1}/Chart.yaml" ]] ; then
         abort "Chart.yaml not found in ${1}"
     fi
-    grep '^version:' ${1}/Chart.yaml | awk ' { print $2 }' | sed -n 1p
+    grep '^version:' ${1}/Chart.yaml | awk ' { print $2 }'
 }
 
 create_chart_release() {

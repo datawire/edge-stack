@@ -160,7 +160,7 @@ commands:
       - run:
           name: "Diff changes"
           command: |
-            thisversion=$(grep version: charts/edge-stack/Chart.yaml | awk ' { print $2 }' | sed -n 1p)
+            thisversion=$(grep ^version: charts/edge-stack/Chart.yaml | awk ' { print $2 }')
 
             if [[ "<< pipeline.git.tag >>" != "chart-v${thisversion}" ]]; then
               echo "Chart version ${thisversion} doesn't match tag << pipeline.git.tag >>; aborting"
