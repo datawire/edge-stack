@@ -72,6 +72,16 @@ We're pleased to introduce Edge Stack 2.0.1 as a developer preview. The 2.X fami
 
 ### Ambassador Edge Stack
 
+- Feature: The optional `statsPrefix` element of the `AmbassadorListener` CRD now determines the prefix of HTTP statistics emitted for a specific `AmbassadorListener`.
+- Feature: Ambassador Agent reports sidecar process information and Mapping OpenAPI documentation to Ambassador Cloud to provide more visibility into services and clusters.
+- Change: Logs now include subsecond time resolutions, rather than just seconds.
+- Change: Envoy-configuration snapshots get saved (as `ambex-#.json`) in `/ambassador/snapshots`.
+  The number of snapshots is controlled by the `AMBASSADOR_AMBEX_SNAPSHOT_COUNT` environment
+  variable; set it to 0 to disable. The default is 30.
+- Change: Set `AMBASSADOR_AMBEX_NO_RATELIMIT` to `true` to completely disable ratelimiting Envoy
+  reconfiguration under memory pressure. This can help performance with the endpoint or Consul
+  resolvers, but could make OOMkills more likely with large configurations. The default is `false`,
+  meaning that the rate limiter is active.
 - Bugfix: The `AmbassadorMapping` resource can now specify `docs.timeout_ms` to set the timeout when the 
   Dev Portal is fetching API specifications.
 - Bugfix: The Dev Portal will now strip HTML tags when displaying search results, showing just
@@ -86,17 +96,17 @@ We're pleased to introduce Edge Stack 2.0.0 as a developer preview. The 2.X fami
 
 ### Ambassador Edge Stack
 
-- Feature: The `Listener` CRD allows explicit definition of ports to listen on, the protocols and security model for each port, and which `Host`s should be associated with which `Listener`.
+- Feature: The `AmbassadorListener` CRD allows explicit definition of ports to listen on, the protocols and security model for each port, and which `AmbassadorHost`s should be associated with which `AmbassadorListener`.
 - Bugfix: `requestPolicy.insecure.action` works independently across `Host`s ([#2888])
 - Bugfix: Fixed a regression in detecting the Ambassador Kubernetes service that could cause the wrong IP or hostname to be used in Ingress statuses.
-- Change: `Host`s and `Mapping`s will not be associated unless a `Host` selector or a `Mapping`'s `host` element explicitly agree.
-- Change: `Mapping`'s `host` field is either an exact match or (with `host_regex` set) a regex. `Mapping` now has a new `hostname` element that is functionally the same as `host`, but is always a DNS glob.
+- Change: `AmbassadorHost`s and `AmbassadorMapping`s will not be associated unless an `AmbassadorHost` selector or an `AmbassadorMapping`'s `host` element explicitly agree.
+- Change: `AmbassadorMapping`'s `host` field is either an exact match or (with `host_regex` set) a regex. `Mapping` now has a new `hostname` element that is functionally the same as `host`, but is always a DNS glob.
 - Change: The `tls` field on the Ambassador module is now deprecated. Please use TLSContexts instead https://www.getambassador.io/docs/edge-stack/latest/topics/running/tls/#tlscontext.
 - Change: Envoy V3 is now the default.
 - Change: The `Host` CRD is now required when terminating TLS.
 - Change: The AGENT_SERVICE environment variable has been deprecated.
-- Change: `redirect_cleartext_from` in a `TLSContext` is no longer supported -- use an extra 'Listener' instead!
-- Change: `prune_unreachable_routes` now defaults to true, which should reduce Envoy memory requirements for installations with many `Host`s
+- Change: `redirect_cleartext_from` in a `TLSContext` is no longer supported -- use an extra `AmbassadorListener` instead!
+- Change: `prune_unreachable_routes` is now always enabled, which should reduce Envoy memory requirements for installations with many `AmbassadorHost`s
 - Change: The edgectl CLI tool has been deprecated, please use the `emissary-ingress` helm chart instead.
 
 [#2888]: https://github.com/datawire/ambassador/issues/2888
