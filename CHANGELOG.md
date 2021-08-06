@@ -66,9 +66,18 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
-## Next Release
+## [2.0.1-ea] (TBD)
 
-- Bugfix: Strip HTML tags in the Dev Portal search results ([#2612])
+We're pleased to introduce Edge Stack 2.0.1 as a developer preview. The 2.X family introduces a number of changes to allow Edge Stack to more gracefully handle larger installations, reduce global configuration to better handle multitenant or multiorganizational installations, reduce memory footprint, and improve performance. We welcome feedback!! Join us on <a href="https://a8r.io/slack">Slack</a> and let us know what you think.
+
+### Ambassador Edge Stack
+
+- Bugfix: The `AmbassadorMapping` resource can now specify `docs.timeout_ms` to set the timeout when the 
+  Dev Portal is fetching API specifications.
+- Bugfix: The Dev Portal will now strip HTML tags when displaying search results, showing just
+  the actual content of the search result.
+- Change: Consul certificate-rotation logging now includes the fingerprints and validity
+  timestamps of certificates being rotated.
 
 ## [2.0.0-ea] June 24, 2021
 [2.0.0-ea]: https://github.com/emissary-ingress/emissary/compare/v1.13.8...v2.0.0-ea
