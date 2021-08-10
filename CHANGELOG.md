@@ -68,6 +68,13 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## Next Release
 
+(no changes yet)
+
+## [2.0.1-ea] (TBD)
+[2.0.1-ea]: https://github.com/datawire/edge-stack/compare/v2.0.0-ea...v2.0.1-ea
+
+### Ambassador Edge Stack
+
 We're pleased to introduce Edge Stack 2.0.1 as a developer preview. The 2.X family introduces a number of changes to allow Edge Stack to more gracefully handle larger installations, reduce global configuration to better handle multitenant or multiorganizational installations, reduce memory footprint, and improve performance. We welcome feedback!! Join us on <a href="https://a8r.io/slack">Slack</a> and let us know what you think.
 
 ### Ambassador Edge Stack
