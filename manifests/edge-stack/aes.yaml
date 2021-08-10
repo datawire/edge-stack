@@ -353,7 +353,8 @@ spec:
       targetPort: 8443
   selector:
     
-      service: ambassador
+    service: ambassador
+    profile: main
 ---
 # Source: edge-stack/templates/aes-redis.yaml
 apiVersion: v1
@@ -419,6 +420,9 @@ spec:
           value: https://app.getambassador.io/
         - name: AES_SNAPSHOT_URL
           value: "http://edge-stack-admin.ambassador:8005/snapshot-external"
+  
+  
+  progressDeadlineSeconds: 600
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/deployment.yaml
 apiVersion: apps/v1
@@ -436,12 +440,16 @@ spec:
       service: ambassador
   strategy:
     type: RollingUpdate
+  
+  
+  progressDeadlineSeconds: 600
   template:
     metadata:
       labels:
         
         service: ambassador
         app.kubernetes.io/managed-by: getambassador.io
+        profile: main
       annotations:
         consul.hashicorp.com/connect-inject: "false"
         sidecar.istio.io/inject: "false"
@@ -661,23 +669,3 @@ metadata:
     product: aes
 spec:
   service: 127.0.0.1:8500
----
-# Source: edge-stack/charts/emissary-ingress/templates/tests/test-ready.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: "edge-stack-test-ready"
-  labels:
-    app.kubernetes.io/name: edge-stack
-    helm.sh/chart: emissary-ingress-7.0.0-ea
-    app.kubernetes.io/instance: edge-stack
-    app.kubernetes.io/managed-by: getambassador.io
-  annotations:
-    "helm.sh/hook": test-success
-spec:
-  containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
-      args:  ['edge-stack:80/ambassador/v0/check_ready']
-  restartPolicy: Never
