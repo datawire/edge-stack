@@ -16,6 +16,8 @@ namespaceOverride: ''
 # Example:
 # setting `emissary-ingress.service.type=NodePort` will pass `service.type=NodePort` to the underlying emissary chart
 emissary-ingress: # +doc-gen:break
+  test:
+    enabled: false
   service:
     type: LoadBalancer
 
