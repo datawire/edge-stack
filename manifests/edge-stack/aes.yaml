@@ -29,7 +29,7 @@ metadata:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: edge-stack-edge-stack
+  name: edge-stack
   namespace: ambassador
 type: Opaque
 data:
@@ -466,9 +466,9 @@ spec:
               - fieldRef:
                   fieldPath: metadata.labels
                 path: labels
-        - name: edge-stack-edge-stack-secrets
+        - name: edge-stack-secrets
           secret:
-            secretName: edge-stack-edge-stack
+            secretName: edge-stack
         
       containers:
         - name: aes
@@ -494,8 +494,6 @@ spec:
               value: "600"
             - name: "AMBASSADOR_INTERNAL_URL"
               value: "https://127.0.0.1:8443"
-            - name: "AMBASSADOR_URL"
-              value: "https://ambassador.ambassador.svc.cluster.local"
             - name: "POLL_EVERY_SECS"
               value: "60"
             - name: REDIS_URL
@@ -522,7 +520,7 @@ spec:
               mountPath: /tmp/ambassador-pod-info
               readOnly: true
             
-            - name: edge-stack-edge-stack-secrets
+            - name: edge-stack-secrets
               mountPath: /.config/ambassador
               readOnly: true
             
@@ -648,7 +646,7 @@ spec:
 apiVersion: getambassador.io/v2
 kind: AuthService
 metadata:
-  name: edge-stack-edge-stack-auth
+  name: edge-stack-auth
   namespace: ambassador
   labels:
     product: aes
@@ -663,7 +661,7 @@ spec:
 apiVersion: getambassador.io/v2
 kind: RateLimitService
 metadata:
-  name: edge-stack-edge-stack-ratelimit
+  name: edge-stack-ratelimit
   namespace: ambassador
   labels:
     product: aes

@@ -6,7 +6,7 @@ resources:
     name: edge-stack-redis
     namespace: default
   - kind: Secret
-    name: edge-stack-edge-stack
+    name: edge-stack
     namespace: default
   - kind: Service
     name: test-aes

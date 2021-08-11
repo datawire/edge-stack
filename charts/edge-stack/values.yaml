@@ -50,16 +50,16 @@ emissary-ingress: # +doc-gen:break
       value: {{ .Values.licenseKey.secretName }}
     {{- end }}
   volumesRaw: |
-    - name: {{ include "ambassador.fullname" . }}-edge-stack-secrets
+    - name: {{ include "ambassador.fullname" . }}-secrets
       secret:
         {{- if and .Values.licenseKey .Values.licenseKey.secretName }}
         secretName: {{ .Values.licenseKey.secretName }}
         {{- else }}
-        secretName: {{ include "ambassador.fullname" . }}-edge-stack
+        secretName: {{ include "ambassador.fullname" . }}
         {{- end }}
   volumeMountsRaw: |
     {{- if and .Values.licenseKey.createSecret }}
-    - name: {{ include "ambassador.fullname" . }}-edge-stack-secrets
+    - name: {{ include "ambassador.fullname" . }}-secrets
       mountPath: /.config/ambassador
       readOnly: true
     {{- end }}
