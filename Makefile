@@ -16,7 +16,9 @@ python-setup: create-venv
 	$(EDGE_STACK_HOME)/venv/bin/python -m pip install ruamel.yaml
 .PHONY: python-setup
 
-$(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml: $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml) $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/charts/*.tgz) $(EDGE_STACK_HOME)/charts/edge-stack/values.yaml $(EDGE_STACK_HOME)/k8s-config/aes/values.yaml
+FORCE:
+
+$(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml: $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml) $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/charts/*.tgz) $(EDGE_STACK_HOME)/charts/edge-stack/values.yaml $(EDGE_STACK_HOME)/k8s-config/aes/values.yaml FORCE
 	mkdir -p  $(@D)
 	helm template edge-stack -n ambassador -f $(EDGE_STACK_HOME)/k8s-config/aes/values.yaml $(EDGE_STACK_HOME)/charts/edge-stack/ > $@
 
@@ -26,7 +28,7 @@ template-helm:
 	helm template edge-stack --output-dir $(HELM_OUTPUT_DIR) --include-crds -n ambassador $(EDGE_STACK_HOME)/charts/edge-stack
 .PHONY: template-helm
 
-$(EDGE_STACK_HOME)/manifests/edge-stack/aes-crds.yaml: $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml) $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/charts/*.tgz) template-helm
+$(EDGE_STACK_HOME)/manifests/edge-stack/aes-crds.yaml: $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml) $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/charts/*.tgz) template-helm FORCE
 	cat $(sort $(wildcard $(HELM_OUTPUT_DIR)/edge-stack/charts/emissary-ingress/crds/*.yaml)) > $@
 	cat $(sort $(wildcard $(HELM_OUTPUT_DIR)/edge-stack/crds/*.yaml)) >> $@
 	rm -rf $(HELM_OUTPUT_DIR)
@@ -41,16 +43,16 @@ define generate_yaml_from_helm
 		$(EDGE_STACK_HOME)/build/yaml/$(1)/helm-expanded.yaml $(EDGE_STACK_HOME)/k8s-config/$(1)/require.yaml > $(3)
 endef
 
-$(EDGE_STACK_HOME)/manifests/edge-stack/oss-migration.yaml: $(EDGE_STACK_HOME)/k8s-config/create_yaml.py $(EDGE_STACK_HOME)/k8s-config/oss-migration/require.yaml $(EDGE_STACK_HOME)/k8s-config/oss-migration/values.yaml $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml $(EDGE_STACK_HOME)/charts/edge-stack/values.yaml python-setup
+$(EDGE_STACK_HOME)/manifests/edge-stack/oss-migration.yaml: $(EDGE_STACK_HOME)/k8s-config/create_yaml.py $(EDGE_STACK_HOME)/k8s-config/oss-migration/require.yaml $(EDGE_STACK_HOME)/k8s-config/oss-migration/values.yaml $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml $(EDGE_STACK_HOME)/charts/edge-stack/values.yaml python-setup FORCE
 	@printf '  $(CYN)$@$(END)\n'
 	$(call generate_yaml_from_helm,oss-migration,default,$@)
 
-$(EDGE_STACK_HOME)/manifests/edge-stack/resources-migration.yaml: $(EDGE_STACK_HOME)/k8s-config/create_yaml.py $(EDGE_STACK_HOME)/k8s-config/resources-migration/require.yaml $(EDGE_STACK_HOME)/k8s-config/resources-migration/values.yaml $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml $(EDGE_STACK_HOME)/charts/edge-stack/values.yaml python-setup
+$(EDGE_STACK_HOME)/manifests/edge-stack/resources-migration.yaml: $(EDGE_STACK_HOME)/k8s-config/create_yaml.py $(EDGE_STACK_HOME)/k8s-config/resources-migration/require.yaml $(EDGE_STACK_HOME)/k8s-config/resources-migration/values.yaml $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml $(EDGE_STACK_HOME)/charts/edge-stack/values.yaml python-setup FORCE
 	@printf '  $(CYN)$@$(END)\n'
 	$(call generate_yaml_from_helm,resources-migration,default,$@)
 
 update-yaml:
-	@echo '$(MAKE) $$(update-yaml/files)'; $(MAKE) $(update-yaml/files)
+	@echo '$(MAKE) $$(update-yaml/files)'; $(MAKE) $(update-yaml/files) --always-make
 .PHONY: update-yaml
 
 push-manifests:
