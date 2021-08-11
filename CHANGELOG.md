@@ -74,9 +74,11 @@ We're pleased to introduce Edge Stack 2.0.1 as a developer preview. The 2.X fami
 
 - Feature: Ambassador Agent reports sidecar process information and Mapping OpenAPI documentation to Ambassador Cloud to provide more visibility into services and clusters.
 - Feature: The optional `stats_prefix` element of the `AmbassadorListener` CRD now determines the prefix of HTTP statistics emitted for a specific `AmbassadorListener`.
+- Feature: The optional `stats_name` element of `AmbassadorMapping`, `AmbassadorTCPMapping`, `AuthService`, `LogService`, `RateLimitService`, and `TracingService` now sets the name under which cluster statistics will be logged. The default is the `service`, with non-alphanumeric characters replaced by underscores.
 - Bugfix: The `AmbassadorMapping` resource can now specify `docs.timeout_ms` to set the timeout when the 
   Dev Portal is fetching API specifications.
 - Bugfix: The Dev Portal will now strip HTML tags when displaying search results, showing just
+- Bugfix: Ambassador Edge Stack has updated to `k8s.io/klog/v2` to track upstream and to quiet unnecessary log output.
 - Change: Logs now include subsecond time resolutions, rather than just seconds.
 - Change: Envoy-configuration snapshots get saved (as `ambex-#.json`) in `/ambassador/snapshots`.
   The number of snapshots is controlled by the `AMBASSADOR_AMBEX_SNAPSHOT_COUNT` environment
