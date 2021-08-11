@@ -72,8 +72,11 @@ We're pleased to introduce Edge Stack 2.0.1 as a developer preview. The 2.X fami
 
 ### Ambassador Edge Stack
 
-- Feature: The optional `statsPrefix` element of the `AmbassadorListener` CRD now determines the prefix of HTTP statistics emitted for a specific `AmbassadorListener`.
 - Feature: Ambassador Agent reports sidecar process information and Mapping OpenAPI documentation to Ambassador Cloud to provide more visibility into services and clusters.
+- Feature: The optional `stats_prefix` element of the `AmbassadorListener` CRD now determines the prefix of HTTP statistics emitted for a specific `AmbassadorListener`.
+- Bugfix: The `AmbassadorMapping` resource can now specify `docs.timeout_ms` to set the timeout when the 
+  Dev Portal is fetching API specifications.
+- Bugfix: The Dev Portal will now strip HTML tags when displaying search results, showing just
 - Change: Logs now include subsecond time resolutions, rather than just seconds.
 - Change: Envoy-configuration snapshots get saved (as `ambex-#.json`) in `/ambassador/snapshots`.
   The number of snapshots is controlled by the `AMBASSADOR_AMBEX_SNAPSHOT_COUNT` environment
@@ -82,9 +85,6 @@ We're pleased to introduce Edge Stack 2.0.1 as a developer preview. The 2.X fami
   reconfiguration under memory pressure. This can help performance with the endpoint or Consul
   resolvers, but could make OOMkills more likely with large configurations. The default is `false`,
   meaning that the rate limiter is active.
-- Bugfix: The `AmbassadorMapping` resource can now specify `docs.timeout_ms` to set the timeout when the 
-  Dev Portal is fetching API specifications.
-- Bugfix: The Dev Portal will now strip HTML tags when displaying search results, showing just
   the actual content of the search result.
 - Change: Consul certificate-rotation logging now includes the fingerprints and validity
   timestamps of certificates being rotated.
