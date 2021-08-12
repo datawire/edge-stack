@@ -16,6 +16,8 @@ namespaceOverride: ''
 # Example:
 # setting `emissary-ingress.service.type=NodePort` will pass `service.type=NodePort` to the underlying emissary chart
 emissary-ingress: # +doc-gen:break
+  test:
+    enabled: false
   service:
     type: LoadBalancer
 
@@ -48,16 +50,16 @@ emissary-ingress: # +doc-gen:break
       value: {{ .Values.licenseKey.secretName }}
     {{- end }}
   volumesRaw: |
-    - name: {{ include "ambassador.fullname" . }}-edge-stack-secrets
+    - name: {{ include "ambassador.fullname" . }}-secrets
       secret:
         {{- if and .Values.licenseKey .Values.licenseKey.secretName }}
         secretName: {{ .Values.licenseKey.secretName }}
         {{- else }}
-        secretName: {{ include "ambassador.fullname" . }}-edge-stack
+        secretName: {{ include "ambassador.fullname" . }}
         {{- end }}
   volumeMountsRaw: |
     {{- if and .Values.licenseKey.createSecret }}
-    - name: {{ include "ambassador.fullname" . }}-edge-stack-secrets
+    - name: {{ include "ambassador.fullname" . }}-secrets
       mountPath: /.config/ambassador
       readOnly: true
     {{- end }}
@@ -68,7 +70,7 @@ emissary-ingress: # +doc-gen:break
 
   image:
     repository: docker.io/datawire/aes
-    tag: 2.0.0-ea
+    tag: 2.0.1-ea
     pullPolicy: IfNotPresent
 
 rbac:

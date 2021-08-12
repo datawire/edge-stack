@@ -29,7 +29,7 @@ metadata:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: edge-stack-edge-stack
+  name: edge-stack
   namespace: ambassador
 type: Opaque
 data:
@@ -353,7 +353,8 @@ spec:
       targetPort: 8443
   selector:
     
-      service: ambassador
+    service: ambassador
+    profile: main
 ---
 # Source: edge-stack/templates/aes-redis.yaml
 apiVersion: v1
@@ -405,7 +406,7 @@ spec:
       serviceAccountName: edge-stack-agent
       containers:
       - name: agent
-        image: docker.io/datawire/aes:2.0.0-ea
+        image: docker.io/datawire/aes:2.0.1-ea
         imagePullPolicy: IfNotPresent
         command: [ "agent" ]
         env:
@@ -419,6 +420,9 @@ spec:
           value: https://app.getambassador.io/
         - name: AES_SNAPSHOT_URL
           value: "http://edge-stack-admin.ambassador:8005/snapshot-external"
+  
+  
+  progressDeadlineSeconds: 600
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/deployment.yaml
 apiVersion: apps/v1
@@ -436,12 +440,16 @@ spec:
       service: ambassador
   strategy:
     type: RollingUpdate
+  
+  
+  progressDeadlineSeconds: 600
   template:
     metadata:
       labels:
         
         service: ambassador
         app.kubernetes.io/managed-by: getambassador.io
+        profile: main
       annotations:
         consul.hashicorp.com/connect-inject: "false"
         sidecar.istio.io/inject: "false"
@@ -458,13 +466,13 @@ spec:
               - fieldRef:
                   fieldPath: metadata.labels
                 path: labels
-        - name: edge-stack-edge-stack-secrets
+        - name: edge-stack-secrets
           secret:
-            secretName: edge-stack-edge-stack
+            secretName: edge-stack
         
       containers:
         - name: aes
-          image: docker.io/datawire/aes:2.0.0-ea
+          image: docker.io/datawire/aes:2.0.1-ea
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -486,8 +494,6 @@ spec:
               value: "600"
             - name: "AMBASSADOR_INTERNAL_URL"
               value: "https://127.0.0.1:8443"
-            - name: "AMBASSADOR_URL"
-              value: "https://ambassador.ambassador.svc.cluster.local"
             - name: "POLL_EVERY_SECS"
               value: "60"
             - name: REDIS_URL
@@ -514,7 +520,7 @@ spec:
               mountPath: /tmp/ambassador-pod-info
               readOnly: true
             
-            - name: edge-stack-edge-stack-secrets
+            - name: edge-stack-secrets
               mountPath: /.config/ambassador
               readOnly: true
             
@@ -640,7 +646,7 @@ spec:
 apiVersion: getambassador.io/v2
 kind: AuthService
 metadata:
-  name: edge-stack-edge-stack-auth
+  name: edge-stack-auth
   namespace: ambassador
   labels:
     product: aes
@@ -655,29 +661,9 @@ spec:
 apiVersion: getambassador.io/v2
 kind: RateLimitService
 metadata:
-  name: edge-stack-edge-stack-ratelimit
+  name: edge-stack-ratelimit
   namespace: ambassador
   labels:
     product: aes
 spec:
   service: 127.0.0.1:8500
----
-# Source: edge-stack/charts/emissary-ingress/templates/tests/test-ready.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: "edge-stack-test-ready"
-  labels:
-    app.kubernetes.io/name: edge-stack
-    helm.sh/chart: emissary-ingress-7.0.0-ea
-    app.kubernetes.io/instance: edge-stack
-    app.kubernetes.io/managed-by: getambassador.io
-  annotations:
-    "helm.sh/hook": test-success
-spec:
-  containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
-      args:  ['edge-stack:80/ambassador/v0/check_ready']
-  restartPolicy: Never

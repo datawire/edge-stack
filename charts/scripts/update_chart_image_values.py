@@ -21,7 +21,7 @@ def main(values_file, image_tag, repo=None):
     if 'image' not in helm_values['emissary-ingress']:
         helm_values['emissary-ingress']['image'] = {}
     helm_values['emissary-ingress']['image'][image_key] = image_tag
-    if repo is not None and repo is not '':
+    if repo is not None and repo != '':
         helm_values['emissary-ingress']['image'][repo_key] = repo
 
     with open(values_file, 'w') as f:
