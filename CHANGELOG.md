@@ -75,7 +75,18 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ### Ambassador Edge Stack
 
-(no changes yet)
+- Change: Logs now include subsecond time resolutions, rather than just seconds.
+- Change: Update from Envoy 1.15 to 1.17.3
+- Change: `AMBASSADOR_ENVOY_API_VERSION` now defaults to `V3`
+- - Change: Update Envoy from 1.15 to 1.17.4 with security patches to fix the following CVEs
+  - CVE-2021-32777
+  - CVE-2021-32779
+  - CVE-2021-32781
+  - CVE-2021-32778
+- Feature: You can now set `allow_chunked_length` in the Ambassador Module to configure the same value in Envoy.
+- Change: Envoy-configuration snapshots get saved (as `ambex-#.json`) in `/ambassador/snapshots`.
+  The number of snapshots is controlled by the `AMBASSADOR_AMBEX_SNAPSHOT_COUNT` environment
+  variable; set it to 0 to disable. The default is 30.
 
 ## [2.0.1-ea] August 12, 2021
 [2.0.1-ea]: https://github.com/datawire/edge-stack/compare/v2.0.0-ea...v2.0.1-ea
