@@ -75,9 +75,6 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ### Ambassador Edge Stack
 
-- Change: Logs now include subsecond time resolutions, rather than just seconds.
-- Change: Update from Envoy 1.15 to 1.17.3
-- Change: `AMBASSADOR_ENVOY_API_VERSION` now defaults to `V3`
 - - Change: Update Envoy from 1.15 to 1.17.4 with security patches to fix the following CVEs
   - CVE-2021-32777
   - CVE-2021-32779
