@@ -75,11 +75,11 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ### Ambassador Edge Stack
 
-- Feature: The environment variable `AES_LOG_LEVEL` now also sets the log level for the `diagd` logger. [#3686] [#3666]
+- Feature: The environment variable `AES_LOG_LEVEL` now also sets the log level for the `diagd` logger. ([#3686] [#3666])
 - Feature: You can now set `dns_type` in the `AmbassadorMapping` to configure how Envoy will use the DNS for
   the service.
 - Bugfix: It is no longer necessary to set `DOCKER_BUILDKIT=0` when building Emissary. A future change will
-  fully support BuildKit. [#3707]
+  fully support BuildKit. ([#3707])
 
 [#3686]: https://github.com/emissary-ingress/emissary/issues/3686
 [#3666]: https://github.com/emissary-ingress/emissary/issues/3666
