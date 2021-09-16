@@ -70,7 +70,7 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 (no changes yet)
 
-## [2.0.3-ea] (TBD)
+## [2.0.3-ea] September 16, 2021
 [2.0.3-ea]: https://github.com/datawire/edge-stack/compare/v2.0.2-ea...v2.0.3-ea
 
 ### Ambassador Edge Stack
