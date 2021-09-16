@@ -7,6 +7,12 @@ numbering uses [semantic versioning](http://semver.org).
 
 (no changes yet)
 
+## v7.1.8-ea
+
+- Update Edge Stack chart image to version v2.0.3-ea: [CHANGELOG](https://github.com/emissary-ingress/emissary/blob/master/CHANGELOG.md)
+
+## v7.1.3 - v7.1.7: Internal, not released
+
 ## v7.1.2-ea
 
 - Update Edge Stack chart image to version v2.0.2-ea: [CHANGELOG](https://github.com/emissary-ingress/emissary/blob/master/CHANGELOG.md)
