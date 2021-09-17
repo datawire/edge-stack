@@ -1,6 +1,6 @@
 EDGE_STACK_HOME := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
-
+SHELL := /bin/bash
 HELM_OUTPUT_DIR := $(EDGE_STACK_HOME)/build/helm/
 
 update-yaml/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml
