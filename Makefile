@@ -59,10 +59,16 @@ push-manifests:
 	$(EDGE_STACK_HOME)/manifests/push_manifests.sh
 .PHONY: push-manifests
 
-generate:
+generate: $(EDGE_STACK_HOME)/CHANGELOG.md
 	$(MAKE) update-yaml
 	cd $(EDGE_STACK_HOME)/.circleci && ./generate --always-make
 .PHONY: generate
+
+$(EDGE_STACK_HOME)/CHANGELOG.md: $(EDGE_STACK_HOME)/docs/CHANGELOG.tpl $(EDGE_STACK_HOME)/docs/releaseNotes.yml
+	docker run --rm \
+	  -v $(EDGE_STACK_HOME)/docs/CHANGELOG.tpl:/tmp/CHANGELOG.tpl \
+	  -v $(EDGE_STACK_HOME)/docs/releaseNotes.yml:/tmp/releaseNotes.yml \
+	  hairyhenderson/gomplate --verbose --file /tmp/CHANGELOG.tpl --datasource relnotes=/tmp/releaseNotes.yml > CHANGELOG.md
 
 create-venv:
 	[[ -d $(EDGE_STACK_HOME)/venv ]] || python3 -m venv $(EDGE_STACK_HOME)/venv
