@@ -90,6 +90,8 @@ spec:
               - v2
               - v3
               type: string
+            stats_name:
+              type: string
             status_on_error:
               description: Why isn't this just an int??
               properties:
@@ -249,6 +251,9 @@ spec:
               - namespace.name
               - name.prefix
               type: string
+            preserve_servers:
+              description: Configures this DevPortal to use server definitions from the openAPI doc instead of rewriting them based on the url used for the connection.
+              type: boolean
             search:
               description: DevPortalSearchSpec allows configuration over search functionality for the DevPortal
               properties:
@@ -715,6 +720,8 @@ spec:
               type: boolean
             service:
               type: string
+            stats_name:
+              type: string
           type: object
       type: object
   version: v2
@@ -882,6 +889,8 @@ spec:
                   - type: string
                   - type: array
               type: object
+            dns_type:
+              type: string
             docs:
               description: DocsInfo provides some extra information about the docs for the Mapping (used by the Dev Portal)
               properties:
@@ -1122,6 +1131,8 @@ spec:
               type: string
             shadow:
               type: boolean
+            stats_name:
+              type: string
             timeout_ms:
               description: The timeout for requests that use this Mapping. Overrides `cluster_request_timeout_ms` set on the Ambassador Module, if it exists.
               type: integer
@@ -1269,6 +1280,8 @@ spec:
               type: string
             service:
               type: string
+            stats_name:
+              type: string
             timeout_ms:
               type: integer
             tls:
@@ -1369,6 +1382,8 @@ spec:
             resolver:
               type: string
             service:
+              type: string
+            stats_name:
               type: string
             tls:
               description: BoolOrString is a type that can hold a Boolean or a string.
@@ -1573,6 +1588,8 @@ spec:
                   type: integer
               type: object
             service:
+              type: string
+            stats_name:
               type: string
             tag_headers:
               items:
@@ -1856,6 +1873,9 @@ spec:
   - JSONPath: .spec.protocolStack
     name: Stack
     type: string
+  - JSONPath: .spec.statsPrefix
+    name: StatsPrefix
+    type: string
   - JSONPath: .spec.securityModel
     name: Security
     type: string
@@ -1978,6 +1998,9 @@ spec:
               - XFP
               - SECURE
               - INSECURE
+              type: string
+            statsPrefix:
+              description: 'StatsPrefix specifies the prefix for statistics sent by Envoy about this AmbassadorListener. The default depends on the protocol: "ingress-http", "ingress-https", "ingress-tls-$port", or "ingress-$port".'
               type: string
           required:
           - hostBinding
@@ -2138,8 +2161,10 @@ spec:
                     type: string
                   type: array
               type: object
+            dns_type:
+              type: string
             docs:
-              description: DocsInfo provides some extra information about the docs for the AmbassadorMapping (used by the Dev Portal)
+              description: DocsInfo provides some extra information about the docs for the AmbassadorMapping. Docs is used by both the agent and the DevPortal.
               properties:
                 display_name:
                   type: string
@@ -2370,6 +2395,8 @@ spec:
               type: string
             shadow:
               type: boolean
+            stats_name:
+              type: string
             timeout_ms:
               description: The timeout for requests that use this AmbassadorMapping. Overrides `cluster_request_timeout_ms` set on the Ambassador Module, if it exists.
               type: integer
@@ -2489,6 +2516,8 @@ spec:
             resolver:
               type: string
             service:
+              type: string
+            stats_name:
               type: string
             tls:
               description: BoolOrString is a type that can hold a Boolean or a string.
