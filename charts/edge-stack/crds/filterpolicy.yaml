@@ -1,6 +1,6 @@
 ---
 # Source: edge-stack/charts/emissary-ingress/crds/filterpolicy.yaml
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
@@ -24,7 +24,17 @@ spec:
   - name: v1beta2
     served: true
     storage: false
+    schema:
+      openAPIV3Schema:
+        description: Filter specifies an Ambassador Edge Stack filter
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
   - name: v2
     served: true
     storage: true
+    schema:
+      openAPIV3Schema:
+        description: Filter specifies an Ambassador Edge Stack filter
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
 
