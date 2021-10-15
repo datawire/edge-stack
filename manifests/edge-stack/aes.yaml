@@ -571,10 +571,25 @@ spec:
           {}
       restartPolicy: Always
 ---
+# Source: edge-stack/templates/aes-authservice.yaml
+apiVersion: getambassador.io/v2
+kind: AuthService
+metadata:
+  name: edge-stack-auth
+  namespace: ambassador
+  labels:
+    product: aes
+spec:
+  proto: grpc
+  auth_service: 127.0.0.1:8500
+  allow_request_body: false
+  status_on_error:
+    code: 504
+---
 # Source: edge-stack/templates/aes-internal.yaml
 # Configure DevPortal
 apiVersion: x.getambassador.io/v3alpha1
-kind: AmbassadorMapping
+kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
   name: edge-stack-devportal
@@ -589,7 +604,7 @@ spec:
 ---
 # Source: edge-stack/templates/aes-internal.yaml
 apiVersion: x.getambassador.io/v3alpha1
-kind: AmbassadorMapping
+kind: Mapping
 metadata:
   name: edge-stack-devportal-assets
   namespace: ambassador
@@ -610,7 +625,7 @@ spec:
 ---
 # Source: edge-stack/templates/aes-internal.yaml
 apiVersion: x.getambassador.io/v3alpha1
-kind: AmbassadorMapping
+kind: Mapping
 metadata:
   # This Mapping name is what the demo uses. Sigh.
   name: edge-stack-devportal-demo
@@ -625,7 +640,7 @@ spec:
 ---
 # Source: edge-stack/templates/aes-internal.yaml
 apiVersion: x.getambassador.io/v3alpha1
-kind: AmbassadorMapping
+kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
   name: edge-stack-devportal-api
@@ -637,21 +652,6 @@ spec:
   hostname: "*"
   rewrite: ""
   service: "127.0.0.1:8500"
----
-# Source: edge-stack/templates/aes-authservice.yaml
-apiVersion: getambassador.io/v2
-kind: AuthService
-metadata:
-  name: edge-stack-auth
-  namespace: ambassador
-  labels:
-    product: aes
-spec:
-  proto: grpc
-  auth_service: 127.0.0.1:8500
-  allow_request_body: false
-  status_on_error:
-    code: 504
 ---
 # Source: edge-stack/templates/aes-ratelimit.yaml
 apiVersion: getambassador.io/v2
