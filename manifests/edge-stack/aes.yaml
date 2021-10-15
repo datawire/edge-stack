@@ -402,7 +402,7 @@ spec:
       serviceAccountName: edge-stack-agent
       containers:
       - name: agent
-        image: docker.io/aidanhahn/aes:2.0.4-rc.2-dirty
+        image: docker.io/datawire/aes:2.0.4-rc.2
         imagePullPolicy: IfNotPresent
         command: [ "agent" ]
         env:
@@ -468,7 +468,7 @@ spec:
         
       containers:
         - name: aes
-          image: docker.io/aidanhahn/aes:2.0.4-rc.2-dirty
+          image: docker.io/datawire/aes:2.0.4-rc.2
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -572,7 +572,7 @@ spec:
       restartPolicy: Always
 ---
 # Source: edge-stack/templates/aes-authservice.yaml
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: AuthService
 metadata:
   name: edge-stack-auth
@@ -588,7 +588,7 @@ spec:
 ---
 # Source: edge-stack/templates/aes-internal.yaml
 # Configure DevPortal
-apiVersion: x.getambassador.io/v3alpha1
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
@@ -603,7 +603,7 @@ spec:
   service: "127.0.0.1:8500"
 ---
 # Source: edge-stack/templates/aes-internal.yaml
-apiVersion: x.getambassador.io/v3alpha1
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: edge-stack-devportal-assets
@@ -624,7 +624,7 @@ spec:
       append: false
 ---
 # Source: edge-stack/templates/aes-internal.yaml
-apiVersion: x.getambassador.io/v3alpha1
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   # This Mapping name is what the demo uses. Sigh.
@@ -639,7 +639,7 @@ spec:
   service: "127.0.0.1:8500"
 ---
 # Source: edge-stack/templates/aes-internal.yaml
-apiVersion: x.getambassador.io/v3alpha1
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
@@ -654,7 +654,7 @@ spec:
   service: "127.0.0.1:8500"
 ---
 # Source: edge-stack/templates/aes-ratelimit.yaml
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: RateLimitService
 metadata:
   name: edge-stack-ratelimit
