@@ -69,8 +69,8 @@ emissary-ingress: # +doc-gen:break
     createSecret: true
 
   image:
-    repository: docker.io/datawire/aes
-    tag: 2.0.3-ea
+    repository: docker.io/aidanhahn/aes
+    tag: 2.0.4-rc.2-dirty
     pullPolicy: IfNotPresent
 
 rbac:

@@ -129,7 +129,7 @@ spec:
 
       containers:
       - name: aes
-        image: docker.io/datawire/aes:2.0.3-ea
+        image: docker.io/aidanhahn/aes:2.0.4-rc.2-dirty
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -213,7 +213,7 @@ metadata:
     product: aes
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: edge-stack
@@ -229,7 +229,7 @@ subjects:
   kind: ServiceAccount
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack
@@ -269,7 +269,7 @@ rules:
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
 # CRDs are cluster scoped resources, so they need to be in a cluster role,
 # even if ambassador is running in single namespace mode
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack-crd
@@ -282,7 +282,7 @@ rules:
   verbs: [get, list, watch, delete]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack-watch
@@ -298,16 +298,12 @@ rules:
   - endpoints
   verbs: [get, list, watch]
 
-- apiGroups: [x.getambassador.io, getambassador.io]
+- apiGroups: [getambassador.io]
   resources: ['*']
   verbs: [get, list, watch, update, patch, create, delete]
 
 - apiGroups: [getambassador.io]
   resources: [mappings/status]
-  verbs: [update]
-
-- apiGroups: [x.getambassador.io]
-  resources: [ambassadormappings/status]
   verbs: [update]
 
 - apiGroups: [networking.internal.knative.dev]

@@ -36,7 +36,7 @@ data:
   license-key: ""
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack-agent
@@ -49,7 +49,7 @@ aggregationRule:
 rules: []
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack-agent-pods
@@ -62,7 +62,7 @@ rules:
   verbs: [ "get", "list", "watch" ]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack-agent-deployments
@@ -75,7 +75,7 @@ rules:
   verbs: [ "get", "list", "watch" ]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack-agent-endpoints
@@ -88,7 +88,7 @@ rules:
   verbs: [ "get", "list", "watch" ]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack-agent-configmaps
@@ -101,7 +101,7 @@ rules:
   verbs: [ "get", "list", "watch" ]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack-agent-rollouts
@@ -114,7 +114,7 @@ rules:
   verbs: [ "get", "list", "watch" ]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack-agent-applications
@@ -127,7 +127,7 @@ rules:
   verbs: [ "get", "list", "watch" ]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack
@@ -142,7 +142,7 @@ rules: []
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
 # CRDs are cluster scoped resources, so they need to be in a cluster role,
 # even if ambassador is running in single namespace mode
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack-crd
@@ -155,7 +155,7 @@ rules:
     verbs: ["get", "list", "watch", "delete"]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack-watch
@@ -171,16 +171,12 @@ rules:
     - endpoints
     verbs: ["get", "list", "watch"]
 
-  - apiGroups: [ "x.getambassador.io", "getambassador.io" ]
+  - apiGroups: [ "getambassador.io" ]
     resources: [ "*" ]
     verbs: ["get", "list", "watch", "update", "patch", "create", "delete" ]
 
   - apiGroups: [ "getambassador.io" ]
     resources: [ "mappings/status" ]
-    verbs: ["update"]
-
-  - apiGroups: [ "x.getambassador.io" ]
-    resources: [ "ambassadormappings/status" ]
     verbs: ["update"]
 
   - apiGroups: [ "networking.internal.knative.dev" ]
@@ -229,7 +225,7 @@ rules:
     verbs: ["get", "list", "watch", "create", "update"]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: edge-stack-agent
@@ -245,7 +241,7 @@ subjects:
   namespace: ambassador
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: edge-stack
@@ -261,7 +257,7 @@ subjects:
     kind: ServiceAccount
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: edge-stack-agent-config
@@ -274,7 +270,7 @@ rules:
   verbs: [ "get", "list", "watch" ]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: edge-stack-agent-config
@@ -406,7 +402,7 @@ spec:
       serviceAccountName: edge-stack-agent
       containers:
       - name: agent
-        image: docker.io/datawire/aes:2.0.3-ea
+        image: docker.io/aidanhahn/aes:2.0.4-rc.2-dirty
         imagePullPolicy: IfNotPresent
         command: [ "agent" ]
         env:
@@ -472,7 +468,7 @@ spec:
         
       containers:
         - name: aes
-          image: docker.io/datawire/aes:2.0.3-ea
+          image: docker.io/aidanhahn/aes:2.0.4-rc.2-dirty
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
