@@ -200,7 +200,7 @@ rules:
     verbs: ["update"]
 ---
 # Source: edge-stack/templates/rbac.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: edge-stack-aes
