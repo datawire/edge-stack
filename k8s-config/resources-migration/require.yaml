@@ -5,15 +5,15 @@ resources:
   - kind: AuthService
     name: edge-stack-auth
     namespace: default
-  - kind: AmbassadorMapping
+  - kind: Mapping
     name: edge-stack-devportal
     namespace: default
-  - kind: AmbassadorMapping
+  - kind: Mapping
     name: edge-stack-devportal-assets
     namespace: default
-  - kind: AmbassadorMapping
+  - kind: Mapping
     name: edge-stack-devportal-demo
     namespace: default
-  - kind: AmbassadorMapping
+  - kind: Mapping
     name: edge-stack-devportal-api
     namespace: default

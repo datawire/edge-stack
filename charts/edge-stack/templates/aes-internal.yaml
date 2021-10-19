@@ -1,8 +1,8 @@
 {{ if .Values.createDevPortalMappings }}
 ---
 # Configure DevPortal
-apiVersion: x.getambassador.io/v3alpha1
-kind: AmbassadorMapping
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
   name: {{ include "ambassador.fullname" . }}-devportal
@@ -32,8 +32,8 @@ spec:
   rewrite: "/docs/"
   service: "127.0.0.1:8500"
 ---
-apiVersion: x.getambassador.io/v3alpha1
-kind: AmbassadorMapping
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
 metadata:
   name: {{ include "ambassador.fullname" . }}-devportal-assets
   namespace: {{ include "ambassador.namespace" . }}
@@ -69,8 +69,8 @@ spec:
       value: "public, max-age=3600, immutable"
       append: false
 ---
-apiVersion: x.getambassador.io/v3alpha1
-kind: AmbassadorMapping
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
 metadata:
   # This Mapping name is what the demo uses. Sigh.
   name: {{ include "ambassador.fullname" . }}-devportal-demo
@@ -100,8 +100,8 @@ spec:
   rewrite: "/docs/"
   service: "127.0.0.1:8500"
 ---
-apiVersion: x.getambassador.io/v3alpha1
-kind: AmbassadorMapping
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
   name: {{ include "ambassador.fullname" . }}-devportal-api

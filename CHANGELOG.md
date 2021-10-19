@@ -70,7 +70,7 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
-## [2.0.4] TBD
+## [2.0.4] 2021-10-19
 [2.0.4]: https://github.com/datawire/edge-stack/releases/v2.0.4
 
 We're pleased to introduce Ambassador Edge Stack 2.0.4 for general availability for new
@@ -87,11 +87,25 @@ know what you think.
   for ease of migration. _Note that `getambassador.io/v3alpha1` is the only supported API version
   for 2.0.4_ &mdash; full support for `getambassador.io/v2` will arrive soon in a later 2.X version.
 
+- Feature: The `getambassador.io/v3alpha1` API version and the published chart and manifests have been
+  updated to support Kubernetes 1.22.
+
+- Feature: You can now set `dns_type` between `strict_dns` and `logical_dns` in a `Mapping` to configure the
+  Service Discovery Type.
+
+- Feature: You can now set `respect_dns_ttl` to `true` to force the DNS refresh rate for a `Mapping` to be
+  set to the record's TTL obtained from DNS resolution.
+
+- Feature: You can now set `buffer_limit_bytes` in the `ambassador` `Module` to to change the size of the
+  upstream read and write buffers. The default is 1MiB.
+
 - Bugfix: The release now shows its actual released version number, rather than the internal development
   version number. ([#3854])
 
 - Bugfix: Large configurations no longer cause Ambassador Edge Stack to be unable to communicate with
   Ambassador Cloud. ([#3593])
+
+- Bugfix: The `l7Depth` element of the `Listener` CRD is  properly supported.
 
 [#3854]: https://github.com/emissary-ingress/emissary/issues/3854
 [#3593]: https://github.com/emissary-ingress/emissary/issues/3593
@@ -258,26 +272,30 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 
 [#2888]: https://github.com/datawire/ambassador/issues/2888
 
-## [1.14.2] 2021-09-27
+## [1.14.2] 2021-09-29
 [1.14.2]: https://github.com/datawire/edge-stack/releases/v1.14.2
 
 ## Ambassador Edge Stack
 
-- Feature: You can now set `respect_dns_ttl` to `true` to force the DNS refresh rate for a `Mapping` to be
-  set to the record's TTL obtained from DNS resolution.
+- Feature: You can now set `respect_dns_ttl` in Ambassador Mappings. When true it configures that upstream's
+  refresh rate to be set to resource record’s TTL
 
-- Feature: You can now set `dns_type` between `strict_dns` and `logical_dns` in a `Mapping` to configure the
-  Service Discovery Type.
+- Feature: You can now set `dns_type` in Ambassador Mappings to use Envoy's `logical_dns` resolution instead
+  of the default `strict_dns`.
 
 - Feature: You can now set `buffer_limit_bytes` in the `ambassador` `Module` to to change the size of the
-  upstream read and write buffers. The default is 1MiB. 
+  upstream read and write buffers. The default is 1MiB.
+
+- Feature: You can now set `preserve_servers` in Ambassador Edge Stack's `DevPortal` resource to configure
+  the DevPortal to use server definitions from the OpenAPI document when displaying connection
+  information for services in the DevPortal.
 
 ## [1.14.1] 2021-08-24
 [1.14.1]: https://github.com/datawire/edge-stack/releases/v1.14.1
 
 ## Ambassador Edge Stack
 
-- Change: Upgraded envoy to 1.17.4 to address security vulnerabilities CVE-2021-32777, CVE-2021-32778,
+- Change: Upgraded Envoy to 1.17.4 to address security vulnerabilities CVE-2021-32777, CVE-2021-32778,
   CVE-2021-32779, and CVE-2021-32781.
 
 ## [1.14.0] 2021-08-19
@@ -285,25 +303,22 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 
 ## Ambassador Edge Stack
 
-- Change: Upgraded Envoy from 1.15 to 1.17.3, see the <a
-  href="https://www.envoyproxy.io/docs/envoy/latest/version_history/version_history">Envoy
-  changelog</a> for more information
+- Change: Update from Envoy 1.15 to 1.17.3
 
 - Feature: You can now set `allow_chunked_length` in the Ambassador Module to configure the same value in
-  Envoy
+  Envoy.
 
-- Change: The default Envoy API version has changed from V2 to V3, as V2 has fallen out of support, and has
-  been removed as of Envoy 1.18.0.
+- Change: `AMBASSADOR_ENVOY_API_VERSION` now defaults to `V3`
 
 - Change: Logs now include subsecond time resolutions, rather than just seconds.
 
-## [1.13.10] 2021-07-27
+## [1.13.10] 2021-07-28
 [1.13.10]: https://github.com/datawire/edge-stack/releases/v1.13.10
 
 ## Ambassador Edge Stack
 
 - Bugfix: Fixed a regression when specifying a comma separated string for `cors.origins` on the `Mapping`
-  resource
+  resource. ([#3609](https://github.com/emissary-ingress/emissary/issues/3609))
 
 - Change: Envoy-configuration snapshots get saved (as `ambex-#.json`) in `/ambassador/snapshots`. The number
   of snapshots is controlled by the `AMBASSADOR_AMBEX_SNAPSHOT_COUNT` environment variable; set it
@@ -311,43 +326,49 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 
 - Change: Set `AMBASSADOR_AMBEX_NO_RATELIMIT` to `true` to completely disable ratelimiting Envoy
   reconfiguration under memory pressure. This can help performance with the endpoint or Consul
-  resolvers, but could make OOMkills more likely with large configurations.
+  resolvers, but could make OOMkills more likely with large configurations. The default is `false`,
+  meaning that the rate limiter is active.
+
+- Bugfix: The `Mapping` resource can now specify `docs.timeout_ms` to set the timeout when the Dev Portal is
+  fetching API specifications.
+
+- Bugfix: The Dev Portal will now strip HTML tags when displaying search results, showing just the actual
+  content of the search result.
+
+- Change: Consul certificate-rotation logging now includes the fingerprints and validity timestamps of
+  certificates being rotated.
 
 ## [1.13.9] 2021-06-30
 [1.13.9]: https://github.com/datawire/edge-stack/releases/v1.13.9
 
 ## Ambassador Edge Stack
 
-- Bugfix: Fixed a bug which caused Ambassador Edge Stack to generate invalid Envoy configuration when two
-  TCPMappings were deployed with the same port, but different host.
+- Bugfix: Configuring multiple TCPMappings with the same ports (but different hosts) no longer generates
+  invalid Envoy configuration.
 
 ## [1.13.8] 2021-06-08
 [1.13.8]: https://github.com/datawire/edge-stack/releases/v1.13.8
 
 ## Ambassador Edge Stack
 
-- Bugfix: Fixed a bug that occasionally caused missing version information for a service in the Ambassador
-  Service Catalog, especially in clusters with high pod churn.
+- Bugfix: Ambassador Agent now accurately reports up-to-date Endpoint information to Ambassador Cloud
 
-- Feature: Ambassador Agent now reports the state of ArgoCD configurations and Deployments in order to
-  provide proper configurations to the users while setting up the Argo Rollouts feature.
+- Feature: Ambassador Agent reports ConfigMaps and Deployments to Ambassador Cloud to provide a better Argo
+  Rollouts experience. See [Argo+Ambassador documentation](https://www.getambassador.io/docs/argo)
+  for more info.
 
 ## [1.13.7] 2021-06-03
 [1.13.7]: https://github.com/datawire/edge-stack/releases/v1.13.7
 
 ## Ambassador Edge Stack
 
-- Feature: An `AMBASSADOR_JSON_LOGGING` environment variable has been added. When set to `true` JSON format
-  will be used for most of the control plane logs. Some (but few) logs from `gunicorn` and the
-  Kubernetes `client-go` package will still be in text only format.
+- Feature: Add AMBASSADOR_JSON_LOGGING to enable JSON for most of the Ambassador control plane. Some (but
+  few) logs from gunicorn and the Kubernetes client-go package still log text.
 
-- Bugfix: The TCPMapping has the ability to specify a resolver, however the `ConsulResolver` did not work
-  properly with it. It now utilizes the Consul Connect service discovery instead of falling back to
-  attempting to register an arbitrary endpoint.
+- Bugfix: Fixed a bug where the Consul resolver would not actually use Consul endpoints with TCPMappings.
 
-- Change: The internal memory usage calculation that Ambassador Edge Stack performs has been updated to
-  exclude cache memory. This now matches how the kernel OOMKiller calculates memory and should avoid
-  situations where Envoy updates are throttled unnecessarily.
+- Change: Ambassador now calculates its own memory usage in a way that is more similar to how the kernel
+  OOMKiller tracks memory.
 
 ## [1.13.6] 2021-05-24
 [1.13.6]: https://github.com/datawire/edge-stack/releases/v1.13.6
@@ -368,7 +389,7 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 - Bugfix: Fixed a regression in detecting the Ambassador Kubernetes service that could cause the wrong IP or
   hostname to be used in Ingress statuses (thanks, [Noah Fontes](https://github.com/impl)!
 
-## [1.13.4] 2021-05-13
+## [1.13.4] 2021-05-11
 [1.13.4]: https://github.com/datawire/edge-stack/releases/v1.13.4
 
 ## Ambassador Edge Stack

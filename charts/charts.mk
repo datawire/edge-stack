@@ -23,13 +23,13 @@ define _docgen
 endef
 
 chart/update-emissary: $(YQ)
-	@[ -n "${EMISSARY_CHART_VERSION}" ] || (echo "EMISSARY_CHART_VERSION must be set for non-GA pushes" && exit 1)
-	@rm -f $(CHART_DIR)/charts/emissary-ingress*.tgz
-	@$(YQ) w -i $(CHART_DIR)/Chart.yaml 'dependencies.(name==emissary-ingress).version' "${EMISSARY_CHART_VERSION}"
-	@helm repo rm emissary-updater || true
-	@helm repo add emissary-updater `$(YQ) r $(CHART_DIR)/Chart.yaml 'dependencies.(name==emissary-ingress).repository'`
-	@helm dep update $(CHART_DIR)
-	@git add $(CHART_DIR)/charts/emissary*.tgz $(CHART_DIR)/Chart.yaml $(CHART_DIR)/Chart.lock
+	[ -n "${EMISSARY_CHART_VERSION}" ] || (echo "EMISSARY_CHART_VERSION must be set for non-GA pushes" && exit 1)
+	rm -f $(CHART_DIR)/charts/emissary-ingress*.tgz
+	$(YQ) w -i $(CHART_DIR)/Chart.yaml 'dependencies.(name==emissary-ingress).version' "${EMISSARY_CHART_VERSION}"
+	helm repo rm emissary-updater || true
+	helm repo add emissary-updater `$(YQ) r $(CHART_DIR)/Chart.yaml 'dependencies.(name==emissary-ingress).repository'`
+	helm dep update $(CHART_DIR)
+	git add $(CHART_DIR)/charts/emissary*.tgz $(CHART_DIR)/Chart.yaml $(CHART_DIR)/Chart.lock
 .PHONY: chart/update-emissary
 
 chart/docgen:
@@ -101,7 +101,7 @@ release/chart/tag:
 			echo "release/chart/tag: tree must be clean" >&2 ;\
 			exit 1 ;\
 		fi; \
-		chart_ver=`grep 'version:' $(CHART_DIR)/Chart.yaml | awk ' { print $$2 }'` ; \
+		chart_ver=`grep 'version:' $(CHART_DIR)/Chart.yaml | head -1 | awk ' { print $$2 }'` ; \
 		chart_ver=chart-v$${chart_ver} ; \
 		git tag -m "Tagging $${chart_ver}" -a $${chart_ver} ; \
 		git push origin $${chart_ver} ; \
