@@ -171,7 +171,7 @@ items:
 
       - title: Expose Envoy's allow_chunked_length HTTPProtocolOption
         type: feature
-        body: "You can now set <code>allow_chunked_length</code> in the Ambassador Module to configure the same value in Envoy."
+        body: "You can now set <code>allow_chunked_length</code> in the <code>ambassador</code> <code>Module</code> to configure the same value in Envoy."
         docs: topics/running/ambassador/#content-length-headers
 
       - title: Envoy-configuration snapshots saved
@@ -268,7 +268,7 @@ items:
         type: feature
 
       - title: Memory usage improvements for installations with many AmbassadorHosts
-        body: The behavior of the Ambassador module <code>prune_unreachable_routes</code> field is now automatic, which should reduce Envoy memory requirements for installations with many <code>AmbassadorHost</code>s
+        body: The behavior of the <code>ambassador</code> <code>Module</code> <code>prune_unreachable_routes</code> field is now automatic, which should reduce Envoy memory requirements for installations with many <code>AmbassadorHost</code>s
         docs: topics/running/ambassador/#prune-unreachable-routes
         image: ./edge-stack-2.0.0-prune_routes.png
         type: feature
@@ -319,7 +319,7 @@ items:
         docs: about/changes-2.0.0/#envoy-v3-api-by-default
 
       - title: Module-based TLS no longer supported
-        body: The <code>tls</code> module and the <code>tls</code> field in the Ambassador module are no longer supported. Please use <code>TLSContext</code> resources instead.
+        body: The <code>tls</code> module and the <code>tls</code> field in the <code>ambassador</code> <code>Module</code> are no longer supported. Please use <code>TLSContext</code> resources instead.
         docs: about/changes-2.0.0/#tls-the-ambassador-module-and-the-tls-module
         image: ./edge-stack-2.0.0-tlscontext.png
         type: change
@@ -394,7 +394,7 @@ items:
       - title: Expose Envoy's allow_chunked_length HTTPProtocolOption
         type: feature
         body: >-
-          You can now set <code>allow_chunked_length</code> in the Ambassador Module to configure
+          You can now set <code>allow_chunked_length</code> in the <code>ambassador</code> <code>Module</code> to configure
           the same value in Envoy.
         docs: topics/running/ambassador/#content-length-headers
 
@@ -539,7 +539,7 @@ items:
       - title: Envoy 1.15.5
         body: >-
           Incorporate the Envoy 1.15.5 security update by adding the
-          <code>reject_requests_with_escaped_slashes</code> option to the Ambassador module.
+          <code>reject_requests_with_escaped_slashes</code> option to the <code>ambassador</code> <code>Module</code>.
         image: ../images/edge-stack-1.13.4.png
         docs: topics/running/ambassador/#rejecting-client-requests-with-escaped-slashes
         type: security
