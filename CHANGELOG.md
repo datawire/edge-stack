@@ -147,7 +147,7 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 - Bugfix: Upgraded envoy to 1.17.4 to address security vulnerabilities CVE-2021-32777, CVE-2021-32778,
   CVE-2021-32779, and CVE-2021-32781.
 
-- Feature: You can now set `allow_chunked_length` in the Ambassador Module to configure the same value in
+- Feature: You can now set `allow_chunked_length` in the `ambassador` `Module` to configure the same value in
   Envoy.
 
 - Change: Envoy-configuration snapshots get saved (as `ambex-#.json`) in `/ambassador/snapshots`. The number
@@ -221,7 +221,7 @@ installations, reduce memory footprint, and improve performance. We welcome feed
   regex, the new `hostname` element is always a DNS glob. Use `hostname` instead of `host` for best
   results.
 
-- Feature: The behavior of the Ambassador module `prune_unreachable_routes` field is now automatic, which
+- Feature: The behavior of the `ambassador` `Module` `prune_unreachable_routes` field is now automatic, which
   should reduce Envoy memory requirements for installations with many `AmbassadorHost`s
 
 - Bugfix: Each `AmbassadorHost` can specify its `requestPolicy.insecure.action` independently of any other
@@ -258,8 +258,8 @@ installations, reduce memory footprint, and improve performance. We welcome feed
   or, e.g., Zipkin's V1 collector protocol. Further details are available in the <a
   href="about/changes-2.0.0">2.0.0 Changes</a> document.
 
-- Change: The `tls` module and the `tls` field in the Ambassador module are no longer supported. Please use
-  `TLSContext` resources instead.
+- Change: The `tls` module and the `tls` field in the `ambassador` `Module` are no longer supported. Please
+  use `TLSContext` resources instead.
 
 - Change: The environment variable `AMBASSADOR_FAST_RECONFIGURE` is now set by default, enabling the
   higher-performance implementation of the code that Ambassador Edge Stack uses to generate and
@@ -305,7 +305,7 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 
 - Change: Update from Envoy 1.15 to 1.17.3
 
-- Feature: You can now set `allow_chunked_length` in the Ambassador Module to configure the same value in
+- Feature: You can now set `allow_chunked_length` in the `ambassador` `Module` to configure the same value in
   Envoy.
 
 - Change: `AMBASSADOR_ENVOY_API_VERSION` now defaults to `V3`
@@ -395,7 +395,7 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 ## Ambassador Edge Stack
 
 - Security: Incorporate the Envoy 1.15.5 security update by adding the `reject_requests_with_escaped_slashes`
-  option to the Ambassador module.
+  option to the `ambassador` `Module`.
 
 
 ## [1.13.3] May 03, 2021
