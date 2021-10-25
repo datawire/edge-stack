@@ -73,12 +73,11 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 ## [2.0.4] 2021-10-19
 [2.0.4]: https://github.com/datawire/edge-stack/releases/v2.0.4
 
-We're pleased to introduce Ambassador Edge Stack 2.0.4 for general availability for new
-installations! The 2.X family introduces a number of changes to allow Ambassador Edge Stack to
-more gracefully handle larger installations, reduce global configuration to better handle
-multitenant or multiorganizational installations, reduce memory footprint, and improve
-performance. We welcome feedback!! Join us on <a href="https://a8r.io/slack">Slack</a> and let us
-know what you think.
+We're pleased to introduce Ambassador Edge Stack 2.0.4 for general availability! The 2.X family
+introduces a number of changes to allow Ambassador Edge Stack to more gracefully handle larger
+installations, reduce global configuration to better handle multitenant or multiorganizational
+installations, reduce memory footprint, and improve performance. We welcome feedback!! Join us on
+<a href="https://a8r.io/slack">Slack</a> and let us know what you think.
 
 ## Ambassador Edge Stack
 
@@ -88,7 +87,8 @@ know what you think.
   for 2.0.4_ &mdash; full support for `getambassador.io/v2` will arrive soon in a later 2.X version.
 
 - Feature: The `getambassador.io/v3alpha1` API version and the published chart and manifests have been
-  updated to support Kubernetes 1.22.
+  updated to support Kubernetes 1.22. Thanks to <a href="https://github.com/imoisharma">Mohit
+  Sharma</a> for contributions to this feature!
 
 - Feature: You can now set `dns_type` between `strict_dns` and `logical_dns` in a `Mapping` to configure the
   Service Discovery Type.
@@ -394,9 +394,8 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 
 ## Ambassador Edge Stack
 
-- Security: Ambassador Edge Stack has been updated to Envoy 1.15.5, which addresses a high severity security
-  vulnerability (CVE-2021-29492). Ambassador Edge Stack can now be configured to reject client
-  requests that contain escaped slashes.
+- Security: Incorporate the Envoy 1.15.5 security update by adding the `reject_requests_with_escaped_slashes`
+  option to the Ambassador module.
 
 
 ## [1.13.3] May 03, 2021
