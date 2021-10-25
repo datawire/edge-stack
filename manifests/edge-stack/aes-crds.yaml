@@ -1793,7 +1793,7 @@ spec:
 ---
 # Source: edge-stack/crds/filter.yaml
 ---
-# Source: edge-stack/charts/emissary-ingress/crds/filter.yaml
+# Source: edge-stack/charts/edge-stack/crds/filter.yaml
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -1816,7 +1816,7 @@ spec:
   scope: Namespaced
   versions:
   - name: v1beta2
-    served: true
+    served: false
     storage: false
     schema:
       openAPIV3Schema:
@@ -1824,6 +1824,14 @@ spec:
         type: object
         x-kubernetes-preserve-unknown-fields: true
   - name: v2
+    served: false
+    storage: false
+    schema:
+      openAPIV3Schema:
+        description: Filter specifies an Ambassador Edge Stack filter
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+  - name: v3alpha1
     served: true
     storage: true
     schema:
@@ -1835,7 +1843,7 @@ spec:
 ---
 # Source: edge-stack/crds/filterpolicy.yaml
 ---
-# Source: edge-stack/charts/emissary-ingress/crds/filterpolicy.yaml
+# Source: edge-stack/charts/edge-stack/crds/filterpolicy.yaml
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -1858,7 +1866,7 @@ spec:
   scope: Namespaced
   versions:
   - name: v1beta2
-    served: true
+    served: false
     storage: false
     schema:
       openAPIV3Schema:
@@ -1866,6 +1874,14 @@ spec:
         type: object
         x-kubernetes-preserve-unknown-fields: true
   - name: v2
+    served: false
+    storage: false
+    schema:
+      openAPIV3Schema:
+        description: Filter specifies an Ambassador Edge Stack filter
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+  - name: v3alpha1
     served: true
     storage: true
     schema:
@@ -1878,7 +1894,7 @@ spec:
 ---
 # Source: edge-stack/crds/ratelimit.yaml
 ---
-# Source: edge-stack/charts/emissary-ingress/crds/ratelimit.yaml
+# Source: edge-stack/charts/edge-stack/crds/ratelimit.yaml
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -1901,7 +1917,7 @@ spec:
   scope: Namespaced
   versions:
   - name: v1beta1
-    served: true
+    served: false
     storage: false
     schema:
       openAPIV3Schema:
@@ -1909,6 +1925,14 @@ spec:
         type: object
         x-kubernetes-preserve-unknown-fields: true
   - name: v2
+    served: false
+    storage: false
+    schema:
+      openAPIV3Schema:
+        description: Filter specifies an Ambassador Edge Stack filter
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+  - name: v3alpha1
     served: true
     storage: true
     schema:
