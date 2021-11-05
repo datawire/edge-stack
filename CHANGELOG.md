@@ -70,6 +70,43 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.0.5] TBD
+[2.0.5]: https://github.com/datawire/edge-stack/releases/v2.0.5
+
+## Ambassador Edge Stack
+
+- Change: When Ambassador Edge Stack makes a cacheable internal request (such as fetching the JWKS endpoint
+  for a `JWT` `Filter`), if a cache-miss occurs but a request for that resource is already
+  in-flight, then instead of performing a second request in parallel, it will now wait for the first
+  request to finish and (if the response is cacheable) use that response.  If the response turns out
+  to be non-cacheable, then it will proceed to make the second request.  This avoids the situation
+  where if a cache entry expires during a moment with high number of concurrent requests, then Edge
+  Stack creates a deluge of concurrent requests to the resource when one aught to have sufficed;
+  this allows the result to be returned more quickly while putting less load on the remote resource.
+  However, if the response turns out to be non-cacheable, then this does effectively serialize
+  requests, increasing the latency for concurrent requests.
+
+- Feature: It is now possible to set the `circuit_breakers` for `AuthServices`, exactly the same as for
+  `Mappings` and `TCPMappings`. This makes it possible to configure your `AuthService` to be able to
+  handle more than 1024 concurrent requests.
+
+- Bugfix: When Ambassador Edge Stack completes an internal request (such as fetching the JWKS endpoint for a
+  `JWT` `Filter`) it logs (at the `info` log level) how long the request took.  Previously, the
+  duration logged was how long it took to receive the response header, and did not count the time it
+  takes to receive the entire response body; now it properly times the entire thing.  Additionally,
+  it now separately logs the "total duration" and the "networking duration", in order to make it
+  possible to identify when a request was delayed waiting for other requests to finish.
+
+- Bugfix: Any token delimited by '%' is now validated agains a whitelist of valid Envoy command operators.
+  Any mapping containing an `error_response_overrides` section with invalid command operators will
+  be discarded.
+
+- Bugfix: The `Host` CRD now correctly supports the `mappingSelector` element, as documented. As a
+  transition aid, `selector` is a synonym for `mappingSelector`; a future version of Ambassador Edge
+  Stack will remove the `selector` element. ([3902])
+
+[3902]: https://github.com/emissary-ingress/emissary/issues/3902
+
 ## [2.0.4] 2021-10-19
 [2.0.4]: https://github.com/datawire/edge-stack/releases/v2.0.4
 
@@ -105,7 +142,7 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 - Bugfix: Large configurations no longer cause Ambassador Edge Stack to be unable to communicate with
   Ambassador Cloud. ([#3593])
 
-- Bugfix: The `l7Depth` element of the `Listener` CRD is  properly supported.
+- Bugfix: The `l7Depth` element of the `Listener` CRD is properly supported.
 
 [#3854]: https://github.com/emissary-ingress/emissary/issues/3854
 [#3593]: https://github.com/emissary-ingress/emissary/issues/3593
@@ -147,7 +184,7 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 - Bugfix: Upgraded envoy to 1.17.4 to address security vulnerabilities CVE-2021-32777, CVE-2021-32778,
   CVE-2021-32779, and CVE-2021-32781.
 
-- Feature: You can now set `allow_chunked_length` in the `ambassador` `Module` to configure the same value in
+- Feature: You can now set `allow_chunked_length` in the Ambassador Module to configure the same value in
   Envoy.
 
 - Change: Envoy-configuration snapshots get saved (as `ambex-#.json`) in `/ambassador/snapshots`. The number
@@ -209,19 +246,19 @@ installations, reduce memory footprint, and improve performance. We welcome feed
   changes that are not backwards compatible with the 1.X family.  API versions
   `getambassador.io/v0`, `getambassador.io/v1`, and `getambassador.io/v2` are deprecated.  Further
   details are available in the <a
-  href="about/changes-2.0.0/#1-configuration-api-version-xgetambassadoriov3alpha1">2.0.0 Changes</a>
-  document.
+  href="../about/changes-2.0.0/#1-configuration-api-version-getambassadoriov3alpha1">2.0.0
+  Changes</a> document.
 
 - Feature: The new `AmbassadorListener` CRD defines where and how to listen for requests from the network,
   and which `AmbassadorHost` definitions should be used to process those requests. Note that the
   `AmbassadorListener` CRD is _mandatory_ and consolidates <i>all</i> port configuration; see the <a
-  href="topics/running/ambassadorlistener">`AmbassadorListener` documentation</a> for more details.
+  href="../topics/running/listener">`AmbassadorListener` documentation</a> for more details.
 
 - Feature: Where `AmbassadorMapping`'s `host` field is either an exact match or (with `host_regex` set) a
   regex, the new `hostname` element is always a DNS glob. Use `hostname` instead of `host` for best
   results.
 
-- Feature: The behavior of the `ambassador` `Module` `prune_unreachable_routes` field is now automatic, which
+- Feature: The behavior of the Ambassador module `prune_unreachable_routes` field is now automatic, which
   should reduce Envoy memory requirements for installations with many `AmbassadorHost`s
 
 - Bugfix: Each `AmbassadorHost` can specify its `requestPolicy.insecure.action` independently of any other
@@ -246,20 +283,20 @@ installations, reduce memory footprint, and improve performance. We welcome feed
   `host` or the `AmbassadorHost`'s `selector` (or both) are explicitly set, and match. This change
   can significantly improve Ambassador Edge Stack's memory footprint when many `AmbassadorHost`s are
   involved. Further details are available in the <a
-  href="about/changes-2.0.0/#host-and-mapping-association">2.0.0 Changes</a> document.
+  href="../about/changes-2.0.0/#host-and-mapping-association">2.0.0 Changes</a> document.
 
 - Change: An `AmbassadorHost` or `Ingress` resource is now required when terminating TLS -- simply creating
   a `TLSContext` is not sufficient. Further details are available in the <a
-  href="about/changes-2.0.0/#host-tlscontext-and-tls-termination">`AmbassadorHost` CRD
+  href="../about/changes-2.0.0/#host-tlscontext-and-tls-termination">`AmbassadorHost` CRD
   documentation.</a>
 
 - Change: By default, Ambassador Edge Stack will configure Envoy using the V3 Envoy API. This change is
   mostly transparent to users, but note that Envoy V3 does not support unsafe regular expressions
   or, e.g., Zipkin's V1 collector protocol. Further details are available in the <a
-  href="about/changes-2.0.0">2.0.0 Changes</a> document.
+  href="../about/changes-2.0.0">2.0.0 Changes</a> document.
 
-- Change: The `tls` module and the `tls` field in the `ambassador` `Module` are no longer supported. Please
-  use `TLSContext` resources instead.
+- Change: The `tls` module and the `tls` field in the Ambassador module are no longer supported. Please use
+  `TLSContext` resources instead.
 
 - Change: The environment variable `AMBASSADOR_FAST_RECONFIGURE` is now set by default, enabling the
   higher-performance implementation of the code that Ambassador Edge Stack uses to generate and
@@ -305,7 +342,7 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 
 - Change: Update from Envoy 1.15 to 1.17.3
 
-- Feature: You can now set `allow_chunked_length` in the `ambassador` `Module` to configure the same value in
+- Feature: You can now set `allow_chunked_length` in the Ambassador Module to configure the same value in
   Envoy.
 
 - Change: `AMBASSADOR_ENVOY_API_VERSION` now defaults to `V3`
@@ -395,7 +432,7 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 ## Ambassador Edge Stack
 
 - Security: Incorporate the Envoy 1.15.5 security update by adding the `reject_requests_with_escaped_slashes`
-  option to the `ambassador` `Module`.
+  option to the Ambassador module.
 
 
 ## [1.13.3] May 03, 2021
