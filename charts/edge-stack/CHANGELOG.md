@@ -7,6 +7,10 @@ numbering uses [semantic versioning](http://semver.org).
 
 (no changes yet)
 
+## v7.1.11
+
+- Update Edge Stack chart image to version v2.0.5: [CHANGELOG](https://github.com/emissary-ingress/emissary/blob/master/CHANGELOG.md)
+
 ## v7.1.10
 
 - Switch Edge Stack CRDs to API version `v3alpha1`.
