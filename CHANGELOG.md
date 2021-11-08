@@ -70,7 +70,7 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
-## [2.0.5] TBD
+## [2.0.5] 2021-11-08
 [2.0.5]: https://github.com/datawire/edge-stack/releases/v2.0.5
 
 ## Ambassador Edge Stack
