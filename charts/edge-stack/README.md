@@ -18,9 +18,9 @@ This chart will install version 2.0 of Edge Stack. All future charts for the Edg
 Versions in the 1.0 release line of Edge Stack and Emissary Ingress share a single chart that can be found in the [Emissary-Ingress repository here](https://github.com/emissary-ingress/emissary/tree/release/v1.14/charts/ambassador) under the branch for the specific release.
 Eg branch `release/v1.14` for the latest 1.14 chart, `release/v1.13` for 1.13 and so on.
 
-> Note that for 1.0 releases in the chart that can be found in the Emissary-Ingress repository, the `enableAES` helm value is used to controll installing Edge-Stack or Emissary-Ingress.
+> Note that for 1.0 releases in the chart that can be found in the Emissary-Ingress repository, the `enableAES` helm value is used to control installing Edge-Stack or Emissary-Ingress.
 
-As of verison 2.0, Emissary-Ingress and Ambassador Edge Stack have separate charts. The helm chart for Emissary-Ingress 2.0 can be found in the `master` branch of the Emissary-Ingress repository linked above, and the chart for Ambassador Edge Stack 2.0 lives in this repository.
+As of version 2.0, Emissary-Ingress and Ambassador Edge Stack have separate charts. The helm chart for Emissary-Ingress 2.0 can be found in the `master` branch of the Emissary-Ingress repository linked above, and the chart for Ambassador Edge Stack 2.0 lives in this repository.
 
 
 ## Prerequisites
@@ -31,7 +31,7 @@ As of verison 2.0, Emissary-Ingress and Ambassador Edge Stack have separate char
 
 This helm chart inherits much of the config from the [Emissary-Ingress 2.0 Helm Chart](https://github.com/emissary-ingress/emissary/tree/master/charts/emissary-ingress).
 Because of this, any value that you do not see in the default `values.yaml` file here specifically for the Edge Stack installation must be configured under the `emissary-ingress` value.
-For example, If you would like to set the `createDefaultListeners` you would enable that setting in a values file like so for the Edge Stack chart:
+For example, if you would like to set the `createDefaultListeners` you would enable that setting in a values file like so for the Edge Stack chart:
 
 ```
 emissary-ingress:
