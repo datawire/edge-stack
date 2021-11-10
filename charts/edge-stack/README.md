@@ -13,10 +13,39 @@ $ helm install edge-stack --devel edge-stack/edge-stack -n ambassador
 ## Introduction
 
 This chart deploys Edge Stack on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart will install version 2.0 of Edge Stack. All future charts for the Edge Stack 2.0 release line can be found here.
+
+Versions in the 1.0 release line of Edge Stack and Emissary Ingress share a single chart that can be found in the [Emissary-Ingress repository here](https://github.com/emissary-ingress/emissary/tree/release/v1.14/charts/ambassador) under the branch for the specific release.
+Eg branch `release/v1.14` for the latest 1.14 chart, `release/v1.13` for 1.13 and so on.
+
+> Note that for 1.0 releases in the chart that can be found in the Emissary-Ingress repository, the `enableAES` helm value is used to control installing Edge-Stack or Emissary-Ingress.
+
+As of version 2.0, Emissary-Ingress and Ambassador Edge Stack have separate charts. The helm chart for Emissary-Ingress 2.0 can be found in the `master` branch of the Emissary-Ingress repository linked above, and the chart for Ambassador Edge Stack 2.0 lives in this repository.
+
 
 ## Prerequisites
 
 - Kubernetes v1.11+
+
+## Helm Values
+
+This helm chart inherits much of the config from the [Emissary-Ingress 2.0 Helm Chart](https://github.com/emissary-ingress/emissary/tree/master/charts/emissary-ingress).
+Because of this, any value that you do not see in the default `values.yaml` file here specifically for the Edge Stack installation must be configured under the `emissary-ingress` value.
+For example, if you would like to set the `createDefaultListeners` you would enable that setting in a values file like so for the Edge Stack chart:
+
+```
+emissary-ingress:
+  createDefaultListeners: true
+```
+
+If you were installing the 2.0 version of the Emissary-Ingress chart instead you would not need the top level `emissary-ingress` value.
+
+```
+createDefaultListeners: true
+```
+
+All the helm values that this chart inherits from the Emissary-Ingress chart [can be found here](https://github.com/emissary-ingress/emissary/tree/master/charts/emissary-ingress).
+If a value is specific to Edge Stack it can be found in this chart, otherwise for all values applicable to both Emissary-Ingress and Edge Stack are inherited from the Emissary-Ingress chart.
 
 ## Installing the Chart
 
