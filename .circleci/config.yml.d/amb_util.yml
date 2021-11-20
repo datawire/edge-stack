@@ -38,11 +38,6 @@ commands:
       - attach_workspace:
           at: /home/circleci/project
 
-  "amb-skip-if-no-code-changes":
-    steps:
-      - skip-if-only-changes:
-          to: (charts/ambassador\|docs/\|*.md)
-
   "amb-checkout":
     steps:
       - checkout:
