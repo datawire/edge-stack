@@ -22,27 +22,26 @@ spec:
   scope: Namespaced
   versions:
   - name: v1beta1
-    served: false
-    storage: false
     schema:
       openAPIV3Schema:
         description: Filter specifies an Ambassador Edge Stack filter
         type: object
         x-kubernetes-preserve-unknown-fields: true
+    served: false
+    storage: false
   - name: v2
-    served: false
-    storage: false
     schema:
       openAPIV3Schema:
         description: Filter specifies an Ambassador Edge Stack filter
         type: object
         x-kubernetes-preserve-unknown-fields: true
+    served: false
+    storage: false
   - name: v3alpha1
+    schema:
+      openAPIV3Schema:
+        description: Filter specifies an Ambassador Edge Stack filter
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
     served: true
     storage: true
-    schema:
-      openAPIV3Schema:
-        description: Filter specifies an Ambassador Edge Stack filter
-        type: object
-        x-kubernetes-preserve-unknown-fields: true
-
