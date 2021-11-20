@@ -2180,6 +2180,8 @@ spec:
                     type: object
                   accessTokenValidation:
                     type: string
+                  audience:
+                    type: string
                   authorizationURL:
                     type: string
                   clientID:
@@ -2361,6 +2363,8 @@ spec:
                     type: string
                   allowMalformedAccessToken:
                     type: boolean
+                  audience:
+                    type: string
                   authorizationURL:
                     type: string
                   clientAuthentication:
@@ -2638,6 +2642,8 @@ spec:
                     type: string
                   allowMalformedAccessToken:
                     type: boolean
+                  audience:
+                    type: string
                   authorizationURL:
                     type: string
                   clientAuthentication:
