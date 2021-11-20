@@ -1,9 +1,10 @@
+# GENERATED FILE: edits made by hand will not be preserved.
 ---
-# Source: edge-stack/charts/edge-stack/crds/filterpolicy.yaml
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
+    controller-gen.kubebuilder.io/version: v0.5.0
     helm.sh/hook: crd-install
   labels:
     app.kubernetes.io/name: ambassador
@@ -15,6 +16,7 @@ spec:
     categories:
     - ambassador-crds
     kind: FilterPolicy
+    listKind: FilterPolicyList
     plural: filterpolicies
     shortNames:
     - fp
@@ -24,24 +26,202 @@ spec:
   - name: v1beta2
     schema:
       openAPIV3Schema:
-        description: Filter specifies an Ambassador Edge Stack filter
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              rules:
+                items:
+                  description: Rule defines authorization rules object.
+                  properties:
+                    filters:
+                      items:
+                        properties:
+                          arguments:
+                            description: UntypedDict is relatively opaque as a Go type, but it preserves its contents in a roundtrippable way.
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                          ifRequestHeader:
+                            properties:
+                              name:
+                                type: string
+                              value:
+                                type: string
+                            type: object
+                          name:
+                            type: string
+                          namespace:
+                            type: string
+                          onAllow:
+                            type: string
+                          onDeny:
+                            type: string
+                        type: object
+                      type: array
+                    host:
+                      type: string
+                    path:
+                      type: string
+                  type: object
+                type: array
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
         type: object
-        x-kubernetes-preserve-unknown-fields: true
     served: false
     storage: false
   - name: v2
     schema:
       openAPIV3Schema:
-        description: Filter specifies an Ambassador Edge Stack filter
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              rules:
+                items:
+                  description: Rule defines authorization rules object.
+                  properties:
+                    filters:
+                      items:
+                        properties:
+                          arguments:
+                            description: UntypedDict is relatively opaque as a Go type, but it preserves its contents in a roundtrippable way.
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                          ifRequestHeader:
+                            properties:
+                              name:
+                                type: string
+                              negate:
+                                type: boolean
+                              value:
+                                type: string
+                              valueRegex:
+                                description: ValueRegex    *regexp.Regexp `json:"-"`
+                                type: string
+                            type: object
+                          name:
+                            type: string
+                          namespace:
+                            type: string
+                          onAllow:
+                            type: string
+                          onDeny:
+                            type: string
+                        type: object
+                      type: array
+                    host:
+                      type: string
+                    path:
+                      type: string
+                  type: object
+                type: array
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+          status:
+            properties:
+              reason:
+                type: string
+              ruleStatuses:
+                items:
+                  properties:
+                    reason:
+                      type: string
+                    state:
+                      type: string
+                  type: object
+                type: array
+              state:
+                type: string
+            type: object
         type: object
-        x-kubernetes-preserve-unknown-fields: true
     served: false
     storage: false
   - name: v3alpha1
     schema:
       openAPIV3Schema:
-        description: Filter specifies an Ambassador Edge Stack filter
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              rules:
+                items:
+                  description: Rule defines authorization rules object.
+                  properties:
+                    filters:
+                      items:
+                        properties:
+                          arguments:
+                            description: UntypedDict is relatively opaque as a Go type, but it preserves its contents in a roundtrippable way.
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                          ifRequestHeader:
+                            properties:
+                              name:
+                                type: string
+                              negate:
+                                type: boolean
+                              value:
+                                type: string
+                              valueRegex:
+                                type: string
+                            required:
+                            - name
+                            type: object
+                          name:
+                            type: string
+                          namespace:
+                            type: string
+                          onAllow:
+                            type: string
+                          onDeny:
+                            type: string
+                        type: object
+                      type: array
+                    host:
+                      type: string
+                    path:
+                      type: string
+                  type: object
+                type: array
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+          status:
+            properties:
+              reason:
+                type: string
+              ruleStatuses:
+                items:
+                  properties:
+                    reason:
+                      type: string
+                    state:
+                      type: string
+                  type: object
+                type: array
+              state:
+                type: string
+            type: object
         type: object
-        x-kubernetes-preserve-unknown-fields: true
     served: true
     storage: true

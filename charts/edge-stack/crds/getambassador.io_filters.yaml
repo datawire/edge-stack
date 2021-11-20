@@ -1,9 +1,10 @@
+# GENERATED FILE: edits made by hand will not be preserved.
 ---
-# Source: edge-stack/charts/edge-stack/crds/filter.yaml
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
+    controller-gen.kubebuilder.io/version: v0.5.0
     helm.sh/hook: crd-install
   labels:
     app.kubernetes.io/name: ambassador
@@ -15,6 +16,7 @@ spec:
     categories:
     - ambassador-crds
     kind: Filter
+    listKind: FilterList
     plural: filters
     shortNames:
     - fil
@@ -24,24 +26,715 @@ spec:
   - name: v1beta2
     schema:
       openAPIV3Schema:
-        description: Filter specifies an Ambassador Edge Stack filter
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              External:
+                description: Based off of ambassador/schemas/v1/AuthService.schema
+                properties:
+                  allow_request_body:
+                    type: boolean
+                  allowed_authorization_headers:
+                    items:
+                      type: string
+                    type: array
+                  allowed_request_headers:
+                    items:
+                      type: string
+                    type: array
+                  auth_service:
+                    type: string
+                  path_prefix:
+                    type: string
+                  proto:
+                    type: string
+                  timeout_ms:
+                    format: int64
+                    type: integer
+                  tls:
+                    description: As an experimental feature, Ambassador supports setting "tls" to the name of a TLS context (rather than setting it to a boolean).  Ambassador Pro External filters do NOT support that; if present, the "tls" field must be a boolean.
+                    type: boolean
+                type: object
+              Internal:
+                type: object
+              JWT:
+                description: "FilterJWT \n Currently supported algorithms: \n - RSA   * \"RS256\"   * \"RS384\"   * \"RS512\" - RSA-PSS   * \"PS256\"   * \"PS384\"   * \"PS512\" - ECDSA   * \"ES256\"   * \"ES384\"   * \"ES512\" - HMAC-SHA   * \"HS256\"   * \"HS384\"   * \"HS512\" - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go v3.2.0.  Keep this list in sync if we pull in a jwt-go update. More algorithms can be added with jwt.RegistersigningMethod(). \n Haha, JK, our JWKS parser only understands RSA keys."
+                properties:
+                  audience:
+                    type: string
+                  errorResponse:
+                    properties:
+                      bodyTemplate:
+                        type: string
+                      contentType:
+                        type: string
+                      headers:
+                        items:
+                          properties:
+                            name:
+                              type: string
+                            value:
+                              type: string
+                          type: object
+                        type: array
+                      realm:
+                        type: string
+                    type: object
+                  injectRequestHeaders:
+                    items:
+                      properties:
+                        name:
+                          type: string
+                        value:
+                          type: string
+                      type: object
+                    type: array
+                  insecureTLS:
+                    type: boolean
+                  issuer:
+                    type: string
+                  jwksURI:
+                    type: string
+                  renegotiateTLS:
+                    type: string
+                  requireAudience:
+                    type: boolean
+                  requireExpiresAt:
+                    type: boolean
+                  requireIssuedAt:
+                    type: boolean
+                  requireIssuer:
+                    type: boolean
+                  requireNotBefore:
+                    type: boolean
+                  validAlgorithms:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              OAuth2:
+                properties:
+                  accessTokenJWTFilter:
+                    properties:
+                      arguments:
+                        properties:
+                          scope:
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                  accessTokenValidation:
+                    type: string
+                  authorizationURL:
+                    type: string
+                  clientID:
+                    type: string
+                  clientURL:
+                    description: grantType=AuthorizationCode
+                    type: string
+                  extraAuthorizationParameters:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  grantType:
+                    type: string
+                  insecureTLS:
+                    type: boolean
+                  maxStale:
+                    type: string
+                  renegotiateTLS:
+                    type: string
+                  secret:
+                    type: string
+                  secretName:
+                    type: string
+                  secretNamespace:
+                    type: string
+                  stateTTL:
+                    description: ClientURL       *url.URL      `json:"-"`         // calculated from RawClientURL
+                    type: string
+                type: object
+              Plugin:
+                properties:
+                  name:
+                    type: string
+                type: object
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
         type: object
-        x-kubernetes-preserve-unknown-fields: true
     served: false
     storage: false
   - name: v2
     schema:
       openAPIV3Schema:
-        description: Filter specifies an Ambassador Edge Stack filter
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              External:
+                description: Based off of ambassador/schemas/v1/AuthService.schema
+                properties:
+                  add_linkerd_headers:
+                    type: boolean
+                  allow_request_body:
+                    type: boolean
+                  allowed_authorization_headers:
+                    items:
+                      type: string
+                    type: array
+                  allowed_request_headers:
+                    items:
+                      type: string
+                    type: array
+                  auth_service:
+                    type: string
+                  failure_mode_allow:
+                    type: boolean
+                  include_body:
+                    properties:
+                      allow_partial:
+                        type: boolean
+                      max_bytes:
+                        type: integer
+                    type: object
+                  path_prefix:
+                    type: string
+                  proto:
+                    type: string
+                  status_on_error:
+                    properties:
+                      code:
+                        type: integer
+                    type: object
+                  timeout_ms:
+                    format: int64
+                    type: integer
+                  tls:
+                    description: As an experimental feature, Ambassador supports setting "tls" to the name of a TLS context (rather than setting it to a boolean).  Ambassador Pro External filters do NOT support that; if present, the "tls" field must be a boolean.
+                    type: boolean
+                type: object
+              JWT:
+                description: "FilterJWT \n Currently supported algorithms: \n - RSA   * \"RS256\"   * \"RS384\"   * \"RS512\" - RSA-PSS   * \"PS256\"   * \"PS384\"   * \"PS512\" - ECDSA   * \"ES256\"   * \"ES384\"   * \"ES512\" - HMAC-SHA   * \"HS256\"   * \"HS384\"   * \"HS512\" - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go v3.2.0.  Keep this list in sync if we pull in a jwt-go update. More algorithms can be added with jwt.RegistersigningMethod(). \n Haha, JK, our JWKS parser only understands RSA keys."
+                properties:
+                  audience:
+                    type: string
+                  errorResponse:
+                    properties:
+                      bodyTemplate:
+                        type: string
+                      contentType:
+                        type: string
+                      headers:
+                        items:
+                          properties:
+                            name:
+                              type: string
+                            value:
+                              type: string
+                          type: object
+                        type: array
+                      realm:
+                        type: string
+                    type: object
+                  injectRequestHeaders:
+                    items:
+                      properties:
+                        name:
+                          type: string
+                        value:
+                          type: string
+                      type: object
+                    type: array
+                  insecureTLS:
+                    type: boolean
+                  issuer:
+                    type: string
+                  jwksURI:
+                    type: string
+                  leewayForExpiresAt:
+                    type: string
+                  leewayForIssuedAt:
+                    type: string
+                  leewayForNotBefore:
+                    type: string
+                  renegotiateTLS:
+                    type: string
+                  requireAudience:
+                    type: boolean
+                  requireExpiresAt:
+                    type: boolean
+                  requireIssuedAt:
+                    type: boolean
+                  requireIssuer:
+                    type: boolean
+                  requireNotBefore:
+                    type: boolean
+                  validAlgorithms:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              OAuth2:
+                properties:
+                  accessTokenJWTFilter:
+                    properties:
+                      arguments:
+                        properties:
+                          scope:
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      inheritScopeArgument:
+                        type: boolean
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                      stripInheritedScope:
+                        type: boolean
+                    type: object
+                  accessTokenValidation:
+                    description: Resource Server settings ////////////////////////////////////////////
+                    type: string
+                  allowMalformedAccessToken:
+                    type: boolean
+                  authorizationURL:
+                    type: string
+                  clientAuthentication:
+                    properties:
+                      jwtAssertion:
+                        properties:
+                          audience:
+                            type: string
+                          lifetime:
+                            description: SigningMethod         jwt.SigningMethod `json:"-"`
+                            format: int64
+                            type: integer
+                          nbfSafetyMargin:
+                            description: A Duration represents the elapsed time between two instants as an int64 nanosecond count. The representation limits the largest representable duration to approximately 290 years.
+                            format: int64
+                            type: integer
+                          otherClaims:
+                            description: UntypedDict is relatively opaque as a Go type, but it preserves its contents in a roundtrippable way.
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                          otherHeaderParameters:
+                            description: UntypedDict is relatively opaque as a Go type, but it preserves its contents in a roundtrippable way.
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                          setClientID:
+                            type: boolean
+                          setIAT:
+                            type: boolean
+                          setNBF:
+                            type: boolean
+                          signingMethod:
+                            type: string
+                        type: object
+                      method:
+                        type: string
+                    type: object
+                  clientID:
+                    description: 'Client settings: grantType≠ClientCredentials ////////////////////////'
+                    type: string
+                  clientURL:
+                    type: string
+                  expirationSafetyMargin:
+                    description: Client settings /////////////////////////////////////////////////////
+                    type: string
+                  extraAuthorizationParameters:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  grantType:
+                    type: string
+                  injectRequestHeaders:
+                    items:
+                      properties:
+                        name:
+                          type: string
+                        value:
+                          type: string
+                      type: object
+                    type: array
+                  insecureTLS:
+                    type: boolean
+                  maxStale:
+                    description: HTTP settings ///////////////////////////////////////////////////////
+                    type: string
+                  protectedOrigins:
+                    items:
+                      properties:
+                        includeSubdomains:
+                          description: InternalOrigin    *url.URL `json:"-"` // RawInternalOrigin
+                          type: boolean
+                        internalOrigin:
+                          description: Origin            *url.URL `json:"-"` // RawOrigin
+                          type: string
+                        origin:
+                          type: string
+                      type: object
+                    type: array
+                  renegotiateTLS:
+                    type: string
+                  secret:
+                    type: string
+                  secretName:
+                    type: string
+                  secretNamespace:
+                    type: string
+                  stateTTL:
+                    description: Deprecated and entirely ignored /////////////////////////////////////
+                    type: string
+                  useSessionCookies:
+                    description: 'Client settings: grantType=AuthorizationCode ////////////////////////'
+                    properties:
+                      ifRequestHeader:
+                        properties:
+                          name:
+                            type: string
+                          negate:
+                            type: boolean
+                          value:
+                            type: string
+                          valueRegex:
+                            description: ValueRegex    *regexp.Regexp `json:"-"`
+                            type: string
+                        type: object
+                      value:
+                        type: boolean
+                    type: object
+                type: object
+              Plugin:
+                properties:
+                  name:
+                    type: string
+                type: object
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+          status:
+            properties:
+              reason:
+                type: string
+              state:
+                type: string
+            type: object
         type: object
-        x-kubernetes-preserve-unknown-fields: true
     served: false
     storage: false
   - name: v3alpha1
     schema:
       openAPIV3Schema:
-        description: Filter specifies an Ambassador Edge Stack filter
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              External:
+                description: Based off of ambassador/schemas/v1/AuthService.schema
+                properties:
+                  add_linkerd_headers:
+                    type: boolean
+                  allow_request_body:
+                    type: boolean
+                  allowed_authorization_headers:
+                    items:
+                      type: string
+                    type: array
+                  allowed_request_headers:
+                    items:
+                      type: string
+                    type: array
+                  auth_service:
+                    type: string
+                  failure_mode_allow:
+                    type: boolean
+                  include_body:
+                    properties:
+                      allow_partial:
+                        type: boolean
+                      max_bytes:
+                        type: integer
+                    type: object
+                  path_prefix:
+                    type: string
+                  proto:
+                    enum:
+                    - http
+                    - grpc
+                    type: string
+                  status_on_error:
+                    description: Why isn't this just an int??
+                    properties:
+                      code:
+                        type: integer
+                    type: object
+                  timeout_ms:
+                    type: integer
+                  tls:
+                    description: As an experimental feature, Ambassador supports setting "tls" to the name of a TLS context (rather than setting it to a boolean).  Ambassador Pro External filters do NOT support that; if present, the "tls" field must be a boolean.
+                    type: boolean
+                required:
+                - auth_service
+                type: object
+              JWT:
+                description: "FilterJWT \n Currently supported algorithms: \n - RSA   * \"RS256\"   * \"RS384\"   * \"RS512\" - RSA-PSS   * \"PS256\"   * \"PS384\"   * \"PS512\" - ECDSA   * \"ES256\"   * \"ES384\"   * \"ES512\" - HMAC-SHA   * \"HS256\"   * \"HS384\"   * \"HS512\" - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go v3.2.0.  Keep this list in sync if we pull in a jwt-go update. More algorithms can be added with jwt.RegistersigningMethod(). \n Haha, JK, our JWKS parser only understands RSA keys."
+                properties:
+                  audience:
+                    type: string
+                  errorResponse:
+                    properties:
+                      bodyTemplate:
+                        type: string
+                      contentType:
+                        type: string
+                      headers:
+                        items:
+                          properties:
+                            name:
+                              type: string
+                            value:
+                              type: string
+                          type: object
+                        type: array
+                      realm:
+                        type: string
+                    type: object
+                  injectRequestHeaders:
+                    items:
+                      properties:
+                        name:
+                          type: string
+                        value:
+                          type: string
+                      type: object
+                    type: array
+                  insecureTLS:
+                    type: boolean
+                  issuer:
+                    type: string
+                  jwksURI:
+                    type: string
+                  leewayForExpiresAt:
+                    type: string
+                  leewayForIssuedAt:
+                    type: string
+                  leewayForNotBefore:
+                    type: string
+                  maxStale:
+                    type: string
+                  renegotiateTLS:
+                    enum:
+                    - never
+                    - onceAsClient
+                    - freelyAsClient
+                    type: string
+                  requireAudience:
+                    type: boolean
+                  requireExpiresAt:
+                    type: boolean
+                  requireIssuedAt:
+                    type: boolean
+                  requireIssuer:
+                    type: boolean
+                  requireNotBefore:
+                    type: boolean
+                  validAlgorithms:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              OAuth2:
+                properties:
+                  accessTokenJWTFilter:
+                    properties:
+                      arguments:
+                        properties:
+                          scope:
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      inheritScopeArgument:
+                        type: boolean
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                      stripInheritedScope:
+                        type: boolean
+                    type: object
+                  accessTokenValidation:
+                    description: Resource Server settings ////////////////////////////////////////////
+                    type: string
+                  allowMalformedAccessToken:
+                    type: boolean
+                  authorizationURL:
+                    type: string
+                  clientAuthentication:
+                    properties:
+                      jwtAssertion:
+                        properties:
+                          audience:
+                            type: string
+                          lifetime:
+                            type: string
+                          nbfSafetyMargin:
+                            type: string
+                          otherClaims:
+                            description: UntypedDict is relatively opaque as a Go type, but it preserves its contents in a roundtrippable way.
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                          otherHeaderParameters:
+                            description: UntypedDict is relatively opaque as a Go type, but it preserves its contents in a roundtrippable way.
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                          setClientID:
+                            type: boolean
+                          setIAT:
+                            type: boolean
+                          setNBF:
+                            type: boolean
+                          signingMethod:
+                            enum:
+                            - ES256
+                            - ES384
+                            - ES512
+                            - HS256
+                            - HS384
+                            - HS512
+                            - PS256
+                            - PS384
+                            - PS512
+                            - RS256
+                            - RS384
+                            - RS512
+                            - none
+                            type: string
+                        type: object
+                      method:
+                        enum:
+                        - ""
+                        - HeaderPassword
+                        - BodyPassword
+                        - JWTAssertion
+                        type: string
+                    type: object
+                  clientID:
+                    description: 'Client settings: grantType≠ClientCredentials ////////////////////////'
+                    type: string
+                  clientURL:
+                    type: string
+                  expirationSafetyMargin:
+                    description: Client settings /////////////////////////////////////////////////////
+                    type: string
+                  extraAuthorizationParameters:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  grantType:
+                    type: string
+                  injectRequestHeaders:
+                    items:
+                      properties:
+                        name:
+                          type: string
+                        value:
+                          type: string
+                      type: object
+                    type: array
+                  insecureTLS:
+                    type: boolean
+                  maxStale:
+                    description: HTTP settings ///////////////////////////////////////////////////////
+                    type: string
+                  protectedOrigins:
+                    items:
+                      properties:
+                        includeSubdomains:
+                          type: boolean
+                        internalOrigin:
+                          type: string
+                        origin:
+                          type: string
+                      type: object
+                    type: array
+                  renegotiateTLS:
+                    enum:
+                    - never
+                    - onceAsClient
+                    - freelyAsClient
+                    type: string
+                  secret:
+                    type: string
+                  secretName:
+                    type: string
+                  secretNamespace:
+                    type: string
+                  stateTTL:
+                    description: Deprecated and entirely ignored /////////////////////////////////////
+                    type: string
+                  useSessionCookies:
+                    description: 'Client settings: grantType=AuthorizationCode ////////////////////////'
+                    properties:
+                      ifRequestHeader:
+                        properties:
+                          name:
+                            type: string
+                          negate:
+                            type: boolean
+                          value:
+                            type: string
+                          valueRegex:
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      value:
+                        type: boolean
+                    type: object
+                type: object
+              Plugin:
+                properties:
+                  name:
+                    type: string
+                type: object
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+          status:
+            properties:
+              reason:
+                type: string
+              state:
+                type: string
+            type: object
         type: object
-        x-kubernetes-preserve-unknown-fields: true
     served: true
     storage: true

@@ -1,9 +1,10 @@
+# GENERATED FILE: edits made by hand will not be preserved.
 ---
-# Source: edge-stack/charts/edge-stack/crds/ratelimit.yaml
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
+    controller-gen.kubebuilder.io/version: v0.5.0
     helm.sh/hook: crd-install
   labels:
     app.kubernetes.io/name: ambassador
@@ -15,6 +16,7 @@ spec:
     categories:
     - ambassador-crds
     kind: RateLimit
+    listKind: RateLimitList
     plural: ratelimits
     shortNames:
     - rl
@@ -24,24 +26,197 @@ spec:
   - name: v1beta1
     schema:
       openAPIV3Schema:
-        description: Filter specifies an Ambassador Edge Stack filter
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              domain:
+                type: string
+              limits:
+                items:
+                  properties:
+                    pattern:
+                      items:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      type: array
+                    rate:
+                      format: int64
+                      type: integer
+                    unit:
+                      type: string
+                  type: object
+                type: array
+            type: object
         type: object
-        x-kubernetes-preserve-unknown-fields: true
     served: false
     storage: false
   - name: v2
     schema:
       openAPIV3Schema:
-        description: Filter specifies an Ambassador Edge Stack filter
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              domain:
+                type: string
+              limits:
+                items:
+                  properties:
+                    action:
+                      type: string
+                    burstFactor:
+                      format: int32
+                      type: integer
+                    errorResponse:
+                      properties:
+                        bodyTemplate:
+                          type: string
+                        headers:
+                          items:
+                            properties:
+                              name:
+                                type: string
+                              value:
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    injectRequestHeaders:
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            type: string
+                        type: object
+                      type: array
+                    injectResponseHeaders:
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            type: string
+                        type: object
+                      type: array
+                    name:
+                      type: string
+                    pattern:
+                      items:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      type: array
+                    rate:
+                      format: int32
+                      type: integer
+                    unit:
+                      type: string
+                  type: object
+                type: array
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
         type: object
-        x-kubernetes-preserve-unknown-fields: true
     served: false
     storage: false
   - name: v3alpha1
     schema:
       openAPIV3Schema:
-        description: Filter specifies an Ambassador Edge Stack filter
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              domain:
+                type: string
+              limits:
+                items:
+                  properties:
+                    action:
+                      enum:
+                      - Enforce
+                      - LogOnly
+                      type: string
+                    burstFactor:
+                      format: int32
+                      type: integer
+                    errorResponse:
+                      properties:
+                        bodyTemplate:
+                          type: string
+                        headers:
+                          items:
+                            properties:
+                              name:
+                                type: string
+                              value:
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    injectRequestHeaders:
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            type: string
+                        type: object
+                      type: array
+                    injectResponseHeaders:
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            type: string
+                        type: object
+                      type: array
+                    name:
+                      type: string
+                    pattern:
+                      items:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      type: array
+                    rate:
+                      format: int32
+                      type: integer
+                    unit:
+                      enum:
+                      - unknown
+                      - second
+                      - minute
+                      - hour
+                      - day
+                      type: string
+                  type: object
+                type: array
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
         type: object
-        x-kubernetes-preserve-unknown-fields: true
     served: true
     storage: true
