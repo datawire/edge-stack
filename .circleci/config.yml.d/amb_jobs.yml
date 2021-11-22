@@ -23,8 +23,6 @@ commands:
     steps:
       - amb-linux-install
       - amb-checkout
-      - skip-if-no-changes:
-          to: charts/edge-stack
       - install-k3d
       # We might need to be logged in the registry to pull the Envoy
       # image or the builder-base image.
