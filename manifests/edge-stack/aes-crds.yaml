@@ -2537,12 +2537,13 @@ spec:
                     - grpc
                     type: string
                   status_on_error:
-                    description: Why isn't this just an int??
+                    description: 'TODO(lukeshu): In v3alpha2, consider getting rid of this struct type in favor of just using an int (i.e. `statusOnError: 500` instead of the current `statusOnError: { code: 500 }`).'
                     properties:
                       code:
                         type: integer
                     type: object
                   timeout_ms:
+                    description: 'TODO(lukeshu): In v3alpha2, change all of the `{foo}_ms`/`MillisecondDuration` fields to `{foo}`/`metav1.Duration`.'
                     type: integer
                   tls:
                     description: As an experimental feature, Ambassador supports setting "tls" to the name of a TLS context (rather than setting it to a boolean).  Ambassador Pro External filters do NOT support that; if present, the "tls" field must be a boolean.
