@@ -2880,6 +2880,8 @@ spec:
                       properties:
                         bodyTemplate:
                           type: string
+                        contentType:
+                          type: string
                         headers:
                           items:
                             properties:
@@ -2889,6 +2891,8 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        realm:
+                          type: string
                       type: object
                     injectRequestHeaders:
                       items:
@@ -2959,6 +2963,8 @@ spec:
                       properties:
                         bodyTemplate:
                           type: string
+                        contentType:
+                          type: string
                         headers:
                           items:
                             properties:
@@ -2968,6 +2974,8 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        realm:
+                          type: string
                       type: object
                     injectRequestHeaders:
                       items:
