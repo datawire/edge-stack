@@ -2099,7 +2099,7 @@ spec:
                   proto:
                     type: string
                   timeout_ms:
-                    format: int64
+                    description: 'TODO(lukeshu): In v3alpha2, change all of the `{foo}_ms`/`MillisecondDuration` fields to `{foo}`/`metav1.Duration`.'
                     type: integer
                   tls:
                     description: As an experimental feature, Ambassador supports setting "tls" to the name of a TLS context (rather than setting it to a boolean).  Ambassador Pro External filters do NOT support that; if present, the "tls" field must be a boolean.
@@ -2271,7 +2271,7 @@ spec:
                         type: integer
                     type: object
                   timeout_ms:
-                    format: int64
+                    description: 'TODO(lukeshu): In v3alpha2, change all of the `{foo}_ms`/`MillisecondDuration` fields to `{foo}`/`metav1.Duration`.'
                     type: integer
                   tls:
                     description: As an experimental feature, Ambassador supports setting "tls" to the name of a TLS context (rather than setting it to a boolean).  Ambassador Pro External filters do NOT support that; if present, the "tls" field must be a boolean.
