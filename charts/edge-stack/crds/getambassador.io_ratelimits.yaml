@@ -49,9 +49,10 @@ spec:
                         type: object
                       type: array
                     rate:
-                      format: int64
+                      format: int32
                       type: integer
                     unit:
+                      pattern: ^([uU][nN][kK][nN][oO][wW][nN]|[sS][eE][cC][oO][nN][dD]|[mM][iI][nN][uU][tT][eE]|[hH][oO][uU][rR]|[dD][aA][yY])$
                       type: string
                   type: object
                 type: array
@@ -80,6 +81,7 @@ spec:
                 items:
                   properties:
                     action:
+                      pattern: ^([eE][nN][fF][oO][rR][cC][eE]|[lL][oO][gG][oO][nN][lL][yY])$
                       type: string
                     burstFactor:
                       format: int32

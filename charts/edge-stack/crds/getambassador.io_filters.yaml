@@ -55,6 +55,9 @@ spec:
                   path_prefix:
                     type: string
                   proto:
+                    enum:
+                    - http
+                    - grpc
                     type: string
                   timeout_ms:
                     description: 'TODO(lukeshu): In v3alpha2, change all of the `{foo}_ms`/`MillisecondDuration` fields to `{foo}`/`metav1.Duration`.'
@@ -222,6 +225,9 @@ spec:
                   path_prefix:
                     type: string
                   proto:
+                    enum:
+                    - http
+                    - grpc
                     type: string
                   status_on_error:
                     properties:

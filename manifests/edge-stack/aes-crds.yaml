@@ -2097,6 +2097,9 @@ spec:
                   path_prefix:
                     type: string
                   proto:
+                    enum:
+                    - http
+                    - grpc
                     type: string
                   timeout_ms:
                     description: 'TODO(lukeshu): In v3alpha2, change all of the `{foo}_ms`/`MillisecondDuration` fields to `{foo}`/`metav1.Duration`.'
@@ -2264,6 +2267,9 @@ spec:
                   path_prefix:
                     type: string
                   proto:
+                    enum:
+                    - http
+                    - grpc
                     type: string
                   status_on_error:
                     properties:
@@ -2838,9 +2844,10 @@ spec:
                         type: object
                       type: array
                     rate:
-                      format: int64
+                      format: int32
                       type: integer
                     unit:
+                      pattern: ^([uU][nN][kK][nN][oO][wW][nN]|[sS][eE][cC][oO][nN][dD]|[mM][iI][nN][uU][tT][eE]|[hH][oO][uU][rR]|[dD][aA][yY])$
                       type: string
                   type: object
                 type: array
@@ -2869,6 +2876,7 @@ spec:
                 items:
                   properties:
                     action:
+                      pattern: ^([eE][nN][fF][oO][rR][cC][eE]|[lL][oO][gG][oO][nN][lL][yY])$
                       type: string
                     burstFactor:
                       format: int32
