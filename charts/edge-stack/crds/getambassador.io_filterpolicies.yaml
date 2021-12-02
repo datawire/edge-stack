@@ -110,7 +110,6 @@ spec:
                               value:
                                 type: string
                               valueRegex:
-                                description: ValueRegex    *regexp.Regexp `json:"-"`
                                 type: string
                             type: object
                           name:

@@ -297,6 +297,8 @@ spec:
                     type: boolean
                   requireNotBefore:
                     type: boolean
+                  v3MaxStale:
+                    type: string
                   validAlgorithms:
                     items:
                       type: string
@@ -394,10 +396,8 @@ spec:
                     items:
                       properties:
                         includeSubdomains:
-                          description: InternalOrigin    *url.URL `json:"-"` // RawInternalOrigin
                           type: boolean
                         internalOrigin:
-                          description: Origin            *url.URL `json:"-"` // RawOrigin
                           type: string
                         origin:
                           type: string
@@ -426,7 +426,6 @@ spec:
                           value:
                             type: string
                           valueRegex:
-                            description: ValueRegex    *regexp.Regexp `json:"-"`
                             type: string
                         type: object
                       value:
