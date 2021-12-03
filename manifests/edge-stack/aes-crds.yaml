@@ -2934,6 +2934,50 @@ spec:
               limits:
                 items:
                   properties:
+                    action:
+                      pattern: ^([eE][nN][fF][oO][rR][cC][eE]|[lL][oO][gG][oO][nN][lL][yY])$
+                      type: string
+                    burstFactor:
+                      format: int32
+                      type: integer
+                    errorResponse:
+                      properties:
+                        bodyTemplate:
+                          type: string
+                        contentType:
+                          type: string
+                        headers:
+                          items:
+                            properties:
+                              name:
+                                type: string
+                              value:
+                                type: string
+                            type: object
+                          type: array
+                        realm:
+                          type: string
+                      type: object
+                    injectRequestHeaders:
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            type: string
+                        type: object
+                      type: array
+                    injectResponseHeaders:
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            type: string
+                        type: object
+                      type: array
+                    name:
+                      type: string
                     pattern:
                       items:
                         additionalProperties:
