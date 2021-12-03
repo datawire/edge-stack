@@ -52,7 +52,11 @@ spec:
                             properties:
                               name:
                                 type: string
+                              negate:
+                                type: boolean
                               value:
+                                type: string
+                              valueRegex:
                                 type: string
                             type: object
                           name:
