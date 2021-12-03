@@ -83,8 +83,7 @@ chart/clean:
 	@cd $(EDGE_STACK_HOME) && git restore $(CHART_DIR)/Chart.yaml $(CHART_DIR)/values.yaml
 	@rm -f $(CHART_DIR)/*.tgz $(CHART_DIR)/index.yaml $(CHART_DIR)/tmp.yaml
 
-chart/push-preflight: create-venv $(YQ)
-	@$(EDGE_STACK_HOME)/venv/bin/python -m pip install ruamel.yaml
+chart/push-preflight: $(EDGE_STACK_HOME)/venv $(YQ)
 .PHONY: chart/push-preflight
 
 #########################################################################################

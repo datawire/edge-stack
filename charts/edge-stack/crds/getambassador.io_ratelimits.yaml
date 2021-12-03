@@ -42,44 +42,8 @@ spec:
               limits:
                 items:
                   properties:
-                    pattern:
-                      items:
-                        additionalProperties:
-                          type: string
-                        type: object
-                      type: array
-                    rate:
-                      format: int64
-                      type: integer
-                    unit:
-                      type: string
-                  type: object
-                type: array
-            type: object
-            x-kubernetes-preserve-unknown-fields: true
-        type: object
-    served: false
-    storage: false
-  - name: v2
-    schema:
-      openAPIV3Schema:
-        properties:
-          apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-            type: string
-          kind:
-            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-            type: string
-          metadata:
-            type: object
-          spec:
-            properties:
-              domain:
-                type: string
-              limits:
-                items:
-                  properties:
                     action:
+                      pattern: ^([eE][nN][fF][oO][rR][cC][eE]|[lL][oO][gG][oO][nN][lL][yY])$
                       type: string
                     burstFactor:
                       format: int32
@@ -87,6 +51,8 @@ spec:
                     errorResponse:
                       properties:
                         bodyTemplate:
+                          type: string
+                        contentType:
                           type: string
                         headers:
                           items:
@@ -97,6 +63,8 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        realm:
+                          type: string
                       type: object
                     injectRequestHeaders:
                       items:
@@ -128,14 +96,179 @@ spec:
                       format: int32
                       type: integer
                     unit:
+                      pattern: ^([uU][nN][kK][nN][oO][wW][nN]|[sS][eE][cC][oO][nN][dD]|[mM][iI][nN][uU][tT][eE]|[hH][oO][uU][rR]|[dD][aA][yY])$
                       type: string
                   type: object
                 type: array
             type: object
             x-kubernetes-preserve-unknown-fields: true
         type: object
-    served: false
+    served: true
     storage: false
+  - name: v1beta2
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              domain:
+                type: string
+              limits:
+                items:
+                  properties:
+                    action:
+                      pattern: ^([eE][nN][fF][oO][rR][cC][eE]|[lL][oO][gG][oO][nN][lL][yY])$
+                      type: string
+                    burstFactor:
+                      format: int32
+                      type: integer
+                    errorResponse:
+                      properties:
+                        bodyTemplate:
+                          type: string
+                        contentType:
+                          type: string
+                        headers:
+                          items:
+                            properties:
+                              name:
+                                type: string
+                              value:
+                                type: string
+                            type: object
+                          type: array
+                        realm:
+                          type: string
+                      type: object
+                    injectRequestHeaders:
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            type: string
+                        type: object
+                      type: array
+                    injectResponseHeaders:
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            type: string
+                        type: object
+                      type: array
+                    name:
+                      type: string
+                    pattern:
+                      items:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      type: array
+                    rate:
+                      format: int32
+                      type: integer
+                    unit:
+                      pattern: ^([uU][nN][kK][nN][oO][wW][nN]|[sS][eE][cC][oO][nN][dD]|[mM][iI][nN][uU][tT][eE]|[hH][oO][uU][rR]|[dD][aA][yY])$
+                      type: string
+                  type: object
+                type: array
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: false
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              domain:
+                type: string
+              limits:
+                items:
+                  properties:
+                    action:
+                      pattern: ^([eE][nN][fF][oO][rR][cC][eE]|[lL][oO][gG][oO][nN][lL][yY])$
+                      type: string
+                    burstFactor:
+                      format: int32
+                      type: integer
+                    errorResponse:
+                      properties:
+                        bodyTemplate:
+                          type: string
+                        contentType:
+                          type: string
+                        headers:
+                          items:
+                            properties:
+                              name:
+                                type: string
+                              value:
+                                type: string
+                            type: object
+                          type: array
+                        realm:
+                          type: string
+                      type: object
+                    injectRequestHeaders:
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            type: string
+                        type: object
+                      type: array
+                    injectResponseHeaders:
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            type: string
+                        type: object
+                      type: array
+                    name:
+                      type: string
+                    pattern:
+                      items:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      type: array
+                    rate:
+                      format: int32
+                      type: integer
+                    unit:
+                      pattern: ^([uU][nN][kK][nN][oO][wW][nN]|[sS][eE][cC][oO][nN][dD]|[mM][iI][nN][uU][tT][eE]|[hH][oO][uU][rR]|[dD][aA][yY])$
+                      type: string
+                  type: object
+                type: array
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: true
   - name: v3alpha1
     schema:
       openAPIV3Schema:
@@ -167,6 +300,8 @@ spec:
                       properties:
                         bodyTemplate:
                           type: string
+                        contentType:
+                          type: string
                         headers:
                           items:
                             properties:
@@ -176,6 +311,8 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        realm:
+                          type: string
                       type: object
                     injectRequestHeaders:
                       items:
@@ -220,4 +357,4 @@ spec:
             x-kubernetes-preserve-unknown-fields: true
         type: object
     served: true
-    storage: true
+    storage: false
