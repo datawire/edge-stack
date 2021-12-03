@@ -1870,6 +1870,8 @@ spec:
                                 type: string
                               valueRegex:
                                 type: string
+                            required:
+                            - name
                             type: object
                           name:
                             type: string
@@ -1927,6 +1929,8 @@ spec:
                                 type: string
                               valueRegex:
                                 type: string
+                            required:
+                            - name
                             type: object
                           name:
                             type: string
@@ -2051,7 +2055,7 @@ spec:
           spec:
             properties:
               External:
-                description: Based off of ambassador/schemas/v1/AuthService.schema
+                description: FilterExternal closely mimics AuthService.getambassador.io.
                 properties:
                   add_linkerd_headers:
                     type: boolean
@@ -2092,8 +2096,10 @@ spec:
                     description: 'TODO(lukeshu): In v3alpha2, change all of the `{foo}_ms`/`MillisecondDuration` fields to `{foo}`/`metav1.Duration`.'
                     type: integer
                   tls:
-                    description: As an experimental feature, Ambassador supports setting "tls" to the name of a TLS context (rather than setting it to a boolean).  Ambassador Pro External filters do NOT support that; if present, the "tls" field must be a boolean.
+                    description: Emissary supports setting "tls" to the name of a TLSContext.  Edge Stack External Filters do NOT yet support that; in External Filters "tls" is a boolean indicating whether to originate TLS.
                     type: boolean
+                required:
+                - auth_service
                 type: object
               JWT:
                 description: "FilterJWT \n Currently supported algorithms: \n - RSA   * \"RS256\"   * \"RS384\"   * \"RS512\" - RSA-PSS   * \"PS256\"   * \"PS384\"   * \"PS512\" - ECDSA   * \"ES256\"   * \"ES384\"   * \"ES512\" - HMAC-SHA   * \"HS256\"   * \"HS384\"   * \"HS512\" - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go v3.2.0.  Keep this list in sync if we pull in a jwt-go update. More algorithms can be added with jwt.RegistersigningMethod(). \n Haha, JK, our JWKS parser only understands RSA keys."
@@ -2140,6 +2146,10 @@ spec:
                   leewayForNotBefore:
                     type: string
                   renegotiateTLS:
+                    enum:
+                    - never
+                    - onceAsClient
+                    - freelyAsClient
                     type: string
                   requireAudience:
                     type: boolean
@@ -2193,7 +2203,6 @@ spec:
                           audience:
                             type: string
                           lifetime:
-                            description: SigningMethod         jwt.SigningMethod `json:"-"`
                             type: string
                           nbfSafetyMargin:
                             type: string
@@ -2212,9 +2221,28 @@ spec:
                           setNBF:
                             type: boolean
                           signingMethod:
+                            enum:
+                            - ES256
+                            - ES384
+                            - ES512
+                            - HS256
+                            - HS384
+                            - HS512
+                            - PS256
+                            - PS384
+                            - PS512
+                            - RS256
+                            - RS384
+                            - RS512
+                            - none
                             type: string
                         type: object
                       method:
+                        enum:
+                        - ""
+                        - HeaderPassword
+                        - BodyPassword
+                        - JWTAssertion
                         type: string
                     type: object
                   clientID:
@@ -2254,6 +2282,10 @@ spec:
                       type: object
                     type: array
                   renegotiateTLS:
+                    enum:
+                    - never
+                    - onceAsClient
+                    - freelyAsClient
                     type: string
                   secret:
                     type: string
@@ -2275,6 +2307,8 @@ spec:
                             type: string
                           valueRegex:
                             type: string
+                        required:
+                        - name
                         type: object
                       value:
                         type: boolean
@@ -2305,7 +2339,7 @@ spec:
           spec:
             properties:
               External:
-                description: Based off of ambassador/schemas/v1/AuthService.schema
+                description: FilterExternal closely mimics AuthService.getambassador.io.
                 properties:
                   add_linkerd_headers:
                     type: boolean
@@ -2346,8 +2380,10 @@ spec:
                     description: 'TODO(lukeshu): In v3alpha2, change all of the `{foo}_ms`/`MillisecondDuration` fields to `{foo}`/`metav1.Duration`.'
                     type: integer
                   tls:
-                    description: As an experimental feature, Ambassador supports setting "tls" to the name of a TLS context (rather than setting it to a boolean).  Ambassador Pro External filters do NOT support that; if present, the "tls" field must be a boolean.
+                    description: Emissary supports setting "tls" to the name of a TLSContext.  Edge Stack External Filters do NOT yet support that; in External Filters "tls" is a boolean indicating whether to originate TLS.
                     type: boolean
+                required:
+                - auth_service
                 type: object
               JWT:
                 description: "FilterJWT \n Currently supported algorithms: \n - RSA   * \"RS256\"   * \"RS384\"   * \"RS512\" - RSA-PSS   * \"PS256\"   * \"PS384\"   * \"PS512\" - ECDSA   * \"ES256\"   * \"ES384\"   * \"ES512\" - HMAC-SHA   * \"HS256\"   * \"HS384\"   * \"HS512\" - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go v3.2.0.  Keep this list in sync if we pull in a jwt-go update. More algorithms can be added with jwt.RegistersigningMethod(). \n Haha, JK, our JWKS parser only understands RSA keys."
@@ -2394,6 +2430,10 @@ spec:
                   leewayForNotBefore:
                     type: string
                   renegotiateTLS:
+                    enum:
+                    - never
+                    - onceAsClient
+                    - freelyAsClient
                     type: string
                   requireAudience:
                     type: boolean
@@ -2433,7 +2473,6 @@ spec:
                         type: boolean
                     type: object
                   accessTokenValidation:
-                    description: Resource Server settings ////////////////////////////////////////////
                     type: string
                   allowMalformedAccessToken:
                     type: boolean
@@ -2448,7 +2487,6 @@ spec:
                           audience:
                             type: string
                           lifetime:
-                            description: SigningMethod         jwt.SigningMethod `json:"-"`
                             type: string
                           nbfSafetyMargin:
                             type: string
@@ -2467,18 +2505,35 @@ spec:
                           setNBF:
                             type: boolean
                           signingMethod:
+                            enum:
+                            - ES256
+                            - ES384
+                            - ES512
+                            - HS256
+                            - HS384
+                            - HS512
+                            - PS256
+                            - PS384
+                            - PS512
+                            - RS256
+                            - RS384
+                            - RS512
+                            - none
                             type: string
                         type: object
                       method:
+                        enum:
+                        - ""
+                        - HeaderPassword
+                        - BodyPassword
+                        - JWTAssertion
                         type: string
                     type: object
                   clientID:
-                    description: 'Client settings: grantType≠ClientCredentials ////////////////////////'
                     type: string
                   clientURL:
                     type: string
                   expirationSafetyMargin:
-                    description: Client settings /////////////////////////////////////////////////////
                     type: string
                   extraAuthorizationParameters:
                     additionalProperties:
@@ -2498,7 +2553,6 @@ spec:
                   insecureTLS:
                     type: boolean
                   maxStale:
-                    description: HTTP settings ///////////////////////////////////////////////////////
                     type: string
                   protectedOrigins:
                     items:
@@ -2512,6 +2566,10 @@ spec:
                       type: object
                     type: array
                   renegotiateTLS:
+                    enum:
+                    - never
+                    - onceAsClient
+                    - freelyAsClient
                     type: string
                   secret:
                     type: string
@@ -2520,10 +2578,8 @@ spec:
                   secretNamespace:
                     type: string
                   stateTTL:
-                    description: Deprecated and entirely ignored /////////////////////////////////////
                     type: string
                   useSessionCookies:
-                    description: 'Client settings: grantType=AuthorizationCode ////////////////////////'
                     properties:
                       ifRequestHeader:
                         properties:
@@ -2535,6 +2591,8 @@ spec:
                             type: string
                           valueRegex:
                             type: string
+                        required:
+                        - name
                         type: object
                       value:
                         type: boolean
@@ -2565,7 +2623,7 @@ spec:
           spec:
             properties:
               External:
-                description: Based off of ambassador/schemas/v1/AuthService.schema
+                description: FilterExternal closely mimics AuthService.getambassador.io.
                 properties:
                   add_linkerd_headers:
                     type: boolean
@@ -2607,7 +2665,7 @@ spec:
                     description: 'TODO(lukeshu): In v3alpha2, change all of the `{foo}_ms`/`MillisecondDuration` fields to `{foo}`/`metav1.Duration`.'
                     type: integer
                   tls:
-                    description: As an experimental feature, Ambassador supports setting "tls" to the name of a TLS context (rather than setting it to a boolean).  Ambassador Pro External filters do NOT support that; if present, the "tls" field must be a boolean.
+                    description: Emissary supports setting "tls" to the name of a TLSContext.  Edge Stack External Filters do NOT yet support that; in External Filters "tls" is a boolean indicating whether to originate TLS.
                     type: boolean
                 required:
                 - auth_service
@@ -2700,7 +2758,6 @@ spec:
                         type: boolean
                     type: object
                   accessTokenValidation:
-                    description: Resource Server settings ////////////////////////////////////////////
                     type: string
                   allowMalformedAccessToken:
                     type: boolean
@@ -2758,12 +2815,10 @@ spec:
                         type: string
                     type: object
                   clientID:
-                    description: 'Client settings: grantType≠ClientCredentials ////////////////////////'
                     type: string
                   clientURL:
                     type: string
                   expirationSafetyMargin:
-                    description: Client settings /////////////////////////////////////////////////////
                     type: string
                   extraAuthorizationParameters:
                     additionalProperties:
@@ -2783,7 +2838,6 @@ spec:
                   insecureTLS:
                     type: boolean
                   maxStale:
-                    description: HTTP settings ///////////////////////////////////////////////////////
                     type: string
                   protectedOrigins:
                     items:
@@ -2809,10 +2863,8 @@ spec:
                   secretNamespace:
                     type: string
                   stateTTL:
-                    description: Deprecated and entirely ignored /////////////////////////////////////
                     type: string
                   useSessionCookies:
-                    description: 'Client settings: grantType=AuthorizationCode ////////////////////////'
                     properties:
                       ifRequestHeader:
                         properties:
@@ -3024,6 +3076,7 @@ spec:
                       format: int32
                       type: integer
                     unit:
+                      pattern: ^([uU][nN][kK][nN][oO][wW][nN]|[sS][eE][cC][oO][nN][dD]|[mM][iI][nN][uU][tT][eE]|[hH][oO][uU][rR]|[dD][aA][yY])$
                       type: string
                   type: object
                 type: array

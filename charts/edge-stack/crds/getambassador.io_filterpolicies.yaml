@@ -58,6 +58,8 @@ spec:
                                 type: string
                               valueRegex:
                                 type: string
+                            required:
+                            - name
                             type: object
                           name:
                             type: string
@@ -115,6 +117,8 @@ spec:
                                 type: string
                               valueRegex:
                                 type: string
+                            required:
+                            - name
                             type: object
                           name:
                             type: string
