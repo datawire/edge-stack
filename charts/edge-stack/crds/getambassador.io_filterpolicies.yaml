@@ -21,6 +21,7 @@ spec:
     shortNames:
     - fp
     singular: filterpolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - name: v1beta2

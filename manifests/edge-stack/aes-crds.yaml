@@ -3165,6 +3165,7 @@ spec:
     shortNames:
     - fp
     singular: filterpolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - name: v1beta2
@@ -3370,6 +3371,7 @@ spec:
     shortNames:
     - fil
     singular: filter
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - name: v1beta2
@@ -4251,6 +4253,7 @@ spec:
     shortNames:
     - rl
     singular: ratelimit
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - name: v1beta1
