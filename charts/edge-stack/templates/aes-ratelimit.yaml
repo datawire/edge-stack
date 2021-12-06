@@ -1,6 +1,6 @@
 {{ if and .Values.rateLimit.create }}
 ---
-apiVersion: getambassador.io/v3alpha1
+apiVersion: getambassador.io/v2
 kind: RateLimitService
 metadata:
   name: {{ include "ambassador.fullname" . }}-{{ .Values.rateLimit.deploymentExtraName | default "ratelimit" }}

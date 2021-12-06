@@ -1,4 +1,6 @@
 resources:
+  - { kind: ClusterRole,        name: edge-stack-aes-apiext                }
+  - { kind: ClusterRoleBinding, name: edge-stack-aes-apiext                }
   - { kind: Service,            name: edge-stack-redis, namespace: default }
   - { kind: Deployment,         name: edge-stack-redis, namespace: default }
   - { kind: Secret,             name: edge-stack,       namespace: default }

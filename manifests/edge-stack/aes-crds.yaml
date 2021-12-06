@@ -3155,6 +3155,15 @@ metadata:
     product: aes
   name: filterpolicies.getambassador.io
 spec:
+  conversion:
+    strategy: Webhook
+    webhook:
+      clientConfig:
+        service:
+          name: bogus-ambassador-apiext
+          namespace: bogus-ambassador
+      conversionReviewVersions:
+      - v1beta1
   group: getambassador.io
   names:
     categories:
@@ -3361,6 +3370,15 @@ metadata:
     product: aes
   name: filters.getambassador.io
 spec:
+  conversion:
+    strategy: Webhook
+    webhook:
+      clientConfig:
+        service:
+          name: bogus-ambassador-apiext
+          namespace: bogus-ambassador
+      conversionReviewVersions:
+      - v1beta1
   group: getambassador.io
   names:
     categories:
@@ -4243,6 +4261,15 @@ metadata:
     product: aes
   name: ratelimits.getambassador.io
 spec:
+  conversion:
+    strategy: Webhook
+    webhook:
+      clientConfig:
+        service:
+          name: bogus-ambassador-apiext
+          namespace: bogus-ambassador
+      conversionReviewVersions:
+      - v1beta1
   group: getambassador.io
   names:
     categories:
