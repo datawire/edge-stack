@@ -3,9 +3,9 @@
 This file documents all notable changes to Edge Stack Helm Chart. The release
 numbering uses [semantic versioning](http://semver.org).
 
-## Next Release
+## v7.2.0
 
-(no changes yet)
+- Update Edge Stack chart image to version v2.1.0: [CHANGELOG](https://github.com/emissary-ingress/emissary/blob/master/CHANGELOG.md)
 
 ## v7.1.11
 

@@ -16,6 +16,18 @@ metadata:
   labels:
     product: aes
 ---
+# Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: edge-stack-apiext
+  namespace: ambassador
+  labels:
+    product: aes
+    app.kubernetes.io/name: edge-stack-apiext
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/instance: edge-stack
+---
 # Source: edge-stack/charts/emissary-ingress/templates/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
@@ -126,7 +138,46 @@ rules:
   resources: [ "applications" ]
   verbs: [ "get", "list", "watch" ]
 ---
+# Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: edge-stack-apiext
+  labels:
+    product: aes
+    app.kubernetes.io/name: edge-stack-apiext
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/instance: edge-stack
+rules:
+  - apiGroups: [ "apiextensions.k8s.io" ]
+    resources: [ "customresourcedefinitions" ]
+    verbs: [ "list", "watch" ]
+  - apiGroups: [ "apiextensions.k8s.io" ]
+    resources: [ "customresourcedefinitions" ]
+    resourceNames:
+      - authservices.getambassador.io
+      - consulresolvers.getambassador.io
+      - devportals.getambassador.io
+      - hosts.getambassador.io
+      - kubernetesendpointresolvers.getambassador.io
+      - kubernetesserviceresolvers.getambassador.io
+      - listeners.getambassador.io
+      - logservices.getambassador.io
+      - mappings.getambassador.io
+      - modules.getambassador.io
+      - ratelimitservices.getambassador.io
+      - tcpmappings.getambassador.io
+      - tlscontexts.getambassador.io
+      - tracingservices.getambassador.io
+    verbs: [ "update" ]
+---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
+######################################################################
+# Aggregate                                                          #
+######################################################################
+# This ClusterRole has an empty `rules` and instead sets
+# `aggregationRule` in order to aggregate several other ClusterRoles
+# together, to avoid the need for multiple ClusterRoleBindings.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -140,8 +191,12 @@ aggregationRule:
 rules: []
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
-# CRDs are cluster scoped resources, so they need to be in a cluster role,
-# even if ambassador is running in single namespace mode
+######################################################################
+# No namespace                                                       #
+######################################################################
+# These ClusterRoles should be limited to resource types that are
+# non-namespaced, and therefore cannot be put in a Role, even if
+# Emissary is in single-namespace mode.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -155,6 +210,9 @@ rules:
     verbs: ["get", "list", "watch", "delete"]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
+######################################################################
+# All namespaces                                                     #
+######################################################################
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -240,6 +298,25 @@ subjects:
   name: edge-stack-agent
   namespace: ambassador
 ---
+# Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: edge-stack-apiext
+  labels:
+    product: aes
+    app.kubernetes.io/name: edge-stack-apiext
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/instance: edge-stack
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edge-stack-apiext
+subjects:
+  - name: edge-stack-apiext
+    namespace: ambassador
+    kind: ServiceAccount
+---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -269,6 +346,26 @@ rules:
   resources: [ "configmaps" ]
   verbs: [ "get", "list", "watch" ]
 ---
+# Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: edge-stack-apiext
+  namespace: ambassador
+  labels:
+    product: aes
+    app.kubernetes.io/name: edge-stack-apiext
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/instance: edge-stack
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["create"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: ["emissary-ingress-webhook-ca"]
+    verbs: ["get", "update"]
+---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -284,6 +381,26 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: edge-stack-agent
+  namespace: ambassador
+---
+# Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: edge-stack-apiext
+  namespace: ambassador
+  labels:
+    product: aes
+    app.kubernetes.io/name: edge-stack-apiext
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/instance: edge-stack
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: edge-stack-apiext
+subjects:
+- kind: ServiceAccount
+  name: edge-stack-apiext
   namespace: ambassador
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/admin-service.yaml
@@ -319,6 +436,28 @@ spec:
   selector:
     
       service: ambassador
+---
+# Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-stack-apiext
+  namespace: ambassador
+  labels:
+    product: aes
+    app.kubernetes.io/name: edge-stack-apiext
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/instance: edge-stack
+spec:
+  type: ClusterIP
+  ports:
+    - name: https
+      port: 443
+      targetPort: https
+  selector:
+    app.kubernetes.io/name: edge-stack-apiext
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/instance: edge-stack
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/service.yaml
 apiVersion: v1
@@ -419,6 +558,52 @@ spec:
   
   
   progressDeadlineSeconds: 600
+---
+# Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-stack-apiext
+  namespace: ambassador
+  labels:
+    product: aes
+    app.kubernetes.io/name: edge-stack-apiext
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/instance: edge-stack
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: edge-stack-apiext
+      app.kubernetes.io/part-of: edge-stack
+      app.kubernetes.io/instance: edge-stack
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        product: aes
+        app.kubernetes.io/name: edge-stack-apiext
+        app.kubernetes.io/part-of: edge-stack
+        app.kubernetes.io/instance: edge-stack
+    spec:
+      serviceAccountName: edge-stack-apiext
+      containers:
+        - name: edge-stack-apiext
+          image: docker.io/datawire/aes:2.0.5
+          imagePullPolicy: IfNotPresent
+          command: [ "apiext", edge-stack-apiext ]
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: https
+              containerPort: 8443
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /probes/live
+              port: 8080
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 3
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/deployment.yaml
 apiVersion: apps/v1

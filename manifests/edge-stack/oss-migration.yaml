@@ -229,6 +229,12 @@ subjects:
   kind: ServiceAccount
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
+######################################################################
+# Aggregate                                                          #
+######################################################################
+# This ClusterRole has an empty `rules` and instead sets
+# `aggregationRule` in order to aggregate several other ClusterRoles
+# together, to avoid the need for multiple ClusterRoleBindings.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -267,8 +273,12 @@ rules:
   verbs: [get, list, watch, create, update]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
-# CRDs are cluster scoped resources, so they need to be in a cluster role,
-# even if ambassador is running in single namespace mode
+######################################################################
+# No namespace                                                       #
+######################################################################
+# These ClusterRoles should be limited to resource types that are
+# non-namespaced, and therefore cannot be put in a Role, even if
+# Emissary is in single-namespace mode.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -282,6 +292,9 @@ rules:
   verbs: [get, list, watch, delete]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
+######################################################################
+# All namespaces                                                     #
+######################################################################
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
