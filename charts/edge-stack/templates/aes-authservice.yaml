@@ -1,6 +1,6 @@
 {{ if .Values.authService.create }}
 ---
-apiVersion: getambassador.io/v3alpha1
+apiVersion: getambassador.io/v2
 kind: AuthService
 metadata:
   name: {{ include "ambassador.fullname" . }}-{{ .Values.authService.deploymentExtraName | default "auth" }}

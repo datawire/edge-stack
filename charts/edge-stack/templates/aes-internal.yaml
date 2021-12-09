@@ -1,7 +1,7 @@
 {{ if .Values.createDevPortalMappings }}
 ---
 # Configure DevPortal
-apiVersion: getambassador.io/v3alpha1
+apiVersion: getambassador.io/v2
 kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
@@ -28,11 +28,10 @@ spec:
   {{- end }}
   {{- end }}
   prefix: {{ .Values.devportal.docsPrefix }}
-  hostname: "*"
   rewrite: "/docs/"
   service: "127.0.0.1:8500"
 ---
-apiVersion: getambassador.io/v3alpha1
+apiVersion: getambassador.io/v2
 kind: Mapping
 metadata:
   name: {{ include "ambassador.fullname" . }}-devportal-assets
@@ -58,7 +57,6 @@ spec:
   {{- end }}
   {{- end }}
   prefix: /documentation/(assets|styles)/(.*)(.css)
-  hostname: "*"
   prefix_regex: true
   regex_rewrite:
     pattern: /documentation/(.*)
@@ -69,7 +67,7 @@ spec:
       value: "public, max-age=3600, immutable"
       append: false
 ---
-apiVersion: getambassador.io/v3alpha1
+apiVersion: getambassador.io/v2
 kind: Mapping
 metadata:
   # This Mapping name is what the demo uses. Sigh.
@@ -96,11 +94,10 @@ spec:
   {{- end }}
   {{- end }}
   prefix: /docs/
-  hostname: "*"
   rewrite: "/docs/"
   service: "127.0.0.1:8500"
 ---
-apiVersion: getambassador.io/v3alpha1
+apiVersion: getambassador.io/v2
 kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
@@ -127,7 +124,6 @@ spec:
   {{- end }}
   {{- end }}
   prefix: /openapi/
-  hostname: "*"
   rewrite: ""
   service: "127.0.0.1:8500"
 {{ end }}
