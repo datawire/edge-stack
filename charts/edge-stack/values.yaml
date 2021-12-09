@@ -69,8 +69,8 @@ emissary-ingress: # +doc-gen:break
     createSecret: true
 
   image:
-    repository: docker.io/lukeshu/aes
-    tag: 59a2e6768953
+    repository: docker.io/datawire/aes
+    tag: 2.1.0-rc.2
     pullPolicy: IfNotPresent
 
 rbac:
