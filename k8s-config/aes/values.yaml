@@ -14,11 +14,14 @@ emissary-ingress:
   terminationGracePeriodSeconds: "0"
   service:
     type: LoadBalancer
-
-    # Note that target http ports need to match your ambassador configurations service_port
-    # https://www.getambassador.io/reference/modules/#the-ambassador-module
+    # TODO(lukeshu): It's silly that we need to set this, but the OSS
+    # Helm chart breaks if you set deploymentTool="getambassador.io"
+    # without setting service.selector.  We should fix that, but until
+    # then, just explicitly set this to what would be (if not for
+    # deploymentTool) the default value.
     selector:
-      service: ambassador
+      app.kubernetes.io/name: edge-stack
+      app.kubernetes.io/instance: edge-stack
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:

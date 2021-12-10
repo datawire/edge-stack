@@ -294,7 +294,8 @@ spec:
     port: 443
     targetPort: 8443
   selector:
-    product: aes
+    app.kubernetes.io/instance: edge-stack
+    app.kubernetes.io/name: edge-stack
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/deployment.yaml
 apiVersion: apps/v1
@@ -308,7 +309,8 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      product: aes
+      app.kubernetes.io/instance: edge-stack
+      app.kubernetes.io/name: edge-stack
   strategy:
     type: RollingUpdate
 
@@ -317,7 +319,8 @@ spec:
   template:
     metadata:
       labels:
-        product: aes
+        app.kubernetes.io/instance: edge-stack
+        app.kubernetes.io/name: edge-stack
         app.kubernetes.io/managed-by: getambassador.io
         profile: main
       annotations:
