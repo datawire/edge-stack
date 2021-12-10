@@ -41,6 +41,52 @@ subjects:
   namespace: default
   kind: ServiceAccount
 ---
+# Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-stack-apiext
+  namespace: default
+  labels:
+    product: aes
+    app.kubernetes.io/name: edge-stack-apiext
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/instance: edge-stack
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: edge-stack-apiext
+      app.kubernetes.io/part-of: edge-stack
+      app.kubernetes.io/instance: edge-stack
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        product: aes
+        app.kubernetes.io/name: edge-stack-apiext
+        app.kubernetes.io/part-of: edge-stack
+        app.kubernetes.io/instance: edge-stack
+    spec:
+      serviceAccountName: edge-stack-apiext
+      containers:
+      - name: edge-stack-apiext
+        image: docker.io/datawire/aes:2.1.0-rc.2
+        imagePullPolicy: IfNotPresent
+        command: [apiext, edge-stack-apiext]
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /probes/live
+            port: 8080
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 3
+---
 # Source: edge-stack/templates/aes-redis.yaml
 apiVersion: v1
 kind: Service
