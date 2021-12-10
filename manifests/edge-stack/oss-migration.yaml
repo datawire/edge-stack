@@ -1,6 +1,18 @@
 # GENERATED FILE: edits made by hand will not be preserved.
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: edge-stack-apiext
+  namespace: default
+  labels:
+    product: aes
+    app.kubernetes.io/name: edge-stack-apiext
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/instance: edge-stack
+---
+# Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -52,46 +64,6 @@ subjects:
   namespace: default
   kind: ServiceAccount
 ---
-# Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: edge-stack-apiext
-  namespace: default
-  labels:
-    product: aes
-    app.kubernetes.io/name: edge-stack-apiext
-    app.kubernetes.io/part-of: edge-stack
-    app.kubernetes.io/instance: edge-stack
-rules:
-- apiGroups: ['']
-  resources: [secrets]
-  verbs: [create]
-- apiGroups: ['']
-  resources: [secrets]
-  resourceNames: [emissary-ingress-webhook-ca]
-  verbs: [get, update]
----
-# Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: edge-stack-apiext
-  namespace: default
-  labels:
-    product: aes
-    app.kubernetes.io/name: edge-stack-apiext
-    app.kubernetes.io/part-of: edge-stack
-    app.kubernetes.io/instance: edge-stack
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: edge-stack-apiext
-subjects:
-- kind: ServiceAccount
-  name: edge-stack-apiext
-  namespace: default
----
 # Source: edge-stack/templates/aes-apiext.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -134,13 +106,63 @@ subjects:
   kind: ServiceAccount
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
-apiVersion: v1
-kind: ServiceAccount
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
 metadata:
   name: edge-stack-apiext
   namespace: default
   labels:
     product: aes
+    app.kubernetes.io/name: edge-stack-apiext
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/instance: edge-stack
+rules:
+- apiGroups: ['']
+  resources: [secrets]
+  verbs: [create]
+- apiGroups: ['']
+  resources: [secrets]
+  resourceNames: [emissary-ingress-webhook-ca]
+  verbs: [get, update]
+---
+# Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: edge-stack-apiext
+  namespace: default
+  labels:
+    product: aes
+    app.kubernetes.io/name: edge-stack-apiext
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/instance: edge-stack
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: edge-stack-apiext
+subjects:
+- kind: ServiceAccount
+  name: edge-stack-apiext
+  namespace: default
+---
+# Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-stack-apiext
+  namespace: default
+  labels:
+    product: aes
+    app.kubernetes.io/name: edge-stack-apiext
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/instance: edge-stack
+spec:
+  type: ClusterIP
+  ports:
+  - name: https
+    port: 443
+    targetPort: https
+  selector:
     app.kubernetes.io/name: edge-stack-apiext
     app.kubernetes.io/part-of: edge-stack
     app.kubernetes.io/instance: edge-stack

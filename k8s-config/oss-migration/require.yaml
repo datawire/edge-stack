@@ -1,12 +1,15 @@
 resources:
-  - { kind: ClusterRole,        name: edge-stack-apiext                        }  # apiext perms for OSS resources
-  - { kind: ClusterRoleBinding, name: edge-stack-apiext                        }
-  - { kind: Role,               name: edge-stack-apiext,   namespace: default  }  # apiext perms for secrets
-  - { kind: RoleBinding,        name: edge-stack-apiext,   namespace: default  }
-  - { kind: ClusterRole,        name: edge-stack-aes-apiext                    }  # apiext perms for Edge Stack resources
-  - { kind: ClusterRoleBinding, name: edge-stack-aes-apiext                    }
+  # apiext
   - { kind: ServiceAccount,     name: edge-stack-apiext,    namespace: default }
+  - { kind: ClusterRole,        name: edge-stack-apiext                        } # OSS CRDs
+  - { kind: ClusterRoleBinding, name: edge-stack-apiext                        } # OSS CRDs
+  - { kind: ClusterRole,        name: edge-stack-aes-apiext                    } # AES CRDs
+  - { kind: ClusterRoleBinding, name: edge-stack-aes-apiext                    } # AES CRDs
+  - { kind: Role,               name: edge-stack-apiext,    namespace: default } # secrets
+  - { kind: RoleBinding,        name: edge-stack-apiext,    namespace: default } # secrets
+  - { kind: Service,            name: edge-stack-apiext,    namespace: default }
   - { kind: Deployment,         name: edge-stack-apiext,    namespace: default }
+  # everything else
   - { kind: Service,            name: edge-stack-redis,     namespace: default }
   - { kind: Deployment,         name: edge-stack-redis,     namespace: default }
   - { kind: Secret,             name: edge-stack,           namespace: default }
