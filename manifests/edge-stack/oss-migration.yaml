@@ -196,7 +196,7 @@ spec:
       serviceAccountName: edge-stack-apiext
       containers:
       - name: edge-stack-apiext
-        image: docker.io/datawire/aes:2.1.0-rc.2
+        image: docker.io/datawire/aes:2.1.0-rc.3
         imagePullPolicy: IfNotPresent
         command: [apiext, edge-stack-apiext]
         ports:
@@ -345,7 +345,7 @@ spec:
 
       containers:
       - name: aes
-        image: docker.io/datawire/aes:2.1.0-rc.2
+        image: docker.io/datawire/aes:2.1.0-rc.3
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
