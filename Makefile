@@ -3,9 +3,12 @@ EDGE_STACK_HOME := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))
 SHELL := /bin/bash
 HELM_OUTPUT_DIR := $(EDGE_STACK_HOME)/build/helm/
 
-generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-crds.yaml
-generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/oss-migration.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-defaultns.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-defaultns-migration.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-emissaryns.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-emissaryns-migration.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/resources-migration.yaml
 generate/files += $(EDGE_STACK_HOME)/CHANGELOG.md
 generate/files += $(EDGE_STACK_HOME)/.circleci/config.yml
@@ -27,9 +30,12 @@ $(EDGE_STACK_HOME)/manifests/edge-stack/aes-crds.yaml: $(HELM_OUTPUT_DIR)
 	  $(sort $(wildcard $(HELM_OUTPUT_DIR)/edge-stack/charts/emissary-ingress/crds/*.yaml)) \
 	  $(sort $(wildcard $(HELM_OUTPUT_DIR)/edge-stack/crds/*.yaml)); } >$@
 
-helm-namespace.aes                 = ambassador
-helm-namespace.oss-migration       = default
-helm-namespace.resources-migration = default
+helm-namespace.aes                      = ambassador
+helm-namespace.aes-defaultns            = default
+helm-namespace.aes-defaultms-migration  = default
+helm-namespace.aes-emissaryns           = emissary
+helm-namespace.aes-emissaryns-migration = emissary
+helm-namespace.resources-migration      = default
 $(EDGE_STACK_HOME)/k8s-config/%/helm-expanded.yaml: \
   $(EDGE_STACK_HOME)/k8s-config/%/values.yaml \
   FORCE

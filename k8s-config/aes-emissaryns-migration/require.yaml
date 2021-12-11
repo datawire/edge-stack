@@ -1,0 +1,23 @@
+resources:
+  # apiext
+  - { kind: ServiceAccount,     name: edge-stack-apiext,    namespace: emissary }
+  - { kind: ClusterRole,        name: edge-stack-apiext                         } # OSS CRDs
+  - { kind: ClusterRoleBinding, name: edge-stack-apiext                         } # OSS CRDs
+  - { kind: ClusterRole,        name: edge-stack-aes-apiext                     } # AES CRDs
+  - { kind: ClusterRoleBinding, name: edge-stack-aes-apiext                     } # AES CRDs
+  - { kind: Role,               name: edge-stack-apiext,    namespace: emissary } # secrets
+  - { kind: RoleBinding,        name: edge-stack-apiext,    namespace: emissary } # secrets
+  - { kind: Service,            name: emissary-ingress-apiext, namespace: emissary }
+  - { kind: Deployment,         name: edge-stack-apiext,    namespace: emissary }
+  # everything else
+  - { kind: Service,            name: edge-stack-redis,     namespace: emissary }
+  - { kind: Deployment,         name: edge-stack-redis,     namespace: emissary }
+  - { kind: Secret,             name: edge-stack,           namespace: emissary }
+  - { kind: Service,            name: test-aes,             namespace: emissary }
+  - { kind: Deployment,         name: aes,                  namespace: emissary }
+  - { kind: ServiceAccount,     name: edge-stack,           namespace: emissary }
+  - { kind: ClusterRoleBinding, name: edge-stack                                }
+  - { kind: ClusterRole,        name: edge-stack                                }
+  - { kind: ClusterRole,        name: edge-stack-aes                            }
+  - { kind: ClusterRole,        name: edge-stack-crd                            }
+  - { kind: ClusterRole,        name: edge-stack-watch                          }
