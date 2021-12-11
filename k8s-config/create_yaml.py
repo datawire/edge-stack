@@ -51,7 +51,10 @@ def main(templated_helm_file, require_file):
         key = get_requirement_key(requirement)
         if key not in templated_helm:
             raise Exception(f'Resource {key} not found in generated yaml (known resources are: {templated_helm.keys()})')
-        yaml.dump(templated_helm[key], sys.stdout)
+        resource = templated_helm[key]
+        if requirements.get('strip_namespace'):
+            resource['metadata'].pop('namespace', None)
+        yaml.dump(resource, sys.stdout)
 
 
 if __name__ == '__main__':

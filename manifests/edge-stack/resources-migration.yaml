@@ -5,7 +5,6 @@ apiVersion: getambassador.io/v2
 kind: RateLimitService
 metadata:
   name: edge-stack-ratelimit
-  namespace: default
   labels:
     product: aes
 spec:
@@ -16,7 +15,6 @@ apiVersion: getambassador.io/v2
 kind: AuthService
 metadata:
   name: edge-stack-auth
-  namespace: default
   labels:
     product: aes
 spec:
@@ -33,7 +31,6 @@ kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
   name: edge-stack-devportal
-  namespace: default
   labels:
     product: aes
 spec:
@@ -46,7 +43,6 @@ apiVersion: getambassador.io/v2
 kind: Mapping
 metadata:
   name: edge-stack-devportal-assets
-  namespace: default
   labels:
     product: aes
 spec:
@@ -67,7 +63,6 @@ kind: Mapping
 metadata:
   # This Mapping name is what the demo uses. Sigh.
   name: edge-stack-devportal-demo
-  namespace: default
   labels:
     product: aes
 spec:
@@ -81,7 +76,6 @@ kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
   name: edge-stack-devportal-api
-  namespace: default
   labels:
     product: aes
 spec:
