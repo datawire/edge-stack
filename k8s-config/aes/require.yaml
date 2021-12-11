@@ -26,7 +26,7 @@ resources:
  - { kind: RoleBinding,        name: edge-stack-agent-config,     namespace: ambassador }
  - { kind: RoleBinding,        name: edge-stack-apiext,           namespace: ambassador }
  - { kind: Service,            name: edge-stack-admin,            namespace: ambassador }
- - { kind: Service,            name: edge-stack-apiext,           namespace: ambassador }
+ - { kind: Service,            name: emissary-ingress-apiext,     namespace: ambassador }
  - { kind: Service,            name: edge-stack,                  namespace: ambassador }
  - { kind: Service,            name: edge-stack-redis,            namespace: ambassador }
  - { kind: Deployment,         name: edge-stack-agent,            namespace: ambassador }

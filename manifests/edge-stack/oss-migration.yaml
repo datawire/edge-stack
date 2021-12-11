@@ -149,7 +149,7 @@ subjects:
 apiVersion: v1
 kind: Service
 metadata:
-  name: edge-stack-apiext
+  name: emissary-ingress-apiext
   namespace: default
   labels:
     product: aes
@@ -198,7 +198,7 @@ spec:
       - name: edge-stack-apiext
         image: docker.io/datawire/aes:2.1.0-rc.3
         imagePullPolicy: IfNotPresent
-        command: [apiext, edge-stack-apiext]
+        command: [apiext, emissary-ingress-apiext]
         ports:
         - name: http
           containerPort: 8080
