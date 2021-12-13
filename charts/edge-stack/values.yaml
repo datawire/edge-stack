@@ -73,6 +73,10 @@ emissary-ingress: # +doc-gen:break
     tag: 2.1.0-rc.3
     pullPolicy: IfNotPresent
 
+  apiext:
+    service:
+      nameOverride: emissary-ingress-apiext
+
 rbac:
   # Specifies whether RBAC resources should be created
   create: true

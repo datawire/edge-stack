@@ -3,9 +3,12 @@ EDGE_STACK_HOME := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))
 SHELL := /bin/bash
 HELM_OUTPUT_DIR := $(EDGE_STACK_HOME)/build/helm/
 
-generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-crds.yaml
-generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/oss-migration.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-defaultns.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-defaultns-migration.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-emissaryns.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-emissaryns-migration.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/resources-migration.yaml
 generate/files += $(EDGE_STACK_HOME)/CHANGELOG.md
 generate/files += $(EDGE_STACK_HOME)/.circleci/config.yml
@@ -16,57 +19,33 @@ $(EDGE_STACK_HOME)/venv:
 
 FORCE:
 .PHONY: FORCE
+.SECONDARY:
 
-$(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml: $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml)
-$(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml: $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/charts/*.tgz)
-$(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml: $(EDGE_STACK_HOME)/charts/edge-stack/values.yaml
-$(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml: $(EDGE_STACK_HOME)/k8s-config/aes/values.yaml
-$(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml: FORCE
-	mkdir -p  $(@D)
-	helm template edge-stack -n ambassador -f $(EDGE_STACK_HOME)/k8s-config/aes/values.yaml $(EDGE_STACK_HOME)/charts/edge-stack/ > $@
-
-$(HELM_OUTPUT_DIR):
+$(HELM_OUTPUT_DIR): FORCE
 	rm -rf $@
 	mkdir -p $@
 	helm template edge-stack --output-dir $@ --include-crds -n ambassador $(EDGE_STACK_HOME)/charts/edge-stack
-
-$(EDGE_STACK_HOME)/manifests/edge-stack/aes-crds.yaml: $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml)
-$(EDGE_STACK_HOME)/manifests/edge-stack/aes-crds.yaml: $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/charts/*.tgz)
 $(EDGE_STACK_HOME)/manifests/edge-stack/aes-crds.yaml: $(HELM_OUTPUT_DIR)
-$(EDGE_STACK_HOME)/manifests/edge-stack/aes-crds.yaml: FORCE
-	cat $(sort $(wildcard $(HELM_OUTPUT_DIR)/edge-stack/charts/emissary-ingress/crds/*.yaml)) > $@
-	cat $(sort $(wildcard $(HELM_OUTPUT_DIR)/edge-stack/crds/*.yaml)) >> $@
-	rm -rf $(HELM_OUTPUT_DIR)
+	{ cat \
+	  $(sort $(wildcard $(HELM_OUTPUT_DIR)/edge-stack/charts/emissary-ingress/crds/*.yaml)) \
+	  $(sort $(wildcard $(HELM_OUTPUT_DIR)/edge-stack/crds/*.yaml)); } >$@
 
-define generate_yaml_from_helm
-	mkdir -p `dirname $(3)` && \
-	mkdir -p $(EDGE_STACK_HOME)/build/yaml/$(1) && \
-		helm template edge-stack -n $(2) \
-		-f $(EDGE_STACK_HOME)/k8s-config/$(1)/values.yaml \
-		$(EDGE_STACK_HOME)/charts/edge-stack > $(EDGE_STACK_HOME)/build/yaml/$(1)/helm-expanded.yaml
-	$(EDGE_STACK_HOME)/venv/bin/python $(EDGE_STACK_HOME)/k8s-config/create_yaml.py \
-		$(EDGE_STACK_HOME)/build/yaml/$(1)/helm-expanded.yaml $(EDGE_STACK_HOME)/k8s-config/$(1)/require.yaml > $(3)
-endef
-
-$(EDGE_STACK_HOME)/manifests/edge-stack/oss-migration.yaml: $(EDGE_STACK_HOME)/k8s-config/create_yaml.py
-$(EDGE_STACK_HOME)/manifests/edge-stack/oss-migration.yaml: $(EDGE_STACK_HOME)/k8s-config/oss-migration/require.yaml
-$(EDGE_STACK_HOME)/manifests/edge-stack/oss-migration.yaml: $(EDGE_STACK_HOME)/k8s-config/oss-migration/values.yaml
-$(EDGE_STACK_HOME)/manifests/edge-stack/oss-migration.yaml: $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml)
-$(EDGE_STACK_HOME)/manifests/edge-stack/oss-migration.yaml: $(EDGE_STACK_HOME)/charts/edge-stack/values.yaml
-$(EDGE_STACK_HOME)/manifests/edge-stack/oss-migration.yaml: $(EDGE_STACK_HOME)/venv
-$(EDGE_STACK_HOME)/manifests/edge-stack/oss-migration.yaml: FORCE
-	@printf '  $(CYN)$@$(END)\n'
-	$(call generate_yaml_from_helm,oss-migration,default,$@)
-
-$(EDGE_STACK_HOME)/manifests/edge-stack/resources-migration.yaml: $(EDGE_STACK_HOME)/k8s-config/create_yaml.py
-$(EDGE_STACK_HOME)/manifests/edge-stack/resources-migration.yaml: $(EDGE_STACK_HOME)/k8s-config/resources-migration/require.yaml
-$(EDGE_STACK_HOME)/manifests/edge-stack/resources-migration.yaml: $(EDGE_STACK_HOME)/k8s-config/resources-migration/values.yaml
-$(EDGE_STACK_HOME)/manifests/edge-stack/resources-migration.yaml: $(wildcard $(EDGE_STACK_HOME)/charts/edge-stack/templates/*.yaml)
-$(EDGE_STACK_HOME)/manifests/edge-stack/resources-migration.yaml: $(EDGE_STACK_HOME)/charts/edge-stack/values.yaml
-$(EDGE_STACK_HOME)/manifests/edge-stack/resources-migration.yaml: $(EDGE_STACK_HOME)/venv
-$(EDGE_STACK_HOME)/manifests/edge-stack/resources-migration.yaml: FORCE
-	@printf '  $(CYN)$@$(END)\n'
-	$(call generate_yaml_from_helm,resources-migration,default,$@)
+helm-namespace.aes                      = ambassador
+helm-namespace.aes-defaultns            = default
+helm-namespace.aes-defaultms-migration  = default
+helm-namespace.aes-emissaryns           = emissary
+helm-namespace.aes-emissaryns-migration = emissary
+helm-namespace.resources-migration      = default
+$(EDGE_STACK_HOME)/k8s-config/%/helm-expanded.yaml: \
+  $(EDGE_STACK_HOME)/k8s-config/%/values.yaml \
+  FORCE
+	helm template --namespace=$(helm-namespace.$*) --values=$(@D)/values.yaml edge-stack $(EDGE_STACK_HOME)/charts/edge-stack >$@
+$(EDGE_STACK_HOME)/manifests/edge-stack/%.yaml: \
+  $(EDGE_STACK_HOME)/k8s-config/%/helm-expanded.yaml \
+  $(EDGE_STACK_HOME)/k8s-config/%/require.yaml \
+  $(EDGE_STACK_HOME)/k8s-config/create_yaml.py \
+  $(EDGE_STACK_HOME)/venv
+	. $(EDGE_STACK_HOME)/venv/bin/activate && $(filter %.py,$^) $(filter %/helm-expanded.yaml,$^) $(filter %/require.yaml,$^) >$@
 
 push-manifests:
 	$(EDGE_STACK_HOME)/manifests/push_manifests.sh

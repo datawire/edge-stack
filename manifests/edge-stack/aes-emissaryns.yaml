@@ -6,14 +6,14 @@ kind: Namespace
 metadata:
   labels:
     product: aes
-  name: ambassador
+  name: emissary
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: edge-stack-agent
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
 ---
@@ -22,7 +22,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: edge-stack-apiext
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
     app.kubernetes.io/name: edge-stack-apiext
@@ -34,7 +34,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: edge-stack
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
 ---
@@ -43,7 +43,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: edge-stack
-  namespace: ambassador
+  namespace: emissary
 type: Opaque
 data:
   license-key: ''
@@ -319,7 +319,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: edge-stack-agent
-  namespace: ambassador
+  namespace: emissary
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -337,7 +337,7 @@ roleRef:
   name: edge-stack-apiext
 subjects:
 - name: edge-stack-apiext
-  namespace: ambassador
+  namespace: emissary
   kind: ServiceAccount
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
@@ -353,7 +353,7 @@ roleRef:
   name: edge-stack
 subjects:
 - name: edge-stack
-  namespace: ambassador
+  namespace: emissary
   kind: ServiceAccount
 ---
 # Source: edge-stack/templates/aes-apiext.yaml
@@ -372,7 +372,7 @@ roleRef:
   name: edge-stack-aes-apiext
 subjects:
 - name: edge-stack-apiext
-  namespace: ambassador
+  namespace: emissary
   kind: ServiceAccount
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
@@ -380,7 +380,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: edge-stack-agent-config
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
 rules:
@@ -393,7 +393,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: edge-stack-apiext
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
     app.kubernetes.io/name: edge-stack-apiext
@@ -413,7 +413,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: edge-stack-agent-config
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
 roleRef:
@@ -423,14 +423,14 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: edge-stack-agent
-  namespace: ambassador
+  namespace: emissary
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: edge-stack-apiext
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
     app.kubernetes.io/name: edge-stack-apiext
@@ -443,14 +443,14 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: edge-stack-apiext
-  namespace: ambassador
+  namespace: emissary
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/admin-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: edge-stack-admin
-  namespace: ambassador
+  namespace: emissary
   labels:
     # Hard-coded label for Prometheus Operator ServiceMonitor
     service: ambassador-admin
@@ -485,7 +485,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: emissary-ingress-apiext
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
     app.kubernetes.io/name: edge-stack-apiext
@@ -507,7 +507,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: edge-stack
-  namespace: ambassador
+  namespace: emissary
   labels:
     app.kubernetes.io/component: ambassador-service
     product: aes
@@ -521,7 +521,7 @@ metadata:
     a8r.io/chat: http://a8r.io/Slack
     a8r.io/bugs: https://github.com/datawire/ambassador/issues
     a8r.io/support: https://www.getambassador.io/about-us/support/
-    a8r.io/dependencies: edge-stack-redis.ambassador
+    a8r.io/dependencies: edge-stack-redis.emissary
 spec:
   type: LoadBalancer
   ports:
@@ -541,7 +541,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: edge-stack-redis
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
   annotations:
@@ -567,7 +567,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: edge-stack-agent
-  namespace: ambassador
+  namespace: emissary
   labels:
     app.kubernetes.io/name: edge-stack-agent
     app.kubernetes.io/instance: edge-stack
@@ -599,7 +599,7 @@ spec:
         - name: RPC_CONNECTION_ADDRESS
           value: https://app.getambassador.io/
         - name: AES_SNAPSHOT_URL
-          value: http://edge-stack-admin.ambassador:8005/snapshot-external
+          value: http://edge-stack-admin.emissary:8005/snapshot-external
   progressDeadlineSeconds: 600
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/apiext.yaml
@@ -607,7 +607,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: edge-stack-apiext
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
     app.kubernetes.io/name: edge-stack-apiext
@@ -653,7 +653,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: edge-stack
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
 spec:
@@ -773,7 +773,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: edge-stack-redis
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
   annotations: {}
@@ -799,7 +799,7 @@ apiVersion: getambassador.io/v2
 kind: AuthService
 metadata:
   name: edge-stack-auth
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
 spec:
@@ -816,7 +816,7 @@ kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
   name: edge-stack-devportal
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
 spec:
@@ -829,7 +829,7 @@ apiVersion: getambassador.io/v2
 kind: Mapping
 metadata:
   name: edge-stack-devportal-assets
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
 spec:
@@ -850,7 +850,7 @@ kind: Mapping
 metadata:
   # This Mapping name is what the demo uses. Sigh.
   name: edge-stack-devportal-demo
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
 spec:
@@ -864,7 +864,7 @@ kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
   name: edge-stack-devportal-api
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
 spec:
@@ -877,7 +877,7 @@ apiVersion: getambassador.io/v2
 kind: RateLimitService
 metadata:
   name: edge-stack-ratelimit
-  namespace: ambassador
+  namespace: emissary
   labels:
     product: aes
 spec:
