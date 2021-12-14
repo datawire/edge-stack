@@ -3,7 +3,6 @@ EDGE_STACK_HOME := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))
 SHELL := /bin/bash
 HELM_OUTPUT_DIR := $(EDGE_STACK_HOME)/build/helm/
 
-generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-crds.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-defaultns.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-defaultns-migration.yaml
@@ -28,11 +27,7 @@ $(EDGE_STACK_HOME)/charts/edge-stack/charts: %/charts: %/Chart.yaml
 $(HELM_OUTPUT_DIR): $(EDGE_STACK_HOME)/charts/edge-stack/charts FORCE
 	rm -rf $@
 	mkdir -p $@
-	helm template edge-stack --output-dir $@ --include-crds -n ambassador $(EDGE_STACK_HOME)/charts/edge-stack
-$(EDGE_STACK_HOME)/manifests/edge-stack/aes-crds.yaml: $(HELM_OUTPUT_DIR)
-	{ cat \
-	  $(sort $(wildcard $(HELM_OUTPUT_DIR)/edge-stack/charts/emissary-ingress/crds/*.yaml)) \
-	  $(sort $(wildcard $(HELM_OUTPUT_DIR)/edge-stack/crds/*.yaml)); } >$@
+	helm template edge-stack --output-dir $@ -n ambassador $(EDGE_STACK_HOME)/charts/edge-stack
 
 helm-namespace.aes                      = ambassador
 helm-namespace.aes-defaultns            = default
