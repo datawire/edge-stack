@@ -14,14 +14,6 @@ emissary-ingress:
   terminationGracePeriodSeconds: "0"
   service:
     type: LoadBalancer
-    # TODO(lukeshu): It's silly that we need to set this, but the OSS
-    # Helm chart breaks if you set deploymentTool="getambassador.io"
-    # without setting service.selector.  We should fix that, but until
-    # then, just explicitly set this to what would be (if not for
-    # deploymentTool) the default value.
-    selector:
-      app.kubernetes.io/name: edge-stack
-      app.kubernetes.io/instance: edge-stack
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
