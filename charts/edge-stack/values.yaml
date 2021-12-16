@@ -69,8 +69,8 @@ emissary-ingress: # +doc-gen:break
     createSecret: true
 
   image:
-    repository: docker.io/lukeshu/aes
-    tag: 59a2e6768953
+    repository: docker.io/datawire/aes
+    tag: 2.1.0
     pullPolicy: IfNotPresent
 
 rbac:
@@ -96,12 +96,6 @@ global:
     # Set nameOverride when installing Ambassador with cluster-wide scope in
     # different namespaces with the same release name to avoid conflicts.
     nameOverride:
-
-
-  crds:
-    enabled: true
-    create: true
-    keep: true
 
 ################################################################################
 ## Ambassador Edge Stack Configuration                                        ##
@@ -194,6 +188,3 @@ rateLimit:
 deploymentTool: ''
 
 enableTestService: false
-
-apiext:
-  enabled: true

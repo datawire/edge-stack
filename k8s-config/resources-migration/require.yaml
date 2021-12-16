@@ -1,3 +1,4 @@
+strip_namespace: true
 resources:
   - { kind: RateLimitService, name: edge-stack-ratelimit,        namespace: default }
   - { kind: AuthService,      name: edge-stack-auth,             namespace: default }

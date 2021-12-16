@@ -70,7 +70,46 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
-## [2.0.5] 2021-11-08
+## [2.1.0] 2021-12-16
+[2.1.0]: https://github.com/datawire/edge-stack/releases/v2.1.0
+
+## Ambassador Edge Stack
+
+- Feature: Ambassador Edge Stack supports `getambassador.io/v2` CRDs, to simplify migration from Ambassador
+  Edge Stack 1.X. _Note:_ it is important to read the <a
+  href="../topics/install/migrate-to-version-2">migration documentation</a> before starting
+  migration.
+
+- Change: The Ambassador Edge Stack CRDs (`Filter`, `FilterPolicy`, and `RateLimit`) will now be validated
+  for correct syntax by Kubernetes itself. This means that `kubectl apply` will reject invalid CRDs
+  before they are actually applied, preventing them from causing errors.
+
+- Bugfix: The incremental reconfiguration cache could miss some updates when multiple `Mapping`s had the
+  same `prefix` ("canary"ing multiple `Mapping`s together). This has been corrected, so that all
+  such updates correctly take effect. ([3945])
+
+- Bugfix: When using Kubernetes Secrets to store ACME private keys (as the Edge Stack ACME client does), an
+  error would always be logged about the Secret not being present, even though it was present, and
+  everything was working correctly. This error is no longer logged.
+
+- Bugfix: When using gzip compression, upstream services will no longer receive compressed data. This bug
+  was introduced in 1.14.0. The fix restores the default behavior of  not sending compressed data to
+  upstream services. ([3818])
+
+- Security: Update to busybox 1.34.1 to resolve CVE-2021-28831, CVE-2021-42378, CVE-2021-42379,
+  CVE-2021-42380, CVE-2021-42381, CVE-2021-42382, CVE-2021-42383, CVE-2021-42384, CVE-2021-42385,
+  and CVE-2021-42386.
+
+- Security: Update Python dependencies to resolve CVE-2020-28493 (jinja2), CVE-2021-28363 (urllib3), and
+  CVE-2021-33503 (urllib3).
+
+- Security: Previous built images included some Python packages used only for test. These have now been
+  removed, resolving CVE-2020-29651.
+
+[3945]: https://github.com/emissary-ingress/emissary/issues/3945
+[3818]: https://github.com/emissary-ingress/emissary/issues/3818
+
+## [2.0.5] 2021-11-09
 [2.0.5]: https://github.com/datawire/edge-stack/releases/v2.0.5
 
 ## Ambassador Edge Stack

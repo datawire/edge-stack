@@ -61,6 +61,10 @@ chart/preflight-kubeconfig:
 chart/create-cluster: chart/preflight-kubeconfig
 	$(MAKE) chart/delete-cluster || true
 	$(K3D_EXEC) cluster create $(K3D_CLUSTER_NAME) --k3s-server-arg "--no-deploy=traefik"
+	while ! kubectl --kubeconfig=$(CHART_KUBECONFIG) get serviceaccount default >/dev/null; do sleep 1; done
+	kubectl --kubeconfig=$(CHART_KUBECONFIG) version
+	kubectl --kubeconfig=$(CHART_KUBECONFIG) apply -f manifests/edge-stack/aes-crds.yaml
+	kubectl --kubeconfig=$(CHART_KUBECONFIG) --namespace=emissary-system wait --timeout=90s --for=condition=available Deployments/emissary-apiext
 .PHONY: chart/create-cluster
 
 chart/delete-cluster:
