@@ -22,6 +22,13 @@ Edge Stack, designed for startups.
 
 ## UPCOMING BREAKING CHANGES
 
+#### Envoy V2 API
+
+In *Ambassador Edge Stack v2.2.0*, support for the Envoy V2 API will be removed, and Ambassador
+Edge Stack will support only the Envoy V3 API. The `AMBASSADOR_ENVOY_API_VERSION` environment
+variable will also be removed. Note that Ambassador Edge Stack has been using the Envoy V3 API
+as its default since v1.14.0.
+
 #### TLS Termination and the `Host` CRD
 
 As of Ambassador Edge Stack v2.0.4, you _must_ supply a `Host` CRD to terminate TLS: it is not
