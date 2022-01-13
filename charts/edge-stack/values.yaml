@@ -105,8 +105,6 @@ global:
 # Go to https://{ambassador-host}/edge_stack/admin/#dashboard to register
 # for a community license key.
 
-# Set createSecret: false is installing multiple releases of The Ambassador
-# Edge Stack in the same namespace.
 licenseKey:
   value:
   createSecret: true
