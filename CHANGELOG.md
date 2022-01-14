@@ -77,6 +77,17 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.1.1] 2022-01-14
+[2.1.1]: https://github.com/datawire/edge-stack/releases/v2.1.1
+
+## Ambassador Edge Stack
+
+- Bugfix: In Edge Stack 2.1.0, it erroneously ignored `Filters`, `FilterPolicies`, and `RateLimits` that
+  were created as `v3alpha1` (but correctly paid attention to them if they were created as `v2` or
+  older).  This is fixed; it will now correctly pay attention to both API versions. ([3945])
+
+[3945]: https://github.com/emissary-ingress/emissary/issues/3982
+
 ## [2.1.0] 2021-12-16
 [2.1.0]: https://github.com/datawire/edge-stack/releases/v2.1.0
 

@@ -31,6 +31,21 @@
 
 changelog: https://github.com/datawire/edge-stack/blob/$branch$/CHANGELOG.md
 items:
+  - version: 2.1.1
+    date: '2022-01-14'
+    notes:
+      - title: Fix discovery of Filters, FilterPolicies, and RateLimits
+        type: bugfix
+        body: >-
+          In Edge Stack 2.1.0, it erroneously ignored <code>Filters</code>,
+          <code>FilterPolicies</code>, and <code>RateLimits</code> that were created as
+          <code>v3alpha1</code> (but correctly paid attention to them if they were created as
+          <code>v2</code> or older).  This is fixed; it will now correctly pay attention to both API
+          versions.
+        github:
+        - title: 3945
+          link: https://github.com/emissary-ingress/emissary/issues/3982
+
   - version: 2.1.0
     date: '2021-12-16'
     notes:
