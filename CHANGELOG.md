@@ -288,6 +288,9 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 - Change: Consul certificate-rotation logging now includes the fingerprints and validity timestamps of
   certificates being rotated.
 
+- Feature: The `maxStale` field is now supported in in the JWT Filter to configure how long $productname$
+  should cache OIDC responses for similar to the existing `maxStale` field in the OAuth2 Filter. 
+
 ## [2.0.0-ea] 2021-06-24
 [2.0.0-ea]: https://github.com/datawire/edge-stack/releases/v2.0.0-ea
 
