@@ -77,6 +77,20 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.1.2] TBD
+[2.1.2]: https://github.com/datawire/edge-stack/releases/v2.1.2
+
+## Ambassador Edge Stack
+
+- Bugfix: In Ambassador Edge Stack 2.1.0 and 2.1.1, an OAuth2 Filter with
+  `clientAuthentication.method=jwtAssertion` would not function correctly as it would fail to select
+  the signing-method-appropriate function to parse the private key.
+
+- Bugfix: In Ambassador Edge Stack 2.1.0 and 2.1.1, an `ifRequestHeader` selector (in a FilterPolicy, OAuth2
+  Filter `useSessionCookies`, or OAuth2 Filter `insteadOfRedirect`) without a `value` or
+  `valueRegex` would erroneously behave as if `valueRegex='^$'`, rather than performing a simple
+  presence check.
+
 ## [2.1.1] 2022-01-14
 [2.1.1]: https://github.com/datawire/edge-stack/releases/v2.1.1
 

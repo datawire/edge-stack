@@ -31,6 +31,25 @@
 
 changelog: https://github.com/datawire/edge-stack/blob/$branch$/CHANGELOG.md
 items:
+  - version: 2.1.2
+    date: 'TBD'
+    notes:
+      - title: Fix OAuth2 Filter jwtAssertion
+        type: bugfix
+        body: >-
+          In $productName$ 2.1.0 and 2.1.1, an OAuth2 Filter with
+          <code>clientAuthentication.method=jwtAssertion</code> would not function correctly as it
+          would fail to select the signing-method-appropriate function to parse the private key.
+
+      - title: Fix ifRequestHeader without a value
+        type: bugfix
+        body: >-
+         In $productName$ 2.1.0 and 2.1.1, an <code>ifRequestHeader</code> selector (in a
+         FilterPolicy, OAuth2 Filter <code>useSessionCookies</code>, or OAuth2 Filter
+         <code>insteadOfRedirect</code>) without a <code>value</code> or <code>valueRegex</code>
+         would erroneously behave as if <code>valueRegex='^$'</code>, rather than performing a
+         simple presence check.
+
   - version: 2.1.1
     date: '2022-01-14'
     notes:
