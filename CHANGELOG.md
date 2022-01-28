@@ -77,6 +77,62 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.1.2] 2022-01-25
+[2.1.2]: https://github.com/datawire/edge-stack/releases/v2.1.2
+
+## Ambassador Edge Stack
+
+- Bugfix: In Ambassador Edge Stack 2.1.0 and 2.1.1, an OAuth2 Filter with
+  `clientAuthentication.method=jwtAssertion` would not function correctly as it would fail to select
+  the signing-method-appropriate function to parse the private key.
+
+- Bugfix: In Ambassador Edge Stack 2.1.0 and 2.1.1, an `ifRequestHeader` selector (in a FilterPolicy, OAuth2
+  Filter `useSessionCookies`, or OAuth2 Filter `insteadOfRedirect`) without a `value` or
+  `valueRegex` would erroneously behave as if `valueRegex='^$'`, rather than performing a simple
+  presence check.
+
+- Bugfix: Ambassador Edge Stack 2.1.1 generated invalid Envoy configuration for `getambassador.io/v2`
+  `Mappings` that set `spec.cors.origins` to a string rather than a list of strings; this has been
+  fixed, and these `Mappings` should once again function correctly.
+
+- Bugfix: Changes to the `weight` of `Mapping` in a canary group will now always be correctly managed during
+  reconfiguration; such changes could have been missed in earlier releases.
+
+- Bugfix: A `Mapping` that is not part of a canary group, but that has a `weight` less than 100, will be
+  correctly configured to receive all traffic as if the `weight` were 100.
+
+- Bugfix: Using `rewrite: ""` in a `Mapping` is correctly handled to mean "do not rewrite the path at all".
+
+- Bugfix: `Mapping`s with DNS wildcard `hostname` will now be correctly matched with `Host`s. Previously,
+  the case where both the `Host` and the `Mapping` use DNS wildcards for their hostnames could
+  sometimes  not correctly match when they should have.
+
+- Bugfix: Any `Mapping` that uses the `host_redirect` field is now properly discovered and used. Thanks to
+  <a href="https://github.com/gferon">Gabriel Féron</a> for contributing this bugfix! ([3709])
+
+- Bugfix: If the `ambassador` `Module` sets a global default for `add_request_headers`,
+  `add_response_headers`, `remove_request_headers`, or `remove_response_headers`, it is often
+  desirable to be able to turn off that setting locally for a specific `Mapping`. For several
+  releases this has not been possible for `Mappings` that are native Kubernetes resources (as
+  opposed to annotations), as an empty value ("mask the global default") was erroneously considered
+  to be equivalent to unset ("inherit the global default").  This is now fixed.
+
+- Bugfix: It is now possible to set a `Mapping` `spec.error_response_overrides` `body.text_format` to an
+  empty string or `body.json_format` to an empty dict.  Previously, this was possible for
+  annotations but not for native Kubernetes resources.
+
+- Bugfix: Resources that exist as `getambassador.io/config` annotations rather than as native Kubernetes
+  resources are now validated and internally converted to v3alpha1 and, the same as native
+  Kubernetes resources.
+
+- Bugfix: Resource validation errors are now reported more consistently; it was the case that in some
+  situations a validation error would not be reported.
+
+- Change: Docker BuildKit is enabled for all Emissary builds. Additionally, the Go build cache is fully
+  enabled when building images, speeding up repeated builds.
+
+[3709]: https://github.com/emissary-ingress/emissary/issues/3709
+
 ## [2.1.1] 2022-01-14
 [2.1.1]: https://github.com/datawire/edge-stack/releases/v2.1.1
 
