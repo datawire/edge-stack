@@ -1455,12 +1455,7 @@ spec:
                       format: int32
                       type: integer
                     unit:
-                      enum:
-                      - unknown
-                      - second
-                      - minute
-                      - hour
-                      - day
+                      pattern: ^([uU][nN][kK][nN][oO][wW][nN]|[sS][eE][cC][oO][nN][dD]|[mM][iI][nN][uU][tT][eE]|[hH][oO][uU][rR]|[dD][aA][yY])$
                       type: string
                   type: object
                 type: array
