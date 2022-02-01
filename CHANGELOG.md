@@ -77,6 +77,15 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.2] TBD
+[2.2]: https://github.com/datawire/edge-stack/releases/v2.2
+
+## Ambassador Edge Stack
+
+- Feature: You can now set `preserve_servers` in Ambassador Edge Stack's `DevPortal` resource to configure
+  the DevPortal to use server definitions from the OpenAPI document when displaying connection
+  information for services in the DevPortal.
+
 ## [2.1.2] 2022-01-25
 [2.1.2]: https://github.com/datawire/edge-stack/releases/v2.1.2
 
@@ -438,10 +447,6 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 
 - Feature: You can now set `buffer_limit_bytes` in the `ambassador` `Module` to to change the size of the
   upstream read and write buffers. The default is 1MiB.
-
-- Feature: You can now set `preserve_servers` in Ambassador Edge Stack's `DevPortal` resource to configure
-  the DevPortal to use server definitions from the OpenAPI document when displaying connection
-  information for services in the DevPortal.
 
 ## [1.14.1] 2021-08-24
 [1.14.1]: https://github.com/datawire/edge-stack/releases/v1.14.1
