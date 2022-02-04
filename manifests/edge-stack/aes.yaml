@@ -152,7 +152,7 @@ metadata:
 rules:
 - apiGroups: [argoproj.io]
   resources: [rollouts]
-  verbs: [get, list, watch]
+  verbs: [get, list, watch, patch]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -242,6 +242,7 @@ rules:
   - namespaces
   - services
   - secrets
+  - configmaps
   - endpoints
   verbs: [get, list, watch]
 
@@ -607,6 +608,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - name: AGENT_CONFIG_RESOURCE_NAME
+          value: edge-stack-agent-cloud-token
         - name: AMBASSADOR_DRAIN_TIME
           value: '600'
         - name: AMBASSADOR_INTERNAL_URL

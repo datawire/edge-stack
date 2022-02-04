@@ -31,6 +31,68 @@
 
 changelog: https://github.com/datawire/edge-stack/blob/$branch$/CHANGELOG.md
 items:
+  - version: 2.2.0
+    date: 'TBD'
+    notes:
+      - title: Support a log-level metric
+        type: feature
+        body: >-
+          $productName$ now supports the metric <code>ambassador_log_level{label="debug"}</code>
+          which will be set to 1 if debug logging is enabled for the running Emissary
+          instance, or to 0 if not. This can help to be sure that a running production
+          instance was not actually left doing debugging logging, for example.
+          (Thanks to <a href="https://github.com/jfrabaute">Fabrice</a>!)
+        github:
+        - title: 3906
+          link: https://github.com/emissary-ingress/emissary/issues/3906
+        docs: topics/running/statistics/8877-metrics/
+
+      - title: Envoy configuration % escaping
+        type: feature
+        body: >-
+          $productName$ is now leveraging a new Envoy Proxy patch that allows Envoy to accept escaped
+          '%' characters in its configuration. This means that error_response_overrides and other
+          custom user content can now contain '%' symbols escaped as '%%'
+        docs: topics/running/custom-error-responses
+        github:
+        - title: "DW Envoy: 74"
+          link: https://github.com/datawire/envoy/pull/74
+        - title: "Upstream Envoy: 19383"
+          link: https://github.com/envoyproxy/envoy/pull/19383
+
+      - title: Support binary uploads for AuthService and External Filters
+        type: feature
+        body: >-
+          $productName$ now supports sending the body of requests to the AuthService and external authentication services by configuring <code>include_body.body_raw_bytes</code> in each resource.
+        github:
+        - title: "Support binary uploads"
+          link: https://github.com/emissary-ingress/emissary/pull/3995
+        docs: topics/running/services/auth-service/#fields
+
+      - title: Support configuration for Envoy's Certificate Revocation Lists
+        type: feature
+        body: >-
+          $productName$ now supports configuring Certificate Revocation Lists containing a list of certificates that have been revoked before their expiration. Configuration for CRLs can be done on the <code>Listener</code>, <code>Host</code>, or <code>TLSContext</code>.
+        docs: topics/running/listener/#certvalidation
+
+      - title: Allow configuring FilterPolicy rule priority
+        type: feature
+        body: >-
+          The new <code>precedence</code> field in <code>FilterPolicy</code> rules allows for manual configuration of <code>FilterPolicy</code> rules instead of the default behavior where $productName$ always selects the rule with the most specific hostname and path.
+        docs: topics/using/filters
+
+      - title: Resolved 503 outages with Consul services
+        type: bugfix
+        body: >-
+          Intermitent 503 outages with consul upstream services have been resolved in $productName$.
+        docs: https://github.com/emissary-ingress/emissary/issues/3680
+
+      - title: OAuth cache config supports userInfo token validation responsess
+        type: bugfix
+        body: >-
+          Configuring the OAuth Filter's cache duration with <code>maxStale</code> now supports caching responses from validating opaque userInfo tokens.
+        docs: topics/using/filters/oauth2/#oauth-resource-server-settings    
+  
   - version: 2.1.2
     date: '2022-01-25'
     notes:

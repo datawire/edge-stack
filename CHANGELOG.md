@@ -77,6 +77,41 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.2.0] TBD
+[2.2.0]: https://github.com/datawire/edge-stack/releases/v2.2.0
+
+## Ambassador Edge Stack
+
+- Feature: Ambassador Edge Stack now supports the metric `ambassador_log_level{label="debug"}` which will be
+  set to 1 if debug logging is enabled for the running Emissary instance, or to 0 if not. This can
+  help to be sure that a running production instance was not actually left doing debugging logging,
+  for example. (Thanks to <a href="https://github.com/jfrabaute">Fabrice</a>!) ([3906])
+
+- Feature: Ambassador Edge Stack is now leveraging a new Envoy Proxy patch that allows Envoy to accept
+  escaped '%' characters in its configuration. This means that error_response_overrides and other
+  custom user content can now contain '%' symbols escaped as '%%' ([DW Envoy: 74]) ([Upstream Envoy: 19383])
+
+- Feature: Ambassador Edge Stack now supports sending the body of requests to the AuthService and external
+  authentication services by configuring `include_body.body_raw_bytes` in each resource. ([Support binary uploads])
+
+- Feature: Ambassador Edge Stack now supports configuring Certificate Revocation Lists containing a list of
+  certificates that have been revoked before their expiration. Configuration for CRLs can be done on
+  the `Listener`, `Host`, or `TLSContext`.
+
+- Feature: The new `precedence` field in `FilterPolicy` rules allows for manual configuration of
+  `FilterPolicy` rules instead of the default behavior where Ambassador Edge Stack always selects
+  the rule with the most specific hostname and path.
+
+- Bugfix: Intermitent 503 outages with consul upstream services have been resolved in Ambassador Edge Stack.
+
+- Bugfix: Configuring the OAuth Filter's cache duration with `maxStale` now supports caching responses from
+  validating opaque userInfo tokens.
+
+[3906]: https://github.com/emissary-ingress/emissary/issues/3906
+[DW Envoy: 74]: https://github.com/datawire/envoy/pull/74
+[Upstream Envoy: 19383]: https://github.com/envoyproxy/envoy/pull/19383
+[Support binary uploads]: https://github.com/emissary-ingress/emissary/pull/3995
+
 ## [2.1.2] 2022-01-25
 [2.1.2]: https://github.com/datawire/edge-stack/releases/v2.1.2
 
