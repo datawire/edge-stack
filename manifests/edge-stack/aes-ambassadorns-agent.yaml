@@ -120,7 +120,7 @@ metadata:
 rules:
 - apiGroups: [argoproj.io]
   resources: [rollouts]
-  verbs: [get, list, watch]
+  verbs: [get, list, watch, patch]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -233,9 +233,12 @@ spec:
       serviceAccountName: edge-stack-agent
       containers:
       - name: agent
-        image: docker.io/datawire/aes:2.1.2
+        image: docker.io/datawire/aes:2.2.0-rc.0
         imagePullPolicy: IfNotPresent
         command: [agent]
+        ports:
+        - containerPort: 8006
+          name: grpc
         env:
         - name: AGENT_NAMESPACE
           valueFrom:
