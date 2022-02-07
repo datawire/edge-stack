@@ -4,9 +4,14 @@ SHELL := /bin/bash
 HELM_OUTPUT_DIR := $(EDGE_STACK_HOME)/build/helm/
 
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-ambassadorns.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-ambassadorns-agent.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-ambassadorns-migration.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-defaultns.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-defaultns-agent.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-defaultns-migration.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-emissaryns.yaml
+generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-emissaryns-agent.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-emissaryns-migration.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/resources-migration.yaml
 generate/files += $(EDGE_STACK_HOME)/CHANGELOG.md
@@ -29,12 +34,17 @@ $(HELM_OUTPUT_DIR): $(EDGE_STACK_HOME)/charts/edge-stack/charts FORCE
 	mkdir -p $@
 	helm template edge-stack --output-dir $@ -n ambassador $(EDGE_STACK_HOME)/charts/edge-stack
 
-helm-namespace.aes                      = ambassador
-helm-namespace.aes-defaultns            = default
-helm-namespace.aes-defaultms-migration  = default
-helm-namespace.aes-emissaryns           = emissary
-helm-namespace.aes-emissaryns-migration = emissary
-helm-namespace.resources-migration      = default
+helm-namespace.aes                         = ambassador
+helm-namespace.aes-ambassadorns            = ambassador
+helm-namespace.aes-ambassadorns-agent      = ambassador
+helm-namespace.aes-ambassadorns-migration  = ambassador
+helm-namespace.aes-defaultns               = default
+helm-namespace.aes-defaultns-agent         = default
+helm-namespace.aes-defaultns-migration     = default
+helm-namespace.aes-emissaryns              = emissary
+helm-namespace.aes-emissaryns-migration    = emissary
+helm-namespace.aes-emissaryns-agent        = emissary
+helm-namespace.resources-migration         = default
 $(EDGE_STACK_HOME)/k8s-config/%/helm-expanded.yaml: \
   $(EDGE_STACK_HOME)/charts/edge-stack/charts \
   $(EDGE_STACK_HOME)/k8s-config/%/values.yaml \
