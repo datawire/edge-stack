@@ -10,4 +10,5 @@ resources:
   - { kind: ClusterRoleBinding, name: edge-stack-agent                                }
   - { kind: Role,               name: edge-stack-agent-config,     namespace: default }
   - { kind: RoleBinding,        name: edge-stack-agent-config,     namespace: default }
+  - { kind: Service,            name: edge-stack-admin,            namespace: default }
   - { kind: Deployment,         name: edge-stack-agent,            namespace: default }
