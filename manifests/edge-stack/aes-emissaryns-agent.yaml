@@ -119,7 +119,7 @@ metadata:
     product: aes
 rules:
 - apiGroups: [argoproj.io]
-  resources: [rollouts]
+  resources: [rollouts, rollouts/status]
   verbs: [get, list, watch, patch]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
