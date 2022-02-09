@@ -32,7 +32,7 @@
 changelog: https://github.com/datawire/edge-stack/blob/$branch$/CHANGELOG.md
 items:
   - version: 2.2.0
-    date: 'TBD'
+    date: '2022-02-09'
     notes:
       - title: Support a log-level metric
         type: feature
