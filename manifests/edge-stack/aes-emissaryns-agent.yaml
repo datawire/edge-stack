@@ -237,8 +237,8 @@ spec:
         imagePullPolicy: IfNotPresent
         command: [agent]
         ports:
-        - containerPort: 8006
-          name: grpc
+        - containerPort: 8080
+          name: http
         env:
         - name: AGENT_NAMESPACE
           valueFrom:

@@ -522,8 +522,8 @@ spec:
         imagePullPolicy: IfNotPresent
         command: [agent]
         ports:
-        - containerPort: 8006
-          name: grpc
+        - containerPort: 8080
+          name: http
         env:
         - name: AGENT_NAMESPACE
           valueFrom:
@@ -604,7 +604,7 @@ spec:
           containerPort: 8877
         env:
         - name: AMBASSADOR_GRPC_METRICS_SINK
-          value: edge-stack:8006
+          value: edge-stack-agent:80
         - name: HOST_IP
           valueFrom:
             fieldRef:
