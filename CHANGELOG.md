@@ -77,6 +77,17 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.3.0] TBD
+[2.3.0]: https://github.com/datawire/edge-stack/releases/v2.3.0
+
+## Ambassador Edge Stack
+
+- Feature: Ambassador Edge Stack now supports the use of transport protocol V3 in External Filters while
+  reatining compatability for V2.  To start using transport protocol V3, set the new
+  `protocol_version` field in an External Filter to `v3`. If the protocol version is not specified
+  then it will be assumed to be V2 which is the standard in Ambassador Edge Stack versions prior to
+  2.3. // TODO, link to a docs page that has not yet been created 
+
 ## [2.2.0] 2022-02-10
 [2.2.0]: https://github.com/datawire/edge-stack/releases/v2.2.0
 
