@@ -82,6 +82,11 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## Ambassador Edge Stack
 
+- Change: Support for the Envoy V2 API is deprecated as of Ambassador Edge Stack v2.1, and will be removed
+  in Ambassador Edge Stack v3.0. The `AMBASSADOR_ENVOY_API_VERSION` environment variable will be
+  removed at the same time. Only the Envoy V3 API will be supported (this has been the default since
+  Ambassador Edge Stack v1.14.0).
+
 - Change: Ambassador Edge Stack will now watch for ConfigMap or Secret resources specified by the
   `AGENT_CONFIG_RESOURCE_NAME` environment variable in order to allow all components (and not only
   the Ambassador Agent) to authenticate requests to Ambassador Cloud.
