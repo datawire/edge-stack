@@ -19,7 +19,7 @@ generate/files += $(EDGE_STACK_HOME)/.circleci/config.yml
 
 $(EDGE_STACK_HOME)/venv:
 	python3 -m venv $@
-	$@/bin/python -m pip install ruamel.yaml
+	$@/bin/pip3 install ruamel.yaml
 
 FORCE:
 .PHONY: FORCE

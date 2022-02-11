@@ -143,8 +143,8 @@ metadata:
     product: aes
 rules:
 - apiGroups: [argoproj.io]
-  resources: [rollouts]
-  verbs: [get, list, watch]
+  resources: [rollouts, rollouts/status]
+  verbs: [get, list, watch, patch]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -234,6 +234,7 @@ rules:
   - namespaces
   - services
   - secrets
+  - configmaps
   - endpoints
   verbs: [get, list, watch]
 
@@ -509,9 +510,12 @@ spec:
       serviceAccountName: edge-stack-agent
       containers:
       - name: agent
-        image: docker.io/datawire/aes:2.1.2
+        image: docker.io/datawire/aes:2.2.0
         imagePullPolicy: IfNotPresent
         command: [agent]
+        ports:
+        - containerPort: 8080
+          name: http
         env:
         - name: AGENT_NAMESPACE
           valueFrom:
@@ -581,7 +585,7 @@ spec:
 
       containers:
       - name: aes
-        image: docker.io/datawire/aes:2.1.2
+        image: docker.io/datawire/aes:2.2.0
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -591,6 +595,8 @@ spec:
         - name: admin
           containerPort: 8877
         env:
+        - name: AMBASSADOR_GRPC_METRICS_SINK
+          value: edge-stack-agent:80
         - name: HOST_IP
           valueFrom:
             fieldRef:
@@ -599,6 +605,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - name: AGENT_CONFIG_RESOURCE_NAME
+          value: edge-stack-agent-cloud-token
         - name: AMBASSADOR_DRAIN_TIME
           value: '600'
         - name: AMBASSADOR_INTERNAL_URL

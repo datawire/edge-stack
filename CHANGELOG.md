@@ -77,6 +77,50 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.2.0] 2022-02-10
+[2.2.0]: https://github.com/datawire/edge-stack/releases/v2.2.0
+
+## Ambassador Edge Stack
+
+- Change: Support for the Envoy V2 API is deprecated as of Ambassador Edge Stack v2.1, and will be removed
+  in Ambassador Edge Stack v3.0. The `AMBASSADOR_ENVOY_API_VERSION` environment variable will be
+  removed at the same time. Only the Envoy V3 API will be supported (this has been the default since
+  Ambassador Edge Stack v1.14.0).
+
+- Change: Ambassador Edge Stack will now watch for ConfigMap or Secret resources specified by the
+  `AGENT_CONFIG_RESOURCE_NAME` environment variable in order to allow all components (and not only
+  the Ambassador Agent) to authenticate requests to Ambassador Cloud.
+
+- Security: Ambassador Edge Stack has updated Alpine to 3.15, and Python and Go dependencies to their latest
+  compatible versions, to incorporate numerous security patches.
+
+- Feature: Ambassador Edge Stack now supports the metric `ambassador_log_level{label="debug"}` which will be
+  set to 1 if debug logging is enabled for the running Emissary instance, or to 0 if not. This can
+  help to be sure that a running production instance was not actually left doing debugging logging,
+  for example. (Thanks to <a href="https://github.com/jfrabaute">Fabrice</a>!) ([#3906])
+
+- Feature: Ambassador Edge Stack is now leveraging a new Envoy Proxy patch that allows Envoy to accept
+  escaped '%' characters in its configuration. This means that error_response_overrides and other
+  custom user content can now contain '%' symbols escaped as '%%'. ([DW Envoy: 74]) ([Upstream Envoy: 19383])
+
+- Feature: Support for streaming Envoy metrics about the clusters to Ambassador Cloud. ([#4053])
+
+- Feature: The Ambassador agent now receives commands to manipulate Rollouts (pause, continue, and abort are
+  currently supported) via directives and executes them in the cluster. A report is sent to
+  Ambassador Cloud including the command ID, whether it ran successfully, and an error message in
+  case there was any. ([#4040])
+
+- Bugfix: Kubernetes Secrets that should contain TLS certificates are now validated before being accepted
+  for configuration. A Secret that contains an invalid TLS certificate will be logged as an invalid
+  resource. ([#3821])
+
+[#3906]: https://github.com/emissary-ingress/emissary/issues/3906
+[DW Envoy: 74]: https://github.com/datawire/envoy/pull/74
+[Upstream Envoy: 19383]: https://github.com/envoyproxy/envoy/pull/19383
+[#4053]: https://github.com/emissary-ingress/emissary/pull/4053
+[#4040]: https://github.com/emissary-ingress/emissary/pull/4040
+[#3821]: https://github.com/emissary-ingress/emissary/issues/3821
+
 ## [2.1.2] 2022-01-25
 [2.1.2]: https://github.com/datawire/edge-stack/releases/v2.1.2
 
