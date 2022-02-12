@@ -319,6 +319,11 @@ spec:
                     - http
                     - grpc
                     type: string
+                  protocol_version:
+                    enum:
+                    - v2
+                    - v3
+                    type: string
                   status_on_error:
                     properties:
                       code:
@@ -622,6 +627,11 @@ spec:
                     - http
                     - grpc
                     type: string
+                  protocol_version:
+                    enum:
+                    - v2
+                    - v3
+                    type: string
                   status_on_error:
                     properties:
                       code:
@@ -924,6 +934,11 @@ spec:
                     enum:
                     - http
                     - grpc
+                    type: string
+                  protocol_version:
+                    enum:
+                    - v2
+                    - v3
                     type: string
                   status_on_error:
                     description: 'TODO(lukeshu): In v3alpha2, consider getting rid
