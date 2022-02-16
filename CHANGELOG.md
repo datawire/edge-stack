@@ -77,6 +77,15 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.3.0] TBD
+[2.3.0]: https://github.com/datawire/edge-stack/releases/v2.3.0
+
+## Ambassador Edge Stack
+
+- Feature: `FilterPolicy` `Rules` now have a `Precedence` field which can be set to control the order of rule
+  evaluation: higher-precedence rules are executed first. If the `Precedence` is not set, the order
+  of the `Rule` within the `FilterPolicy` resource is honored.
+
 ## [2.2.0] 2022-02-10
 [2.2.0]: https://github.com/datawire/edge-stack/releases/v2.2.0
 
