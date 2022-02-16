@@ -32,6 +32,17 @@
 
 changelog: https://github.com/datawire/edge-stack/blob/$branch$/CHANGELOG.md
 items:
+  - version: 2.3.0
+    date: 'TBD'
+    notes:
+      - title: The order of FilterPolicy Rules can be controlled
+        type: feature
+        body: >-
+          <code>FilterPolicy</code> <code>Rules</code> now have a <code>Precedence</code> field which
+          can be set to control the order of rule evaluation: higher-precedence rules are executed first.
+          If the <code>Precedence</code> is not set, the order of the <code>Rule</code> within the
+          <code>FilterPolicy</code> resource is honored.
+
   - version: 2.2.0
     date: '2022-02-10'
     notes:
