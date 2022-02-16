@@ -32,6 +32,17 @@
 
 changelog: https://github.com/datawire/edge-stack/blob/$branch$/CHANGELOG.md
 items:
+  - version: 2.3.0
+    date: 'TBD'
+    notes:
+      - title: Support for Envoy Transport Protocol V2 and V3 
+        type: feature
+        body: >-
+          $productName$ now supports the use of transport protocol V3 in External Filters while reatining compatability for V2. 
+          To start using transport protocol V3, set the new `protocol_version` field in an External Filter to `v3`. If the protocol version
+          is not specified then it will be assumed to be V2 which is the standard in $productName$ versions prior to 2.3.
+          // TODO, link to a docs page that has not yet been created 
+
   - version: 2.2.0
     date: '2022-02-10'
     notes:
