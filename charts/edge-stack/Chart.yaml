@@ -27,5 +27,5 @@ maintainers:
 engine: gotpl
 dependencies:
 - name: emissary-ingress
-  version: 7.3.1-0.20220218170742-db7ace0ddd33
+  version: 7.3.1-0.20220218203457-b727aaae1f2f
   repository: https://s3.amazonaws.com/datawire-static-files/charts-dev
