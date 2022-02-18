@@ -26,6 +26,6 @@ maintainers:
   email: lukeshu@datawire.io
 engine: gotpl
 dependencies:
-- name: emissary-ingress
-  version: 7.3.2
-  repository: https://s3.amazonaws.com/datawire-static-files/charts
+  - name: emissary-ingress
+    version: 7.3.3-0.20220505214127-eb074c7a5ef1
+    repository: https://s3.amazonaws.com/datawire-static-files/charts-dev
