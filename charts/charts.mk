@@ -30,9 +30,6 @@ chart/update-emissary: $(YQ)
 	rm -f $(CHART_DIR)/charts/emissary-ingress*.tgz
 	$(YQ) w -i $(CHART_DIR)/Chart.yaml 'dependencies.(name==emissary-ingress).version' '$(patsubst v%,%,$(EMISSARY_CHART_VERSION))'
 	$(YQ) w -i $(CHART_DIR)/Chart.yaml 'dependencies.(name==emissary-ingress).repository' '$(EMISSARY_CHART_REPO)'
-	helm repo rm emissary-updater || true
-	helm repo add emissary-updater '$(EMISSARY_CHART_REPO)'
-	helm dep update $(CHART_DIR)
 .PHONY: chart/update-emissary
 
 chart/docgen:
