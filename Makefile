@@ -25,9 +25,8 @@ FORCE:
 .PHONY: FORCE
 .SECONDARY:
 
-$(EDGE_STACK_HOME)/charts/edge-stack/charts: %/charts: %/Chart.yaml
-	rm -rf $@
-	cd $* && helm dependency update
+$(EDGE_STACK_HOME)/charts/edge-stack/charts: FORCE
+	$(MAKE) -C .. $@
 
 $(HELM_OUTPUT_DIR): $(EDGE_STACK_HOME)/charts/edge-stack/charts FORCE
 	rm -rf $@
