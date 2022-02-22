@@ -77,6 +77,21 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.2.1] 2022-02-22
+[2.2.1]: https://github.com/datawire/edge-stack/releases/v2.2.1
+
+## Ambassador Edge Stack
+
+- Change: Support for the Envoy V2 API is deprecated as of Ambassador Edge Stack v2.1, and will be removed
+  in Ambassador Edge Stack v3.0. The `AMBASSADOR_ENVOY_API_VERSION` environment variable will be
+  removed at the same time. Only the Envoy V3 API will be supported (this has been the default since
+  Ambassador Edge Stack v1.14.0).
+
+- Security: Upgraded Envoy to address security vulnerabilities CVE-2021-43824, CVE-2021-43825, CVE-2021-43826,
+  CVE-2022-21654, and CVE-2022-21655.
+
+- Bugfix: The Ambassador Agent now correctly supports requests to cancel a rollout.
+
 ## [2.2.0] 2022-02-10
 [2.2.0]: https://github.com/datawire/edge-stack/releases/v2.2.0
 
