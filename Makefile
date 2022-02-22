@@ -26,7 +26,11 @@ FORCE:
 .SECONDARY:
 
 $(EDGE_STACK_HOME)/charts/edge-stack/charts: FORCE
-	$(MAKE) -C .. $@
+	if test -f ../go.mod && test "$$(cd .. && go list -m)" == github.com/datawire/apro/v2; then \
+	  $(MAKE) -C .. $@; \
+	else \
+	  cd $(@D) && helm dependency update; \
+	fi
 
 $(HELM_OUTPUT_DIR): $(EDGE_STACK_HOME)/charts/edge-stack/charts FORCE
 	rm -rf $@
