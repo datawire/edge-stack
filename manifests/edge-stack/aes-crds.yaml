@@ -157,6 +157,8 @@ spec:
                       type: string
                     path:
                       type: string
+                    v3Precedence:
+                      type: integer
                   type: object
                 type: array
             type: object
@@ -222,6 +224,8 @@ spec:
                       type: string
                     path:
                       type: string
+                    precedence:
+                      type: integer
                   type: object
                 type: array
             type: object
