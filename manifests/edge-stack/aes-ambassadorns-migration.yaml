@@ -5,7 +5,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: edge-stack-redis
-  namespace: emissary
+  namespace: ambassador
   labels:
     product: aes
   annotations:
@@ -31,7 +31,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: edge-stack-redis
-  namespace: emissary
+  namespace: ambassador
   labels:
     product: aes
   annotations: {}
@@ -57,7 +57,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: edge-stack
-  namespace: emissary
+  namespace: ambassador
 type: Opaque
 data:
   license-key: ''
@@ -67,7 +67,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: test-aes
-  namespace: emissary
+  namespace: ambassador
   labels:
     product: aes
 spec:
@@ -89,7 +89,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: aes
-  namespace: emissary
+  namespace: ambassador
   labels:
     app.kubernetes.io/name: edge-stack
 
@@ -225,7 +225,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: edge-stack
-  namespace: emissary
+  namespace: ambassador
   labels:
     app.kubernetes.io/name: edge-stack
 
@@ -252,7 +252,7 @@ roleRef:
   name: edge-stack
 subjects:
 - name: edge-stack
-  namespace: emissary
+  namespace: ambassador
   kind: ServiceAccount
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml

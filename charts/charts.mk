@@ -22,14 +22,14 @@ define _docgen
 	fi
 endef
 
+EMISSARY_CHART_REPO_GA  = https://s3.amazonaws.com/datawire-static-files/charts
+EMISSARY_CHART_REPO_PRE = https://s3.amazonaws.com/datawire-static-files/charts-dev
+EMISSARY_CHART_REPO     = $(if $(findstring -,$(EMISSARY_CHART_VERSION)),$(EMISSARY_CHART_REPO_PRE),$(EMISSARY_CHART_REPO_GA))
 chart/update-emissary: $(YQ)
-	[ -n "${EMISSARY_CHART_VERSION}" ] || (echo "EMISSARY_CHART_VERSION must be set for non-GA pushes" && exit 1)
+	[ -n '$(EMISSARY_CHART_VERSION)' ] || (echo "EMISSARY_CHART_VERSION must be set for non-GA pushes" && exit 1)
 	rm -f $(CHART_DIR)/charts/emissary-ingress*.tgz
-	$(YQ) w -i $(CHART_DIR)/Chart.yaml 'dependencies.(name==emissary-ingress).version' "${EMISSARY_CHART_VERSION}"
-	helm repo rm emissary-updater || true
-	helm repo add emissary-updater `$(YQ) r $(CHART_DIR)/Chart.yaml 'dependencies.(name==emissary-ingress).repository'`
-	helm dep update $(CHART_DIR)
-	git add $(CHART_DIR)/charts/emissary*.tgz $(CHART_DIR)/Chart.yaml $(CHART_DIR)/Chart.lock
+	$(YQ) w -i $(CHART_DIR)/Chart.yaml 'dependencies.(name==emissary-ingress).version' '$(patsubst v%,%,$(EMISSARY_CHART_VERSION))'
+	$(YQ) w -i $(CHART_DIR)/Chart.yaml 'dependencies.(name==emissary-ingress).repository' '$(EMISSARY_CHART_REPO)'
 .PHONY: chart/update-emissary
 
 chart/docgen:
