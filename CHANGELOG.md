@@ -92,6 +92,11 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   browser to the last origin listed, rather than returning to the original URL.  This has been
   fixed.
 
+- Bugfix: Previously, the `OAuth2` filter's known endpoints `/.ambassador/oauth2/logout` and
+  `/.ambassador/oauth2/multicookie` did not understand CORS or CORS preflight request which would
+  cause the browser to reject the request. This has now been fixed and these endpoints will attach
+  the appropriate CORS headers to the response.
+
 ## [2.3.2] TBD
 [2.3.2]: https://github.com/datawire/edge-stack/releases/v2.3.2
 
@@ -106,6 +111,11 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   login (which only happens when using a refresh token), it would erroneously redirect the web
   browser to the last origin listed, rather than returning to the original URL.  This has been
   fixed.
+
+- Bugfix: Previously, the `OAuth2` filter's known endpoints `/.ambassador/oauth2/logout` and
+  `/.ambassador/oauth2/multicookie` did not understand CORS or CORS preflight request which would
+  cause the browser to reject the request. This has now been fixed and these endpoints will attach
+  the appropriate CORS headers to the response.
 
 ## [3.0.0] 2022-06-29
 [3.0.0]: https://github.com/datawire/edge-stack/releases/v3.0.0
