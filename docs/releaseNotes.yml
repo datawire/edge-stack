@@ -50,6 +50,13 @@ items:
           adjust the cookies for an active login (which only happens when using a refresh token), it
           would erroneously redirect the web browser to the last origin listed, rather than
           returning to the original URL.  This has been fixed.
+      - title: Correctly handle CORS and CORs preflight request within the OAuth2 Fitler known endpoints
+        type: bugfix
+        body: >-
+          Previously, the <code>OAuth2</code> filter's known endpoints <code>/.ambassador/oauth2/logout</code>
+          and <code>/.ambassador/oauth2/multicookie</code> did not understand CORS or CORS preflight request
+          which would cause the browser to reject the request. This has now been fixed and these endpoints will
+          attach the appropriate CORS headers to the response.
   - version: 2.3.2
     date: 'TBD'
     notes:
@@ -68,6 +75,13 @@ items:
           adjust the cookies for an active login (which only happens when using a refresh token), it
           would erroneously redirect the web browser to the last origin listed, rather than
           returning to the original URL.  This has been fixed.
+      - title: Correctly handle CORS and CORs preflight request within the OAuth2 Fitler known endpoints
+        type: bugfix
+        body: >-
+          Previously, the <code>OAuth2</code> filter's known endpoints <code>/.ambassador/oauth2/logout</code>
+          and <code>/.ambassador/oauth2/multicookie</code> did not understand CORS or CORS preflight request
+          which would cause the browser to reject the request. This has now been fixed and these endpoints will
+          attach the appropriate CORS headers to the response.
   - version: 3.0.0
     date: '2022-06-29'
     notes:
