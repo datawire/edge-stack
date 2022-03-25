@@ -77,6 +77,52 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [3.1.0] TBD
+[3.1.0]: https://github.com/datawire/edge-stack/releases/v3.1.0
+
+## Ambassador Edge Stack
+
+- Bugfix: When an `OAuth2` filter sets cookies for a `protectedOrigin`, it should set a cookie's "Secure"
+  flag to true for `https://` origins and false for `http://` origins.  However, for filters with
+  multiple origins, it set the cookie's flag based on the first origin listen in the Filter, rather
+  than the origin that the cookie is actually for.
+
+## [2.3.2] TBD
+[2.3.2]: https://github.com/datawire/edge-stack/releases/v2.3.2
+
+## Ambassador Edge Stack
+
+- Bugfix: When an `OAuth2` filter sets cookies for a `protectedOrigin`, it should set a cookie's "Secure"
+  flag to true for `https://` origins and false for `http://` origins.  However, for filters with
+  multiple origins, it set the cookie's flag based on the first origin listen in the Filter, rather
+  than the origin that the cookie is actually for.
+
+## [3.0.0] 2022-06-29
+[3.0.0]: https://github.com/datawire/edge-stack/releases/v3.0.0
+
+## Ambassador Edge Stack
+
+- Change: Ambassador Edge Stack is now built on top of Emissary-ingress 3.0.0 which updates Envoy Proxy from
+  v1.17 to v1.22. This provides Ambassador Edge Stack with the latest  security patches,
+  performances enhancments, and features offered by Envoy Proxy.  One notable change that will
+  effect users is the removal of support for  the V2 xDS tranport protocol. See the Emissary-ingress
+  changelog for more details.
+
+- Change: In Envoy Proxy 1.18, two behavior changes were made in the way headers are attached to request.
+  First, the `:scheme` header is now attached to upstream requests over HTTP/1.1 to align with
+  http/2 and is used by HTTP Filters. The second behavior change is that the `content-length: 0`
+  will no longer be added to upstream request that have no body.
+
+- Change: Ambassador Edge Stack no longer supports the xDS V2 transport protocol. `ExternalFilter`s
+  targeting `grpc` must not explicitly set the `protocol_version` to `v3`. If not set or if using an
+  unsupported protocol_version then an error will be returned. Before upgrading to 3.0.0 you should
+  ugrade to Ambassador Edge Stack v2.3  and test that your `ExternalFilter` works with the xDS v3
+  transport protocol.
+
+- Change: Since Ambassador Edge Stack no longer supports the xDS V2 transport protocol, the default Helm
+  Charts and Manifest explicilty set `protocol_version` to `v3` for  the `RateLimitService` and
+  `AuthService` provided by Ambassador Edge Stack.
+
 ## [2.3.1] 2022-06-09
 [2.3.1]: https://github.com/datawire/edge-stack/releases/v2.3.1
 
