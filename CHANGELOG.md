@@ -87,6 +87,11 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   multiple origins, it set the cookie's flag based on the first origin listen in the Filter, rather
   than the origin that the cookie is actually for.
 
+- Bugfix: When an `OAuth2` filter with multiple `protectedOrigins` needs to adjust the cookies for an active
+  login (which only happens when using a refresh token), it would erroneously redirect the web
+  browser to the last origin listed, rather than returning to the original URL.  This has been
+  fixed.
+
 ## [2.3.2] TBD
 [2.3.2]: https://github.com/datawire/edge-stack/releases/v2.3.2
 
@@ -96,6 +101,11 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   flag to true for `https://` origins and false for `http://` origins.  However, for filters with
   multiple origins, it set the cookie's flag based on the first origin listen in the Filter, rather
   than the origin that the cookie is actually for.
+
+- Bugfix: When an `OAuth2` filter with multiple `protectedOrigins` needs to adjust the cookies for an active
+  login (which only happens when using a refresh token), it would erroneously redirect the web
+  browser to the last origin listed, rather than returning to the original URL.  This has been
+  fixed.
 
 ## [3.0.0] 2022-06-29
 [3.0.0]: https://github.com/datawire/edge-stack/releases/v3.0.0
