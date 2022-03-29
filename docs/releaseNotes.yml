@@ -43,6 +43,13 @@ items:
           for <code>http://</code> origins.  However, for filters with multiple origins, it set the
           cookie's flag based on the first origin listen in the Filter, rather than the origin that
           the cookie is actually for.
+      - title: Correctly handle refresh tokens for OAuth2 filters with multiple origins
+        type: bugfix
+        body: >-
+          When an <code>OAuth2</code> filter with multiple <code>protectedOrigins</code> needs to
+          adjust the cookies for an active login (which only happens when using a refresh token), it
+          would erroneously redirect the web browser to the last origin listed, rather than
+          returning to the original URL.  This has been fixed.
   - version: 2.3.2
     date: 'TBD'
     notes:
@@ -54,6 +61,13 @@ items:
           for <code>http://</code> origins.  However, for filters with multiple origins, it set the
           cookie's flag based on the first origin listen in the Filter, rather than the origin that
           the cookie is actually for.
+      - title: Correctly handle refresh tokens for OAuth2 filters with multiple origins
+        type: bugfix
+        body: >-
+          When an <code>OAuth2</code> filter with multiple <code>protectedOrigins</code> needs to
+          adjust the cookies for an active login (which only happens when using a refresh token), it
+          would erroneously redirect the web browser to the last origin listed, rather than
+          returning to the original URL.  This has been fixed.
   - version: 3.0.0
     date: '2022-06-29'
     notes:
