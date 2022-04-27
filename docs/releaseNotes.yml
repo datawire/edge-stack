@@ -32,6 +32,25 @@
 
 changelog: https://github.com/datawire/edge-stack/blob/$branch$/CHANGELOG.md
 items:
+  - version: 2.2.2
+    date: 'TBD'
+    notes:
+      - title: TLS Secret validation is now opt-in
+        type: change
+        body: >-
+          You may now choose to enable TLS Secret validation by setting the
+          <code>AMBASSADOR_FORCE_SECRET_VALIDATION=true</code> environment variable. The default configuration does not
+          enforce secret validation.
+
+      - title: Correctly validate EC (Elliptic Curve) Private Keys
+        type: bugfix
+        body: >-
+          Kubernetes Secrets that should contain an EC (Elliptic Curve) TLS Private Key are now properly validated.
+        github:
+          - title: 4134
+            link: https://github.com/emissary-ingress/emissary/issues/4134
+        docs: https://github.com/emissary-ingress/emissary/issues/4134
+  
   - version: 2.2.1
     date: '2022-02-22'
     notes:
@@ -48,6 +67,7 @@ items:
           Upgraded Envoy to address security vulnerabilities CVE-2021-43824, CVE-2021-43825, CVE-2021-43826,
           CVE-2022-21654, and CVE-2022-21655.
         docs: https://groups.google.com/g/envoy-announce/c/bIUgEDKHl4g
+
       - title: Correctly support canceling rollouts
         type: bugfix
         body: >-
