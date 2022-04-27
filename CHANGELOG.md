@@ -77,6 +77,7 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+<<<<<<< HEAD
 ## [2.3.0] TBD
 [2.3.0]: https://github.com/datawire/edge-stack/releases/v2.3.0
 
@@ -85,6 +86,21 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 - Feature: `FilterPolicy` `Rules` now have a `Precedence` field which can be set to control the order of rule
   evaluation: higher-precedence rules are executed first. If the `Precedence` is not set, the order
   of the `Rule` within the `FilterPolicy` resource is honored.
+=======
+## [2.2.2] TBD
+[2.2.2]: https://github.com/datawire/edge-stack/releases/v2.2.2
+
+## Ambassador Edge Stack
+
+- Change: You may now choose to enable TLS Secret validation by setting the
+  `AMBASSADOR_FORCE_SECRET_VALIDATION=true` environment variable. The default configuration does not
+  enforce secret validation.
+
+- Bugfix: Kubernetes Secrets that should contain an EC (Elliptic Curve) TLS Private Key are now properly
+  validated. ([4134])
+
+[4134]: https://github.com/emissary-ingress/emissary/issues/4134
+>>>>>>> c2ec93148cf36eb8eddc4397afef2c3c330df8e1
 
 ## [2.2.1] 2022-02-22
 [2.2.1]: https://github.com/datawire/edge-stack/releases/v2.2.1
