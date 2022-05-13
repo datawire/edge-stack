@@ -305,6 +305,8 @@ spec:
                     properties:
                       allow_partial:
                         type: boolean
+                      as_bytes:
+                        type: boolean
                       max_bytes:
                         type: integer
                     type: object
@@ -608,6 +610,8 @@ spec:
                     properties:
                       allow_partial:
                         type: boolean
+                      as_bytes:
+                        type: boolean
                       max_bytes:
                         type: integer
                     type: object
@@ -910,6 +914,8 @@ spec:
                   include_body:
                     properties:
                       allow_partial:
+                        type: boolean
+                      as_bytes:
                         type: boolean
                       max_bytes:
                         type: integer
@@ -1634,6 +1640,8 @@ spec:
                 properties:
                   allow_partial:
                     type: boolean
+                  as_bytes:
+                    type: boolean
                   max_bytes:
                     description: These aren't pointer types because they are required.
                     type: integer
@@ -1760,6 +1768,8 @@ spec:
               include_body:
                 properties:
                   allow_partial:
+                    type: boolean
+                  as_bytes:
                     type: boolean
                   max_bytes:
                     description: These aren't pointer types because they are required.
