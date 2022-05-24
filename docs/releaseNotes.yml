@@ -35,6 +35,23 @@ items:
   - version: 2.3.0
     date: 'TBD'
     notes:
+      - title: Deprecated v2 transport protocol for External Filters and AuthServices
+        type: change
+        body: >-
+          In order to support upgrading to newer Envoy versions, a future release of Edge-Stack will remove support
+          for the deprecated v2 transport protocol in both AuthServices as well as External Filters.
+          Migrating existing External Filters from v2 to v3 is simple and and example can be found on the
+          External Filter page. This change only impacts gRPC External Filters. HTTP External Filters are unaffected by this change.
+        docs: topics/using/filters/external
+
+      - title: Added Support for transport protocol v3 in External Filters
+        type: feature
+        body: >-
+          External Filters can now make use of the v3 transport protocol. In addition to the support for the v3 transport protocol,
+          the default <code>AuthService</code> installed with Edge-Stack will now only operate with transport protocol v3.
+          External Filters using transport protocol v3 must set the new <code>protocol_version</code> field on the External Filter to <code>v3</code>.
+        docs: topics/using/filters/external
+
       - title: The order of FilterPolicy Rules can be controlled
         type: feature
         body: >-
@@ -42,25 +59,6 @@ items:
           can be set to control the order of rule evaluation: higher-precedence rules are executed first.
           If the <code>Precedence</code> is not set, the order of the <code>Rule</code> within the
           <code>FilterPolicy</code> resource is honored.
-
-      - title: Added Support for transport protocol v3 in External Filters
-        type: feature
-        body: >-
-          External Filters can now make use of the v3 transport protocol. In addtion to the support for the v3 transport protocol, 
-          the default <code>AuthService</code> installed with Edge-Stack will now only operate with transport protocol v3. 
-          In order to support existing External Filters using v2, Edge-Stack will automatically translate
-          v2 to the new default of v3. Any External Filters will be assumed to be using transport protocol v2 and will use 
-          the automatic conversion to v3 unless the new <code>protocol_version</code> field on the External Filter is explicitly set to <code>v3</code>.
-        docs: topics/using/filters/external
-
-      - title: Deprecated v2 transport protocol for External Filters and AuthServices
-        type: change
-        body: >-
-          In order to support upgrading to newer Envoy versions, a future release of Edge-Stack will remove support 
-          for the now deprecated v2 transport protocol in both AuthServices as well as External Filters. 
-          Migrating Existing External Filters from v2 to v3 is simple and and example can be found on the 
-          External Filter page. This change only impacts gRPC External Filters. HTTP External Filters are unaffected by this change.
-        docs: topics/using/filters/external
 
   - version: 2.2.2
     date: '2022-02-25'

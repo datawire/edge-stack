@@ -82,22 +82,20 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## Ambassador Edge Stack
 
+- Change: In order to support upgrading to newer Envoy versions, a future release of Edge-Stack will remove
+  support for the deprecated v2 transport protocol in both AuthServices as well as External Filters.
+  Migrating existing External Filters from v2 to v3 is simple and and example can be found on the
+  External Filter page. This change only impacts gRPC External Filters. HTTP External Filters are
+  unaffected by this change.
+
+- Feature: External Filters can now make use of the v3 transport protocol. In addition to the support for the
+  v3 transport protocol, the default `AuthService` installed with Edge-Stack will now only operate
+  with transport protocol v3. External Filters using transport protocol v3 must set the new
+  `protocol_version` field on the External Filter to `v3`.
+
 - Feature: `FilterPolicy` `Rules` now have a `Precedence` field which can be set to control the order of rule
   evaluation: higher-precedence rules are executed first. If the `Precedence` is not set, the order
   of the `Rule` within the `FilterPolicy` resource is honored.
-
-- Feature: External Filters can now make use of the v3 transport protocol. In addtion to the support for the
-  v3 transport protocol,  the default `AuthService` installed with Edge-Stack will now only operate
-  with transport protocol v3.  In order to support existing External Filters using v2, Edge-Stack
-  will automatically translate v2 to the new default of v3. Any External Filters will be assumed to
-  be using transport protocol v2 and will use  the automatic conversion to v3 unless the new
-  `protocol_version` field on the External Filter is explicitly set to `v3`.
-
-- Change: In order to support upgrading to newer Envoy versions, a future release of Edge-Stack will remove
-  support  for the now deprecated v2 transport protocol in both AuthServices as well as External
-  Filters.  Migrating Existing External Filters from v2 to v3 is simple and and example can be found
-  on the  External Filter page. This change only impacts gRPC External Filters. HTTP External
-  Filters are unaffected by this change.
 
 ## [2.2.2] 2022-02-25
 [2.2.2]: https://github.com/datawire/edge-stack/releases/v2.2.2
