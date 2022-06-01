@@ -97,6 +97,16 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   evaluation: higher-precedence rules are executed first. If the `Precedence` is not set, the order
   of the `Rule` within the `FilterPolicy` resource is honored.
 
+- Change: When each Oauth2 Filter that makes use of a secret is loaded, Edge-Stack previously needed to
+  communicate with the API server to request and validate that secret before loading the next
+  Filter. To improve performance, Edge-Stack will now load and validate all secrets required by
+  Oauth2 Filters at once prior to loading the filters.
+
+- Feature: Ambassador Edge Stack now supports <a
+  href="https://www.envoyproxy.io/docs/envoy/v1.17.4/api-v3/extensions/transport_sockets/tls/v3/common.proto.html?highlight=crl">Envoy's
+  Certificate Revocation lists.</a> This allows users to specify a list of certificates that
+  Ambassador Edge Stack should reject even if the certificate itself is otherwise valid.
+
 ## [2.2.2] 2022-02-25
 [2.2.2]: https://github.com/datawire/edge-stack/releases/v2.2.2
 
