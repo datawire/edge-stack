@@ -33,7 +33,7 @@
 changelog: https://github.com/datawire/edge-stack/blob/$branch$/CHANGELOG.md
 items:
   - version: 2.3.0
-    date: 'TBD'
+    date: '2022-06-06'
     notes:
       - title: Deprecated v2 transport protocol for External Filters and AuthServices
         type: change
