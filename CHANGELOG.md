@@ -77,6 +77,24 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.3.1] 2022-06-09
+[2.3.1]: https://github.com/datawire/edge-stack/releases/v2.3.1
+
+## Ambassador Edge Stack
+
+- Bugfix: A regression was introduced in 2.3.0 that leaked zipkin default config fields into the
+  configuration for the other drivers (lightstep, etc...). This caused Ambassador Edge Stack to
+  crash on startup. This issue has been resolved to ensure that the defaults are only applied when
+  driver is `zipkin` ([#4267])
+
+- Security: We have backported patches from the Envoy 1.19.5 security update to Ambassador Edge Stack's
+  1.17-based Envoy, addressing CVE-2022-29224 and CVE-2022-29225.  Ambassador Edge Stack is not
+  affected by CVE-2022-29226, CVE-2022-29227, or CVE-2022-29228; as it <a
+  href="https://github.com/emissary-ingress/emissary/issues/2846">does not support internal
+  redirects</a>, and does not use Envoy's built-in OAuth2 filter.
+
+[#4267]: https://github.com/emissary-ingress/emissary/issues/4267
+
 ## [2.3.0] 2022-06-06
 [2.3.0]: https://github.com/datawire/edge-stack/releases/v2.3.0
 
