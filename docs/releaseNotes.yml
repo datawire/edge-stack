@@ -53,6 +53,14 @@ items:
           is that the `content-length: 0` will no longer be added to upstream request that
           have no body.
         docs: https://www.envoyproxy.io/docs/envoy/latest/version_history/v1.18/v1.18.0.html
+      - title: Remove xDS V2 support in ExternalFilter
+        type: change
+        body: >-
+          $productName$ no longer supports the xDS V2 transport protocol. `ExternalFilter`s
+          targeting <code>grpc</code> must not explicitly set the <code>protocol_version</code>
+          to <code>v3</code>. If not set or if using an unsupported protocol_version then an
+          error will be returned. Before upgrading to 3.0.0 you should ugrade to $productName$ v2.3 
+          and test that your <code>ExternalFilter</code> works with the xDS v3 transport protocol.
   - version: 2.3.1
     date: '2022-06-09'
     notes:

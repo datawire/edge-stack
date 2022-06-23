@@ -93,6 +93,12 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   http/2 and is used by HTTP Filters. The second behavior change is that the `content-length: 0`
   will no longer be added to upstream request that have no body.
 
+- Change: Ambassador Edge Stack no longer supports the xDS V2 transport protocol. `ExternalFilter`s
+  targeting `grpc` must not explicitly set the `protocol_version` to `v3`. If not set or if using an
+  unsupported protocol_version then an error will be returned. Before upgrading to 3.0.0 you should
+  ugrade to Ambassador Edge Stack v2.3  and test that your `ExternalFilter` works with the xDS v3
+  transport protocol.
+
 ## [2.3.1] 2022-06-09
 [2.3.1]: https://github.com/datawire/edge-stack/releases/v2.3.1
 
