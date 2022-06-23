@@ -88,6 +88,11 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   effect users is the removal of support for  the V2 xDS tranport protocol. See the Emissary-ingress
   changelog for more details.
 
+- Change: In Envoy Proxy 1.18, two behavior changes were made in the way headers are attached to request.
+  First, the `:scheme` header is now attached to upstream requests over HTTP/1.1 to align with
+  http/2 and is used by HTTP Filters. The second behavior change is that the `content-length: 0`
+  will no longer be added to upstream request that have no body.
+
 ## [2.3.1] 2022-06-09
 [2.3.1]: https://github.com/datawire/edge-stack/releases/v2.3.1
 
