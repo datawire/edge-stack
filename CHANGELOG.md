@@ -77,6 +77,17 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [3.0.0] TBD
+[3.0.0]: https://github.com/datawire/edge-stack/releases/v3.0.0
+
+## Ambassador Edge Stack
+
+- Change: Ambassador Edge Stack is now built on top of Emissary-ingress 3.0.0 which updates Envoy Proxy from
+  v1.17 to v1.22. This provides Ambassador Edge Stack with the latest  security patches,
+  performances enhancments, and features offered by Envoy Proxy.  One notable change that will
+  effect users is the removal of support for  the V2 xDS tranport protocol. See the Emissary-ingress
+  changelog for more details.
+
 ## [2.3.1] 2022-06-09
 [2.3.1]: https://github.com/datawire/edge-stack/releases/v2.3.1
 

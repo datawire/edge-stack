@@ -32,6 +32,18 @@
 
 changelog: https://github.com/datawire/edge-stack/blob/$branch$/CHANGELOG.md
 items:
+  - version: 3.0.0
+    date: 'TBD'
+    notes:
+      - title: upgrade to Emissary-ingress 3.0.0
+        type: change
+        body: >-
+          $productName$ is now built on top of Emissary-ingress 3.0.0 which updates
+          Envoy Proxy from v1.17 to v1.22. This provides $productName$ with the latest 
+          security patches, performances enhancments, and features offered by Envoy Proxy. 
+          One notable change that will effect users is the removal of support for 
+          the V2 xDS tranport protocol. See the Emissary-ingress changelog for more details.
+        docs: https://github.com/emissary-ingress/emissary/blob/master/CHANGELOG.md
   - version: 2.3.1
     date: '2022-06-09'
     notes:
