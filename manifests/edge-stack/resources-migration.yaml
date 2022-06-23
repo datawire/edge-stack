@@ -9,6 +9,7 @@ metadata:
     product: aes
 spec:
   service: 127.0.0.1:8500
+  protocol_version: v3
 ---
 # Source: edge-stack/templates/aes-authservice.yaml
 apiVersion: getambassador.io/v2
@@ -19,6 +20,7 @@ metadata:
     product: aes
 spec:
   proto: grpc
+  protocol_version: v3
   auth_service: 127.0.0.1:8500
   allow_request_body: false
   status_on_error:

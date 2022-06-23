@@ -99,6 +99,10 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   ugrade to Ambassador Edge Stack v2.3  and test that your `ExternalFilter` works with the xDS v3
   transport protocol.
 
+- Change: Since Ambassador Edge Stack no longer supports the xDS V2 transport protocol, the default Helm
+  Charts and Manifest explicilty set `protocol_version` to `v3` for  the `RateLimitService` and
+  `AuthService` provided by Ambassador Edge Stack.
+
 ## [2.3.1] 2022-06-09
 [2.3.1]: https://github.com/datawire/edge-stack/releases/v2.3.1
 

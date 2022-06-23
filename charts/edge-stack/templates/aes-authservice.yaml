@@ -21,6 +21,7 @@ metadata:
     product: aes
 spec:
   proto: grpc
+  protocol_version: v3
   {{- if .Values.env }}
   {{- if hasKey .Values.env "AMBASSADOR_ID" }}
   ambassador_id: {{ .Values.env.AMBASSADOR_ID | quote }}
