@@ -129,6 +129,9 @@ Note: Other
   cause the browser to reject the request. This has now been fixed and these endpoints will attach
   the appropriate CORS headers to the response.
 
+- Feature: You can now define a new type of filter to enforce API Keys on top of your services, and provide a
+  Kubernetes secrets as a source for the list of all the keys.
+
 ## [3.0.0] 2022-06-29
 [3.0.0]: https://github.com/datawire/edge-stack/releases/v3.0.0
 

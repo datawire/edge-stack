@@ -97,6 +97,12 @@ items:
           and <code>/.ambassador/oauth2/multicookie</code> did not understand CORS or CORS preflight request
           which would cause the browser to reject the request. This has now been fixed and these endpoints will
           attach the appropriate CORS headers to the response.
+      - title: Add a new API Key filter
+        type: feature
+        body: >-
+          You can now define a new type of filter to enforce API Keys on top of your services,
+          and provide a Kubernetes secrets as a source for the list of all the keys.
+
   - version: 3.0.0
     date: '2022-06-29'
     notes:
