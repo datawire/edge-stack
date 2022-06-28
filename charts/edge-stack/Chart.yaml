@@ -1,8 +1,8 @@
 apiVersion: v2
-appVersion: 3.0.0-rc.0
+appVersion: 3.0.0
 description: A Helm chart for Ambassador Edge Stack
 name: edge-stack
-version: 8.0.0-rc.0
+version: 8.0.0
 # TODO: change these to whatever the appropriate things are
 icon: https://www.getambassador.io/images/logo.png
 home: https://www.getambassador.io/
@@ -27,5 +27,5 @@ maintainers:
 engine: gotpl
 dependencies:
   - name: emissary-ingress
-    version: 8.0.0-dev.0.20220627165131-e403ecd332e9
-    repository: https://s3.amazonaws.com/datawire-static-files/charts-dev
+    version: 8.0.0
+    repository: https://s3.amazonaws.com/datawire-static-files/charts
