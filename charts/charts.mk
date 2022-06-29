@@ -28,11 +28,8 @@ EMISSARY_CHART_REPO     = $(if $(findstring -,$(EMISSARY_CHART_VERSION)),$(EMISS
 chart/update-emissary: $(YQ)
 	[ -n '$(EMISSARY_CHART_VERSION)' ] || (echo "EMISSARY_CHART_VERSION must be set for non-GA pushes" && exit 1)
 	rm -f $(CHART_DIR)/charts/emissary-ingress*.tgz
-	$(YQ) w -i $(CHART_DIR)/Chart.yaml 'dependencies.(name==emissary-ingress).version' '$(patsubst v%,%,$(EMISSARY_CHART_VERSION))'
-	$(YQ) w -i $(CHART_DIR)/Chart.yaml 'dependencies.(name==emissary-ingress).repository' '$(EMISSARY_CHART_REPO)'
-	helm repo rm emissary-updater || true
-	helm repo add emissary-updater '$(EMISSARY_CHART_REPO)'
-	helm dep update $(CHART_DIR)
+	$(YQ) '(.dependencies.[] | select(.name == "emissary-ingress") | .version) = "$(patsubst v%,%,$(EMISSARY_CHART_VERSION))"' -i $(CHART_DIR)/Chart.yaml
+	$(YQ) '(.dependencies.[] | select(.name == "emissary-ingress") | .repository) = "$(EMISSARY_CHART_REPO)"' -i $(CHART_DIR)/Chart.yaml
 .PHONY: chart/update-emissary
 
 chart/docgen:
@@ -82,7 +79,7 @@ chart/push-ci: chart/push-preflight
 	@[ -n "${IMAGE_REPO}" ] || (echo "IMAGE_REPO must be set" && exit 1)
 	sed -i.bak -E "s/^version: ([0-9]+\.[0-9]+\.[0-9]+).*/version: \1${CHART_VERSION_SUFFIX}/g" $(CHART_DIR)/Chart.yaml && rm $(CHART_DIR)/Chart.yaml.bak
 	$(call _set_tag_and_repo,$(CHART_DIR)/values.yaml,${IMAGE_TAG},${IMAGE_REPO})
-	$(YQ) w -i $(CHART_DIR)/Chart.yaml 'appVersion' ${IMAGE_TAG}
+	$(YQ) '.appVersion = "${IMAGE_TAG}"' -i $(CHART_DIR)/Chart.yaml	
 	$(call _push_chart,`basename $(CHART_DIR)`)
 .PHONY: chart/push-ci
 
@@ -118,7 +115,7 @@ release/chart/ga-image-update: chart/push-preflight
 	([[ "${IMAGE_TAG}" =~ .*\.0$$ ]] && $(MAKE) release/chart/bump-minor) || $(MAKE) release/chart/bump-revision
 	@[[ "${IMAGE_TAG}" =~ .*\-ea$$ ]] && sed -i.bak -E "s/^version: ([0-9]+\.[0-9]+\.[0-9]+).*/version: \1-ea/g" $(CHART_DIR)/Chart.yaml && rm $(CHART_DIR)/Chart.yaml.bak
 	$(call _set_tag_and_repo,$(CHART_DIR)/values.yaml,${IMAGE_TAG},"")
-	$(YQ) w -i $(CHART_DIR)/Chart.yaml 'appVersion' ${IMAGE_TAG}
+	$(YQ) '.appVersion = "${IMAGE_TAG}"' -i $(CHART_DIR)/Chart.yaml
 	IMAGE_TAG="${IMAGE_TAG}" CHART_NAME=`basename $(CHART_DIR)` $(EDGE_STACK_HOME)/charts/scripts/image_tag_changelog_update.sh
 	CHART_NAME=`basename $(CHART_DIR)` $(EDGE_STACK_HOME)/charts/scripts/update_chart_changelog.sh
 	$(call _docgen,$(CHART_DIR))

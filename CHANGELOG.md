@@ -77,6 +77,109 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [3.0.0] 2022-06-29
+[3.0.0]: https://github.com/datawire/edge-stack/releases/v3.0.0
+
+## Ambassador Edge Stack
+
+- Change: Ambassador Edge Stack is now built on top of Emissary-ingress 3.0.0 which updates Envoy Proxy from
+  v1.17 to v1.22. This provides Ambassador Edge Stack with the latest  security patches,
+  performances enhancments, and features offered by Envoy Proxy.  One notable change that will
+  effect users is the removal of support for  the V2 xDS tranport protocol. See the Emissary-ingress
+  changelog for more details.
+
+- Change: In Envoy Proxy 1.18, two behavior changes were made in the way headers are attached to request.
+  First, the `:scheme` header is now attached to upstream requests over HTTP/1.1 to align with
+  http/2 and is used by HTTP Filters. The second behavior change is that the `content-length: 0`
+  will no longer be added to upstream request that have no body.
+
+- Change: Ambassador Edge Stack no longer supports the xDS V2 transport protocol. `ExternalFilter`s
+  targeting `grpc` must not explicitly set the `protocol_version` to `v3`. If not set or if using an
+  unsupported protocol_version then an error will be returned. Before upgrading to 3.0.0 you should
+  ugrade to Ambassador Edge Stack v2.3  and test that your `ExternalFilter` works with the xDS v3
+  transport protocol.
+
+- Change: Since Ambassador Edge Stack no longer supports the xDS V2 transport protocol, the default Helm
+  Charts and Manifest explicilty set `protocol_version` to `v3` for  the `RateLimitService` and
+  `AuthService` provided by Ambassador Edge Stack.
+
+## [2.3.1] 2022-06-09
+[2.3.1]: https://github.com/datawire/edge-stack/releases/v2.3.1
+
+## Ambassador Edge Stack
+
+- Bugfix: A regression was introduced in 2.3.0 that leaked zipkin default config fields into the
+  configuration for the other drivers (lightstep, etc...). This caused Ambassador Edge Stack to
+  crash on startup. This issue has been resolved to ensure that the defaults are only applied when
+  driver is `zipkin` ([#4267])
+
+- Security: We have backported patches from the Envoy 1.19.5 security update to Ambassador Edge Stack's
+  1.17-based Envoy, addressing CVE-2022-29224 and CVE-2022-29225.  Ambassador Edge Stack is not
+  affected by CVE-2022-29226, CVE-2022-29227, or CVE-2022-29228; as it <a
+  href="https://github.com/emissary-ingress/emissary/issues/2846">does not support internal
+  redirects</a>, and does not use Envoy's built-in OAuth2 filter.
+
+[#4267]: https://github.com/emissary-ingress/emissary/issues/4267
+
+## [2.3.0] 2022-06-06
+[2.3.0]: https://github.com/datawire/edge-stack/releases/v2.3.0
+
+## Ambassador Edge Stack
+
+- Change: In order to support upgrading to newer Envoy versions, a future release of Edge-Stack will remove
+  support for the deprecated v2 transport protocol in both AuthServices as well as External Filters.
+  Migrating existing External Filters from v2 to v3 is simple and and example can be found on the
+  External Filter page. This change only impacts gRPC External Filters. HTTP External Filters are
+  unaffected by this change.
+
+- Feature: External Filters can now make use of the v3 transport protocol. In addition to the support for the
+  v3 transport protocol, the default `AuthService` installed with Edge-Stack will now only operate
+  with transport protocol v3. External Filters using transport protocol v3 must set the new
+  `protocol_version` field on the External Filter to `v3`.
+
+- Feature: `FilterPolicy` `Rules` now have a `Precedence` field which can be set to control the order of rule
+  evaluation: higher-precedence rules are executed first. If the `Precedence` is not set, the order
+  of the `Rule` within the `FilterPolicy` resource is honored.
+
+- Change: When each Oauth2 Filter that makes use of a secret is loaded, Edge-Stack previously needed to
+  communicate with the API server to request and validate that secret before loading the next
+  Filter. To improve performance, Edge-Stack will now load and validate all secrets required by
+  Oauth2 Filters at once prior to loading the filters.
+
+- Feature: Ambassador Edge Stack now supports <a
+  href="https://www.envoyproxy.io/docs/envoy/v1.17.4/api-v3/extensions/transport_sockets/tls/v3/common.proto.html?highlight=crl">Envoy's
+  Certificate Revocation lists.</a> This allows users to specify a list of certificates that
+  Ambassador Edge Stack should reject even if the certificate itself is otherwise valid.
+
+## [2.2.2] 2022-02-25
+[2.2.2]: https://github.com/datawire/edge-stack/releases/v2.2.2
+
+## Ambassador Edge Stack
+
+- Change: You may now choose to enable TLS Secret validation by setting the
+  `AMBASSADOR_FORCE_SECRET_VALIDATION=true` environment variable. The default configuration does not
+  enforce secret validation.
+
+- Bugfix: Kubernetes Secrets that should contain an EC (Elliptic Curve) TLS Private Key are now properly
+  validated. ([4134])
+
+[4134]: https://github.com/emissary-ingress/emissary/issues/4134
+
+## [2.2.1] 2022-02-22
+[2.2.1]: https://github.com/datawire/edge-stack/releases/v2.2.1
+
+## Ambassador Edge Stack
+
+- Change: Support for the Envoy V2 API is deprecated as of Ambassador Edge Stack v2.1, and will be removed
+  in Ambassador Edge Stack v3.0. The `AMBASSADOR_ENVOY_API_VERSION` environment variable will be
+  removed at the same time. Only the Envoy V3 API will be supported (this has been the default since
+  Ambassador Edge Stack v1.14.0).
+
+- Security: Upgraded Envoy to address security vulnerabilities CVE-2021-43824, CVE-2021-43825, CVE-2021-43826,
+  CVE-2022-21654, and CVE-2022-21655.
+
+- Bugfix: The Ambassador Agent now correctly supports requests to cancel a rollout.
+
 ## [2.2.0] 2022-02-10
 [2.2.0]: https://github.com/datawire/edge-stack/releases/v2.2.0
 

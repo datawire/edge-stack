@@ -26,4 +26,5 @@ spec:
   {{- end }}
   {{- end }}
   service: 127.0.0.1:8500
+  protocol_version: v3
 {{ end }}

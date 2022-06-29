@@ -27,7 +27,7 @@ emissary-ingress:
 registry:
   create: true
 devportal:
-  docsPrefix: "/docs/"
+  docsPrefix: "/documentation/"
 authService:
   optional_configurations:
     allow_request_body: false
