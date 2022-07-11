@@ -286,27 +286,6 @@ spec:
             type: object
           spec:
             properties:
-              APIKey:
-                description: FilterAPIKey enforce a set of API Keys.
-                properties:
-                  httpHeader:
-                    type: string
-                  keys:
-                    items:
-                      description: APIKeyItem defines an API Key, and the secrets
-                        it is based on.
-                      properties:
-                        secretName:
-                          type: string
-                        secretNamespace:
-                          type: string
-                        value:
-                          type: string
-                      type: object
-                    type: array
-                required:
-                - keys
-                type: object
               External:
                 description: FilterExternal closely mimics AuthService.getambassador.io.
                 properties:
@@ -621,10 +600,6 @@ spec:
                         it is based on.
                       properties:
                         secretName:
-                          type: string
-                        secretNamespace:
-                          type: string
-                        value:
                           type: string
                       type: object
                     type: array
@@ -950,10 +925,6 @@ spec:
                         it is based on.
                       properties:
                         secretName:
-                          type: string
-                        secretNamespace:
-                          type: string
-                        value:
                           type: string
                       type: object
                     type: array
