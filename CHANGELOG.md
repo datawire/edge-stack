@@ -97,6 +97,18 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   cause the browser to reject the request. This has now been fixed and these endpoints will attach
   the appropriate CORS headers to the response.
 
+- Feature: A new opt-in feature flag has been added that allows Ambassador Edge Stack to use a new Redis 
+  driver when storing state between requests for the Authentication Filters. The new driver has 
+  better connection pool handling, shares connections and supports the Redis RESP3 protocol. 
+Set
+  `AES_REDIS_EXPERIMENTAL_DRIVER_ENABLED=true` to enable the experimental feature. Most of the
+  standard Redis configuration fields (e.g.`REDIS_*`) can be used with the driver. Due to the
+  drivers better connection handling it no longer supports setting  `REDIS_SURGE_LIMIT_INTERVAL`,
+  `REDIS_SURGE_LIMIT_AFTER`, `REDIS_SURGE_POOL_SIZE`, `REDIS_SURGE_POOL_DRAIN_INTERVAL`.
+Note: Other
+  Ambassador Edge Stack features such as the `RateLimitService` will continue to use the current
+  Redis driver and in future releases we plan to roll out the new driver for those features as well.
+
 ## [2.3.2] TBD
 [2.3.2]: https://github.com/datawire/edge-stack/releases/v2.3.2
 

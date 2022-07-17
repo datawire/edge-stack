@@ -57,6 +57,21 @@ items:
           and <code>/.ambassador/oauth2/multicookie</code> did not understand CORS or CORS preflight request
           which would cause the browser to reject the request. This has now been fixed and these endpoints will
           attach the appropriate CORS headers to the response.
+      - title: A new experimental Redis driver for use with Authentication Filters
+        type: feature
+        body: >-
+          A new opt-in feature flag has been added that allows $productName$ to use a new Redis 
+          driver when storing state between requests for the Authentication Filters. The new driver has 
+          better connection pool handling, shares connections and supports the Redis RESP3 protocol. 
+
+          Set <code>AES_REDIS_EXPERIMENTAL_DRIVER_ENABLED=true</code> to enable the experimental feature.
+          Most of the standard Redis configuration fields (e.g.<code>REDIS_*</code>) can be used with the driver.
+          Due to the drivers better connection handling it no longer supports setting 
+          <code>REDIS_SURGE_LIMIT_INTERVAL</code>, <code>REDIS_SURGE_LIMIT_AFTER</code>, <code>REDIS_SURGE_POOL_SIZE</code>,
+          <code>REDIS_SURGE_POOL_DRAIN_INTERVAL</code>.
+
+          Note: Other $productName$ features such as the <code>RateLimitService</code> will continue to use the current
+          Redis driver and in future releases we plan to roll out the new driver for those features as well.
   - version: 2.3.2
     date: 'TBD'
     notes:
