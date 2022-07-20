@@ -102,6 +102,7 @@ items:
         body: >-
           You can now define a new type of filter to enforce API Keys on top of your services,
           and provide a Kubernetes secrets as a source for the list of all the keys.
+        docs: topics/using/filters/apikeys
 
   - version: 3.0.0
     date: '2022-06-29'

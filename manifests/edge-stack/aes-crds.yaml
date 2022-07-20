@@ -881,8 +881,8 @@ spec:
                     type: string
                   keys:
                     items:
-                      description: APIKeyItem defines an API Key, and the secrets
-                        it is based on.
+                      description: APIKeyItem defines how to resolve the values of
+                        the keys.
                       properties:
                         secretName:
                           type: string
@@ -921,8 +921,8 @@ spec:
                     type: string
                   keys:
                     items:
-                      description: APIKeyItem defines an API Key, and the secrets
-                        it is based on.
+                      description: APIKeyItem defines how to resolve the values of
+                        the keys.
                       properties:
                         secretName:
                           type: string
