@@ -77,27 +77,7 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
-## [3.1.0] TBD
-[3.1.0]: https://github.com/datawire/edge-stack/releases/v3.1.0
-
-## Ambassador Edge Stack
-
-- Bugfix: When an `OAuth2` filter sets cookies for a `protectedOrigin`, it should set a cookie's "Secure"
-  flag to true for `https://` origins and false for `http://` origins.  However, for filters with
-  multiple origins, it set the cookie's flag based on the first origin listen in the Filter, rather
-  than the origin that the cookie is actually for.
-
-- Bugfix: When an `OAuth2` filter with multiple `protectedOrigins` needs to adjust the cookies for an active
-  login (which only happens when using a refresh token), it would erroneously redirect the web
-  browser to the last origin listed, rather than returning to the original URL.  This has been
-  fixed.
-
-- Bugfix: Previously, the `OAuth2` filter's known endpoints `/.ambassador/oauth2/logout` and
-  `/.ambassador/oauth2/multicookie` did not understand CORS or CORS preflight request which would
-  cause the browser to reject the request. This has now been fixed and these endpoints will attach
-  the appropriate CORS headers to the response.
-
-## [2.3.2] TBD
+## [2.3.2] 2022-08-01
 [2.3.2]: https://github.com/datawire/edge-stack/releases/v2.3.2
 
 ## Ambassador Edge Stack
@@ -117,31 +97,21 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   cause the browser to reject the request. This has now been fixed and these endpoints will attach
   the appropriate CORS headers to the response.
 
-## [3.0.0] 2022-06-29
-[3.0.0]: https://github.com/datawire/edge-stack/releases/v3.0.0
+- Bugfix: A regression was introduced in 2.3.0 causing the agent to miss some of the metrics coming from
+  emissary ingress before sending them to Ambassador cloud. This issue has been resolved to ensure
+  that all the nodes composing the emissary ingress cluster are reporting properly.
 
-## Ambassador Edge Stack
+- Security: Updated Golang to 1.17.12 to address the CVEs: CVE-2022-23806, CVE-2022-28327, CVE-2022-24675,
+  CVE-2022-24921, CVE-2022-23772.
 
-- Change: Ambassador Edge Stack is now built on top of Emissary-ingress 3.0.0 which updates Envoy Proxy from
-  v1.17 to v1.22. This provides Ambassador Edge Stack with the latest  security patches,
-  performances enhancments, and features offered by Envoy Proxy.  One notable change that will
-  effect users is the removal of support for  the V2 xDS tranport protocol. See the Emissary-ingress
-  changelog for more details.
+- Security: Updated Curl to 7.80.0-r2 to address the CVEs: CVE-2022-32207, CVE-2022-27782, CVE-2022-27781,
+  CVE-2022-27780.
 
-- Change: In Envoy Proxy 1.18, two behavior changes were made in the way headers are attached to request.
-  First, the `:scheme` header is now attached to upstream requests over HTTP/1.1 to align with
-  http/2 and is used by HTTP Filters. The second behavior change is that the `content-length: 0`
-  will no longer be added to upstream request that have no body.
+- Security: Updated openSSL-dev to 1.1.1q-r0 to address CVE-2022-2097.
 
-- Change: Ambassador Edge Stack no longer supports the xDS V2 transport protocol. `ExternalFilter`s
-  targeting `grpc` must not explicitly set the `protocol_version` to `v3`. If not set or if using an
-  unsupported protocol_version then an error will be returned. Before upgrading to 3.0.0 you should
-  ugrade to Ambassador Edge Stack v2.3  and test that your `ExternalFilter` works with the xDS v3
-  transport protocol.
+- Security: Updated ncurses to 1.1.1q-r0 to address CVE-2022-29458
 
-- Change: Since Ambassador Edge Stack no longer supports the xDS V2 transport protocol, the default Helm
-  Charts and Manifest explicilty set `protocol_version` to `v3` for  the `RateLimitService` and
-  `AuthService` provided by Ambassador Edge Stack.
+- Security: Upgrade jwt-go to latest commit to resolve CVE-2020-26160.
 
 ## [2.3.1] 2022-06-09
 [2.3.1]: https://github.com/datawire/edge-stack/releases/v2.3.1
