@@ -350,6 +350,9 @@ rules:
 - apiGroups: ['']
   resources: [configmaps]
   verbs: [get, list, watch]
+- apiGroups: ['']
+  resources: [secrets]
+  verbs: [get, create, delete, patch]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
 apiVersion: rbac.authorization.k8s.io/v1
