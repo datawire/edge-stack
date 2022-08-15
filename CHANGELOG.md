@@ -77,6 +77,15 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [3.2.0] TBD
+[3.2.0]: https://github.com/datawire/edge-stack/releases/v3.2.0
+
+## Ambassador Edge Stack
+
+- Change: The envoy version included in Ambassador Edge Stack has been upgraded from 1.22 to the latest
+  patch release of 1.23. This provides Ambassador Edge Stack with the latest security patches,
+  performances enhancments, and features offered by the envoy proxy.
+
 ## [3.1.0] 2022-08-01
 [3.1.0]: https://github.com/datawire/edge-stack/releases/v3.1.0
 
