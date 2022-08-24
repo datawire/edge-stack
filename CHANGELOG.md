@@ -77,6 +77,15 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.4.0] TBD
+[2.4.0]: https://github.com/datawire/edge-stack/releases/v2.4.0
+
+## Ambassador Edge Stack
+
+- Feature: Previously the `Host` resource could only use secrets that are in the namespace as the Host. The
+  `tlsSecret` field in the Host has a new subfield `namespace` that will allow the use of secrets
+  from different namespaces.
+
 ## [2.3.2] 2022-08-01
 [2.3.2]: https://github.com/datawire/edge-stack/releases/v2.3.2
 
