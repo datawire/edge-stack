@@ -273,7 +273,7 @@ spec:
       serviceAccountName: edge-stack-agent
       containers:
       - name: agent
-        image: docker.io/datawire/aes:2.3.2
+        image: docker.io/datawire/aes:2.4.0-rc.0
         imagePullPolicy: IfNotPresent
         command: [agent]
         ports:

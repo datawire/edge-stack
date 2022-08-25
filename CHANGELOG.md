@@ -86,6 +86,10 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   `tlsSecret` field in the Host has a new subfield `namespace` that will allow the use of secrets
   from different namespaces.
 
+- Change: Set `AMBASSADOR_EDS_BYPASS` to `true` to bypass EDS handling of endpoints and have endpoints be
+  inserted to clusters manually. This can help resolve with `503 UH` caused by certification
+  rotation relating to a delay between EDS + CDS. The default is `false`.
+
 ## [2.3.2] 2022-08-01
 [2.3.2]: https://github.com/datawire/edge-stack/releases/v2.3.2
 
