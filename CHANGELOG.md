@@ -96,6 +96,12 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   option. Set `failure_mode_deny: true`, then Envoy will  deny traffic when it is unable to
   communicate to the RateLimitService  returning a 500.
 
+- Bugfix: Previously, Ambassador Edge Stack would incorrectly include empty fields when converting a
+  FilterPolicy or ExternalFilter between versions. This would cause undesired state to be persisted
+  in k8s which would lead to validation issues when trying to kubectl apply the custom resource.
+  This fixes these issues to ensure the correct data is being persisted and roundtripped properly
+  between CRD versions.
+
 ## [3.1.0] 2022-08-01
 [3.1.0]: https://github.com/datawire/edge-stack/releases/v3.1.0
 

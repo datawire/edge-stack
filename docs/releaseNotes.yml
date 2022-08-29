@@ -59,6 +59,13 @@ items:
           deny traffic when it is unable to communicate to the RateLimitService 
           returning a 500.
         docs: https://www.getambassador.io/docs/edge-stack/latest/topics/running/services/rate-limit-service/
+      - title: Properly convert FilterPolicy and ExternalFilter between CRD versions
+        type: bugfix
+        body: >-
+          Previously, $productName$ would incorrectly include empty fields when converting a FilterPolicy
+          or ExternalFilter between versions. This would cause undesired state to be persisted in k8s which
+          would lead to validation issues when trying to kubectl apply the custom resource. This fixes these
+          issues to ensure the correct data is being persisted and roundtripped properly between CRD versions.
   - version: 3.1.0
     date: '2022-08-01'
     notes:
