@@ -90,6 +90,12 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   inserted to clusters manually. This can help resolve with `503 UH` caused by certification
   rotation relating to a delay between EDS + CDS. The default is `false`.
 
+- Bugfix: Previously, Ambassador Edge Stack would incorrectly include empty fields when converting a
+  FilterPolicy or ExternalFilter between versions. This would cause undesired state to be persisted
+  in k8s which would lead to validation issues when trying to kubectl apply the custom resource.
+  This fixes these issues to ensure the correct data is being persisted and roundtripped properly
+  between CRD versions.
+
 ## [2.3.2] 2022-08-01
 [2.3.2]: https://github.com/datawire/edge-stack/releases/v2.3.2
 

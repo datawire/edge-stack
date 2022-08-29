@@ -131,12 +131,17 @@ spec:
                             type: object
                             x-kubernetes-preserve-unknown-fields: true
                           ifRequestHeader:
+                            description: HeaderFieldSelector allows for matching on
+                              header fields using an exact match value or using a
+                              regular expression match.
                             properties:
                               name:
                                 type: string
                               negate:
                                 type: boolean
                               value:
+                                description: Value is an exact match, empty is a valid
+                                  value
                                 type: string
                               valueRegex:
                                 type: string
@@ -198,14 +203,21 @@ spec:
                             type: object
                             x-kubernetes-preserve-unknown-fields: true
                           ifRequestHeader:
+                            description: HeaderFieldSelector allows for matching on
+                              header fields using an exact match value or using a
+                              regular expression match.
                             properties:
                               name:
                                 type: string
                               negate:
                                 type: boolean
                               value:
+                                description: Value will do an exact match on header
+                                  value, empty is a valid value
                                 type: string
                               valueRegex:
+                                description: ValueRegex will do a match on the header
+                                  value based on the provide header regular expression
                                 type: string
                             required:
                             - name
@@ -545,12 +557,17 @@ spec:
                   useSessionCookies:
                     properties:
                       ifRequestHeader:
+                        description: HeaderFieldSelector allows for matching on header
+                          fields using an exact match value or using a regular expression
+                          match.
                         properties:
                           name:
                             type: string
                           negate:
                             type: boolean
                           value:
+                            description: Value is an exact match, empty is a valid
+                              value
                             type: string
                           valueRegex:
                             type: string
@@ -853,12 +870,17 @@ spec:
                   useSessionCookies:
                     properties:
                       ifRequestHeader:
+                        description: HeaderFieldSelector allows for matching on header
+                          fields using an exact match value or using a regular expression
+                          match.
                         properties:
                           name:
                             type: string
                           negate:
                             type: boolean
                           value:
+                            description: Value is an exact match, empty is a valid
+                              value
                             type: string
                           valueRegex:
                             type: string
@@ -1164,14 +1186,21 @@ spec:
                   useSessionCookies:
                     properties:
                       ifRequestHeader:
+                        description: HeaderFieldSelector allows for matching on header
+                          fields using an exact match value or using a regular expression
+                          match.
                         properties:
                           name:
                             type: string
                           negate:
                             type: boolean
                           value:
+                            description: Value will do an exact match on header value,
+                              empty is a valid value
                             type: string
                           valueRegex:
+                            description: ValueRegex will do a match on the header
+                              value based on the provide header regular expression
                             type: string
                         required:
                         - name
