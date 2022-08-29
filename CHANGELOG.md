@@ -92,8 +92,7 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 - Feature: A new opt-in feature flag has been added that allows Ambassador Edge Stack to use a new Redis 
   driver when storing state between requests for the OAuth2 Filter. The new driver has  better
-  connection pool handling, shares connections and supports the Redis RESP3 protocol. 
-Set
+  connection pool handling, shares connections and supports the Redis RESP3 protocol.  Set
   `AES_REDIS_EXPERIMENTAL_DRIVER_ENABLED=true` to enable the experimental feature. Most of the
   standard Redis configuration fields (e.g.`REDIS_*`) can be used with the driver. Howeever, due to
   the drivers better connection handling the new driver no longer supports setting 
