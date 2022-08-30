@@ -86,6 +86,10 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   patch release of 1.23. This provides Ambassador Edge Stack with the latest security patches,
   performances enhancments, and features offered by the envoy proxy.
 
+- Change: Set `AMBASSADOR_EDS_BYPASS` to `true` to bypass EDS handling of endpoints and have endpoints be
+  inserted to clusters manually. This can help resolve with `503 UH` caused by certification
+  rotation relating to a delay between EDS + CDS. The default is `false`.
+
 ## [3.1.0] 2022-08-01
 [3.1.0]: https://github.com/datawire/edge-stack/releases/v3.1.0
 
