@@ -90,6 +90,12 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   inserted to clusters manually. This can help resolve with `503 UH` caused by certification
   rotation relating to a delay between EDS + CDS. The default is `false`.
 
+- Feature: By default, when Envoy is unable to communicate with the configured RateLimitService then it will
+  allow traffic through. The  `RateLimitService` resource now exposes the  <a
+  href="https://www.envoyproxy.io/docs/envoy/v1.23.0/configuration/http/http_filters/rate_limit_filter">failure_mode_deny</a>
+  option. Set `failure_mode_deny: true`, then Envoy will  deny traffic when it is unable to
+  communicate to the RateLimitService  returning a 500.
+
 ## [3.1.0] 2022-08-01
 [3.1.0]: https://github.com/datawire/edge-stack/releases/v3.1.0
 

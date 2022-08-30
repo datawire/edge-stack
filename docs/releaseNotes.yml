@@ -48,6 +48,17 @@ items:
           Set <code>AMBASSADOR_EDS_BYPASS</code> to <code>true</code> to bypass EDS handling of endpoints and have endpoints be
           inserted to clusters manually. This can help resolve with <code>503 UH</code> caused by certification rotation relating to
           a delay between EDS + CDS. The default is <code>false</code>.
+      - title: Add failure_mode_deny option to the RateLimitService
+        type: feature
+        body: >-
+          By default, when Envoy is unable to communicate with the configured
+          RateLimitService then it will allow traffic through. The 
+          <code>RateLimitService</code> resource now exposes the 
+          <a href="https://www.envoyproxy.io/docs/envoy/v1.23.0/configuration/http/http_filters/rate_limit_filter">failure_mode_deny</a> 
+          option. Set <code>failure_mode_deny: true</code>, then Envoy will 
+          deny traffic when it is unable to communicate to the RateLimitService 
+          returning a 500.
+        docs: https://www.getambassador.io/docs/edge-stack/latest/topics/running/services/rate-limit-service/
   - version: 3.1.0
     date: '2022-08-01'
     notes:
