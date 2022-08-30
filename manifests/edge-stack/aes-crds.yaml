@@ -339,10 +339,10 @@ spec:
                 type: object
               JWT:
                 description: "FilterJWT \n Currently supported algorithms: \n - RSA
-                  \  * \"RS256\"   * \"RS384\"   * \"RS512\" - RSA-PSS   * \"PS256\"
-                  \  * \"PS384\"   * \"PS512\" - ECDSA   * \"ES256\"   * \"ES384\"
-                  \  * \"ES512\" - HMAC-SHA   * \"HS256\"   * \"HS384\"   * \"HS512\"
-                  - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go
+                  \  - \"RS256\"   - \"RS384\"   - \"RS512\" \n - RSA-PSS   - \"PS256\"
+                  \  - \"PS384\"   - \"PS512\" \n - ECDSA   - \"ES256\"   - \"ES384\"
+                  \  - \"ES512\" \n - HMAC-SHA   - \"HS256\"   - \"HS384\"   - \"HS512\"
+                  \n - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go
                   v3.2.0.  Keep this list in sync if we pull in a jwt-go update. More
                   algorithms can be added with jwt.RegistersigningMethod(). \n Haha,
                   JK, our JWKS parser only understands RSA keys."
@@ -647,10 +647,10 @@ spec:
                 type: object
               JWT:
                 description: "FilterJWT \n Currently supported algorithms: \n - RSA
-                  \  * \"RS256\"   * \"RS384\"   * \"RS512\" - RSA-PSS   * \"PS256\"
-                  \  * \"PS384\"   * \"PS512\" - ECDSA   * \"ES256\"   * \"ES384\"
-                  \  * \"ES512\" - HMAC-SHA   * \"HS256\"   * \"HS384\"   * \"HS512\"
-                  - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go
+                  \  - \"RS256\"   - \"RS384\"   - \"RS512\" \n - RSA-PSS   - \"PS256\"
+                  \  - \"PS384\"   - \"PS512\" \n - ECDSA   - \"ES256\"   - \"ES384\"
+                  \  - \"ES512\" \n - HMAC-SHA   - \"HS256\"   - \"HS384\"   - \"HS512\"
+                  \n - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go
                   v3.2.0.  Keep this list in sync if we pull in a jwt-go update. More
                   algorithms can be added with jwt.RegistersigningMethod(). \n Haha,
                   JK, our JWKS parser only understands RSA keys."
@@ -992,10 +992,10 @@ spec:
                 type: object
               JWT:
                 description: "FilterJWT \n Currently supported algorithms: \n - RSA
-                  \  * \"RS256\"   * \"RS384\"   * \"RS512\" - RSA-PSS   * \"PS256\"
-                  \  * \"PS384\"   * \"PS512\" - ECDSA   * \"ES256\"   * \"ES384\"
-                  \  * \"ES512\" - HMAC-SHA   * \"HS256\"   * \"HS384\"   * \"HS512\"
-                  - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go
+                  \  - \"RS256\"   - \"RS384\"   - \"RS512\" \n - RSA-PSS   - \"PS256\"
+                  \  - \"PS384\"   - \"PS512\" \n - ECDSA   - \"ES256\"   - \"ES384\"
+                  \  - \"ES512\" \n - HMAC-SHA   - \"HS256\"   - \"HS384\"   - \"HS512\"
+                  \n - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go
                   v3.2.0.  Keep this list in sync if we pull in a jwt-go update. More
                   algorithms can be added with jwt.RegistersigningMethod(). \n Haha,
                   JK, our JWKS parser only understands RSA keys."
