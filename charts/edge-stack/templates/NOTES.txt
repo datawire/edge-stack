@@ -1,20 +1,21 @@
 -------------------------------------------------------------------------------
-Congratulations! You have successfully installed The Ambassador Edge Stack!
+Congratulations! You have successfully installed Ambassador Edge Stack!
 
 {{- if empty .Values.licenseKey.value }}
 -------------------------------------------------------------------------------
-NOTE: You are currently running The Ambassador Edge Stack in EVALUATION MODE.
+NOTE: You are currently running Ambassador Edge Stack in EVALUATION MODE.
 
-Request a free community license key at https://SERVICE_IP/edge_stack_admin/#dashboard
-to unlock all the features of The Ambassador Edge Stack and update the value of
-licenseKey.value in your values.yaml file.
+Create an account at https://app.getambassador.io/cloud/ and you can request a free community 
+license key to unlock all the features of Ambassador Edge Stack after you connect your cluster to 
+the cloud.
+
 {{- end }}
 
 {{- if or .Values.authService.create .Values.rateLimit.create }}
 -------------------------------------------------------------------------------
 NOTICE:
 
-With your installation of the Ambassador Edge Stack, you have created a:
+With your installation of Ambassador Edge Stack, you have created a:
 {{ if .Values.authService.create }}
 - AuthService named {{include "ambassador.fullname" .}}-auth
 {{ end }} {{ if .Values.rateLimit.create }}
