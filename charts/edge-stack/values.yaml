@@ -70,7 +70,7 @@ emissary-ingress: # +doc-gen:break
 
   image:
     repository: docker.io/datawire/aes
-    tag: 2.4.0
+    tag: 3.2.0-rc.1
     pullPolicy: IfNotPresent
 
 rbac:
@@ -150,6 +150,14 @@ redis:
   nodeSelector: {}
   affinity: {}
   tolerations: {}
+  # Arguments for the redis container
+  containerArgs: {}
+  #  - arg1
+  #  - arg2
+  # Secrets used for pulling the redis image from a private repo
+  imagePullSecrets: {}
+  #  - name: example-secret-1
+  #  - name: example-secret-2
 
 
 # Configures the AuthService that ships with the Ambassador Edge Stack.

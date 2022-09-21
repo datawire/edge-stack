@@ -77,6 +77,7 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+<<<<<<< HEAD
 ## [2.4.0] 2022-09-19
 [2.4.0]: https://github.com/datawire/edge-stack/releases/v2.4.0
 
@@ -85,17 +86,122 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 - Feature: Previously the `Host` resource could only use secrets that are in the namespace as the Host. The
   `tlsSecret` field in the Host has a new subfield `namespace` that will allow the use of secrets
   from different namespaces.
+=======
+## [3.2.0] TBD
+[3.2.0]: https://github.com/datawire/edge-stack/releases/v3.2.0
+
+## Ambassador Edge Stack
+
+- Change: The envoy version included in Ambassador Edge Stack has been upgraded from 1.22 to the latest
+  patch release of 1.23. This provides Ambassador Edge Stack with the latest security patches,
+  performances enhancments, and features offered by the envoy proxy.
+>>>>>>> master
 
 - Change: Set `AMBASSADOR_EDS_BYPASS` to `true` to bypass EDS handling of endpoints and have endpoints be
   inserted to clusters manually. This can help resolve with `503 UH` caused by certification
   rotation relating to a delay between EDS + CDS. The default is `false`.
 
+<<<<<<< HEAD
+=======
+- Feature: By default, when Envoy is unable to communicate with the configured RateLimitService then it will
+  allow traffic through. The  `RateLimitService` resource now exposes the  <a
+  href="https://www.envoyproxy.io/docs/envoy/v1.23.0/configuration/http/http_filters/rate_limit_filter">failure_mode_deny</a>
+  option. Set `failure_mode_deny: true`, then Envoy will  deny traffic when it is unable to
+  communicate to the RateLimitService  returning a 500.
+
+>>>>>>> master
 - Bugfix: Previously, Ambassador Edge Stack would incorrectly include empty fields when converting a
   FilterPolicy or ExternalFilter between versions. This would cause undesired state to be persisted
   in k8s which would lead to validation issues when trying to kubectl apply the custom resource.
   This fixes these issues to ensure the correct data is being persisted and roundtripped properly
   between CRD versions.
 
+<<<<<<< HEAD
+=======
+## [3.1.0] 2022-08-01
+[3.1.0]: https://github.com/datawire/edge-stack/releases/v3.1.0
+
+## Ambassador Edge Stack
+
+- Feature: A new `Fitler` has been added to support validating APIKey's on incoming requests. The new
+  `APIKeyFilter` when applied with a `FilterPolicy` will check to  see if the incoming requests has
+  a valid API Key in the request header. Ambassador Edge Stack uses Kubernetes `Secret`'s to lookup
+  valid keys for authorizing requests.
+
+- Feature: Emissary-ingress has been taught to watch for APIKey secrets when Ambassador Edge Stack is running
+  and makes them available to be used with the new `APIKeyFilter`.
+
+- Feature: A new opt-in feature flag has been added that allows Ambassador Edge Stack to use a new Redis 
+  driver when storing state between requests for the OAuth2 Filter. The new driver has  better
+  connection pool handling, shares connections and supports the Redis RESP3 protocol.  Set
+  `AES_REDIS_EXPERIMENTAL_DRIVER_ENABLED=true` to enable the experimental feature. Most of the
+  standard Redis configuration fields (e.g.`REDIS_*`) can be used with the driver. Howeever, due to
+  the drivers better connection handling the new driver no longer supports setting 
+  `REDIS_SURGE_LIMIT_INTERVAL`, `REDIS_SURGE_LIMIT_AFTER`, `REDIS_SURGE_POOL_SIZE`,
+  `REDIS_SURGE_POOL_DRAIN_INTERVAL` and these will be ignored.
+Note: Other Ambassador Edge Stack
+  features such as the `RateLimitService` will continue to use the current Redis driver and in
+  future releases we plan to roll out the new driver for those features as well.
+
+- Change: If Ambassador Edge Stack is running then Emissary-ingress ensures that only a single
+  RateLimitService is active. If a user doesn't provide one or provides an invalid one then a
+  synthetic RateLimitService will be injected. If the `protocol_version` field is not set or set to
+  an invalid value then it will automatically get upgraded `protocol_version: v3`. 
+This matches the
+  existing behavior that was introduced in Ambassador Edge Stack v3.0.0 for the  `AuthService`. For
+  new installs a valid `RateLimitService` will be added but this  change ensures a smooth upgrade
+  from Ambassador Edge Stack to v2.3.Z to v3.Y for users who use the manifest in a GitOps scenario.
+
+- Feature: The agent is now able to parse api contracts using swagger 2, and to convert them to OpenAPI 3,
+  making them available for use in the dev portal.
+
+- Change: In the standard published `.yaml` files, the `Module` resource enables serving remote client
+  requests to the `:8877/ambassador/v0/diag/` endpoint. The associated Helm chart release also now
+  enables it by default.
+
+- Bugfix: When an `OAuth2` filter sets cookies for a `protectedOrigin`, it should set a cookie's "Secure"
+  flag to true for `https://` origins and false for `http://` origins.  However, for filters with
+  multiple origins, it set the cookie's flag based on the first origin listen in the Filter, rather
+  than the origin that the cookie is actually for.
+
+- Bugfix: When an `OAuth2` filter with multiple `protectedOrigins` needs to adjust the cookies for an active
+  login (which only happens when using a refresh token), it would erroneously redirect the web
+  browser to the last origin listed, rather than returning to the original URL.  This has been
+  fixed.
+
+- Bugfix: Previously, the `OAuth2` filter's known endpoints `/.ambassador/oauth2/logout` and
+  `/.ambassador/oauth2/multicookie` did not understand CORS or CORS preflight request which would
+  cause the browser to reject the request. This has now been fixed and these endpoints will attach
+  the appropriate CORS headers to the response.
+
+- Bugfix: A regression was introduced in 2.3.0 causing the agent to miss some of the metrics coming from
+  emissary ingress before sending them to Ambassador cloud. This issue has been resolved to ensure
+  that all the nodes composing the emissary ingress cluster are reporting properly.
+
+- Bugfix: Previously, we would inject an upstream route for acme-challenge that was targeting the localhost
+  auth service cluster. This route is injected to make Envoy configuration happy and the AuthService
+  that is shipped with Ambassador Edge Stack will handle it properly. However, if the cluster name
+  is longer than 60 characters due to a long namespace, etc... then Ambassador Edge Stack will
+  truncate it and make  sure it is unique. When this happens the name of the cluster assigned to the
+  acme-challenge route would get out-of-sync and would introduce invalid Envoy configuration. 
+To
+  avoid this Ambassador Edge Stack will now inject a route that returns a direct `404` response
+  rather than pointing at an arbitrary cluster. This matches existing behavior and is a transparent
+  change to the user.
+
+- Security: Updated Golang to 1.17.12 to address the CVEs: CVE-2022-23806, CVE-2022-28327, CVE-2022-24675,
+  CVE-2022-24921, CVE-2022-23772.
+
+- Security: Updated Curl to 7.80.0-r2 to address the CVEs: CVE-2022-32207, CVE-2022-27782, CVE-2022-27781,
+  CVE-2022-27780.
+
+- Security: Updated openSSL-dev to 1.1.1q-r0 to address CVE-2022-2097.
+
+- Security: Updated ncurses to 1.1.1q-r0 to address CVE-2022-29458
+
+- Security: Upgrade jwt-go to latest commit to resolve CVE-2020-26160.
+
+>>>>>>> master
 ## [2.3.2] 2022-08-01
 [2.3.2]: https://github.com/datawire/edge-stack/releases/v2.3.2
 
@@ -132,6 +238,35 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 - Security: Upgrade jwt-go to latest commit to resolve CVE-2020-26160.
 
+<<<<<<< HEAD
+=======
+## [3.0.0] 2022-06-29
+[3.0.0]: https://github.com/datawire/edge-stack/releases/v3.0.0
+
+## Ambassador Edge Stack
+
+- Change: Ambassador Edge Stack is now built on top of Emissary-ingress 3.0.0 which updates Envoy Proxy from
+  v1.17 to v1.22. This provides Ambassador Edge Stack with the latest  security patches,
+  performances enhancments, and features offered by Envoy Proxy.  One notable change that will
+  effect users is the removal of support for  the V2 xDS tranport protocol. See the Emissary-ingress
+  changelog for more details.
+
+- Change: In Envoy Proxy 1.18, two behavior changes were made in the way headers are attached to request.
+  First, the `:scheme` header is now attached to upstream requests over HTTP/1.1 to align with
+  http/2 and is used by HTTP Filters. The second behavior change is that the `content-length: 0`
+  will no longer be added to upstream request that have no body.
+
+- Change: Ambassador Edge Stack no longer supports the xDS V2 transport protocol. `ExternalFilter`s
+  targeting `grpc` must not explicitly set the `protocol_version` to `v3`. If not set or if using an
+  unsupported protocol_version then an error will be returned. Before upgrading to 3.0.0 you should
+  ugrade to Ambassador Edge Stack v2.3  and test that your `ExternalFilter` works with the xDS v3
+  transport protocol.
+
+- Change: Since Ambassador Edge Stack no longer supports the xDS V2 transport protocol, the default Helm
+  Charts and Manifest explicilty set `protocol_version` to `v3` for  the `RateLimitService` and
+  `AuthService` provided by Ambassador Edge Stack.
+
+>>>>>>> master
 ## [2.3.1] 2022-06-09
 [2.3.1]: https://github.com/datawire/edge-stack/releases/v2.3.1
 

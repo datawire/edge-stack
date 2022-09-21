@@ -32,6 +32,155 @@
 
 changelog: https://github.com/datawire/edge-stack/blob/$branch$/CHANGELOG.md
 items:
+  - version: 3.2.0
+    date: 'TBD'
+    notes:
+      - title: Envoy upgraded to 1.23
+        type: change
+        body: >-
+          The envoy version included in $productName$ has been upgraded from 1.22 to the latest patch
+          release of 1.23. This provides $productName$ with the latest security patches, performances enhancments,
+          and features offered by the envoy proxy.
+        docs: https://www.envoyproxy.io/docs/envoy/latest/version_history/v1.23/v1.23.0
+      - title: Allow bypassing of EDS for manual endpoint insertion
+        type: change
+        body: >-
+          Set <code>AMBASSADOR_EDS_BYPASS</code> to <code>true</code> to bypass EDS handling of endpoints and have endpoints be
+          inserted to clusters manually. This can help resolve with <code>503 UH</code> caused by certification rotation relating to
+          a delay between EDS + CDS. The default is <code>false</code>.
+      - title: Add failure_mode_deny option to the RateLimitService
+        type: feature
+        body: >-
+          By default, when Envoy is unable to communicate with the configured
+          RateLimitService then it will allow traffic through. The 
+          <code>RateLimitService</code> resource now exposes the 
+          <a href="https://www.envoyproxy.io/docs/envoy/v1.23.0/configuration/http/http_filters/rate_limit_filter">failure_mode_deny</a> 
+          option. Set <code>failure_mode_deny: true</code>, then Envoy will 
+          deny traffic when it is unable to communicate to the RateLimitService 
+          returning a 500.
+        docs: https://www.getambassador.io/docs/edge-stack/latest/topics/running/services/rate-limit-service/
+      - title: Properly convert FilterPolicy and ExternalFilter between CRD versions
+        type: bugfix
+        body: >-
+          Previously, $productName$ would incorrectly include empty fields when converting a FilterPolicy
+          or ExternalFilter between versions. This would cause undesired state to be persisted in k8s which
+          would lead to validation issues when trying to kubectl apply the custom resource. This fixes these
+          issues to ensure the correct data is being persisted and roundtripped properly between CRD versions.
+  - version: 3.1.0
+    date: '2022-08-01'
+    notes:
+      - title: Add new Filter to support authenticating APIKey's
+        type: feature
+        body: >-
+          A new <code>Fitler</code> has been added to support validating APIKey's on incoming requests.
+          The new <code>APIKeyFilter</code> when applied with a <code>FilterPolicy</code> will check to 
+          see if the incoming requests has a valid API Key in the request header. $productName$ uses
+          Kubernetes <code>Secret</code>'s to lookup valid keys for authorizing requests.
+      - title: Add support to watch for secrets with APIKey's
+        type: feature
+        body: >-
+          Emissary-ingress has been taught to watch for APIKey secrets when $productName$ is running and
+          makes them available to be used with the new <code>APIKeyFilter</code>.
+      - title: A new experimental Redis driver for use with the OAuth2 Filter
+        type: feature
+        body: >-
+          A new opt-in feature flag has been added that allows $productName$ to use a new Redis 
+          driver when storing state between requests for the OAuth2 Filter. The new driver has 
+          better connection pool handling, shares connections and supports the Redis RESP3 protocol. 
+          Set <code>AES_REDIS_EXPERIMENTAL_DRIVER_ENABLED=true</code> to enable the experimental feature.
+          Most of the standard Redis configuration fields (e.g.<code>REDIS_*</code>) can be used with the driver.
+          Howeever, due to the drivers better connection handling the new driver no longer supports setting 
+          <code>REDIS_SURGE_LIMIT_INTERVAL</code>, <code>REDIS_SURGE_LIMIT_AFTER</code>, <code>REDIS_SURGE_POOL_SIZE</code>,
+          <code>REDIS_SURGE_POOL_DRAIN_INTERVAL</code> and these will be ignored.
+
+          Note: Other $productName$ features such as the <code>RateLimitService</code> will continue to use the current
+          Redis driver and in future releases we plan to roll out the new driver for those features as well.
+      - title: Add support for injecting a valid synthetic RateLimitService
+        type: change
+        body: >-
+          If $productName$ is running then Emissary-ingress ensures that only a single RateLimitService is active.
+          If a user doesn't provide one or provides an invalid one then a synthetic RateLimitService will be
+          injected. If the <code>protocol_version</code> field is not set or set to an invalid value then it will
+          automatically get upgraded <code>protocol_version: v3</code>. 
+          
+          This matches the existing behavior that was introduced in $productName$ v3.0.0 for the 
+          <code>AuthService</code>. For new installs a valid <code>RateLimitService</code> will be added but this 
+          change ensures a smooth upgrade from $productName$ to v2.3.Z to v3.Y for users who use the manifest
+          in a GitOps scenario.
+      - title: Add Agent support for OpenAPI 2 contracts
+        type: feature
+        body: >-
+          The agent is now able to parse api contracts using swagger 2, and to convert them to OpenAPI 3, making them
+          available for use in the dev portal.
+      - title: Default YAML enables the diagnostics interface from non-local clients on the admin service port
+        type: change
+        body: >-
+          In the standard published <code>.yaml</code> files, the <code>Module</code> resource enables serving
+          remote client requests to the <code>:8877/ambassador/v0/diag/</code> endpoint.
+          The associated Helm chart release also now enables it by default.
+      - title: Correct cookies for mixed HTTP/HTTPS OAuth2 origins
+        type: bugfix
+        body: >-
+          When an <code>OAuth2</code> filter sets cookies for a <code>protectedOrigin</code>, it
+          should set a cookie's "Secure" flag to true for <code>https://</code> origins and false
+          for <code>http://</code> origins.  However, for filters with multiple origins, it set the
+          cookie's flag based on the first origin listen in the Filter, rather than the origin that
+          the cookie is actually for.
+      - title: Correctly handle refresh tokens for OAuth2 filters with multiple origins
+        type: bugfix
+        body: >-
+          When an <code>OAuth2</code> filter with multiple <code>protectedOrigins</code> needs to
+          adjust the cookies for an active login (which only happens when using a refresh token), it
+          would erroneously redirect the web browser to the last origin listed, rather than
+          returning to the original URL.  This has been fixed.
+      - title: Correctly handle CORS and CORs preflight request within the OAuth2 Fitler known endpoints
+        type: bugfix
+        body: >-
+          Previously, the <code>OAuth2</code> filter's known endpoints <code>/.ambassador/oauth2/logout</code>
+          and <code>/.ambassador/oauth2/multicookie</code> did not understand CORS or CORS preflight request
+          which would cause the browser to reject the request. This has now been fixed and these endpoints will
+          attach the appropriate CORS headers to the response.
+      - title: Fix regression in the agent for the metrics transfer.
+        type: bugfix
+        body: >-
+          A regression was introduced in 2.3.0 causing the agent to miss some of the metrics coming from
+          emissary ingress before sending them to Ambassador cloud. This issue has been resolved to ensure
+          that all the nodes composing the emissary ingress cluster are reporting properly.
+      - title: Handle long cluster names for injected acme-challenge route.
+        type: bugfix
+        body: >-
+          Previously, we would inject an upstream route for acme-challenge that was targeting the localhost
+          auth service cluster. This route is injected to make Envoy configuration happy and the AuthService
+          that is shipped with $productName$ will handle it properly. However, if the cluster name is longer
+          than 60 characters due to a long namespace, etc... then $productName$ will truncate it and make 
+          sure it is unique. When this happens the name of the cluster assigned to the acme-challenge route
+          would get out-of-sync and would introduce invalid Envoy configuration. 
+
+          To avoid this $productName$ will now inject a route that returns a direct <code>404</code> response
+          rather than pointing at an arbitrary cluster. This matches existing behavior and is a transparent
+          change to the user.
+      - title: Update Golang to 1.17.12
+        type: security
+        body: >-
+          Updated Golang to 1.17.12 to address the CVEs: CVE-2022-23806, CVE-2022-28327, CVE-2022-24675,
+          CVE-2022-24921, CVE-2022-23772.
+      - title: Update Curl to 7.80.0-r2
+        type: security
+        body: >-
+          Updated Curl to 7.80.0-r2 to address the CVEs: CVE-2022-32207, CVE-2022-27782, CVE-2022-27781,
+          CVE-2022-27780.
+      - title: Update openSSL-dev to 1.1.1q-r0
+        type: security
+        body: >-
+          Updated openSSL-dev to 1.1.1q-r0 to address CVE-2022-2097.
+      - title: Update ncurses to 1.1.1q-r0
+        type: security
+        body: >-
+          Updated ncurses to 1.1.1q-r0 to address CVE-2022-29458
+      - title: Upgrade jwt-go
+        type: security
+        body: >-
+          Upgrade jwt-go to latest commit to resolve CVE-2020-26160.
   - version: 2.4.0
     date: '2022-09-19'
     notes:
@@ -107,6 +256,45 @@ items:
         type: security
         body: >-
           Upgrade jwt-go to latest commit to resolve CVE-2020-26160.
+<<<<<<< HEAD
+=======
+
+  - version: 3.0.0
+    date: '2022-06-29'
+    notes:
+      - title: upgrade to Emissary-ingress 3.0.0
+        type: change
+        body: >-
+          $productName$ is now built on top of Emissary-ingress 3.0.0 which updates
+          Envoy Proxy from v1.17 to v1.22. This provides $productName$ with the latest 
+          security patches, performances enhancments, and features offered by Envoy Proxy. 
+          One notable change that will effect users is the removal of support for 
+          the V2 xDS tranport protocol. See the Emissary-ingress changelog for more details.
+        docs: https://github.com/emissary-ingress/emissary/blob/master/CHANGELOG.md
+      - title: Envoy http header behavior change
+        type: change
+        body: >-
+          In Envoy Proxy 1.18, two behavior changes were made in the way headers are attached
+          to request. First, the `:scheme` header is now attached to upstream requests over
+          HTTP/1.1 to align with http/2 and is used by HTTP Filters. The second behavior change
+          is that the `content-length: 0` will no longer be added to upstream request that
+          have no body.
+        docs: https://www.envoyproxy.io/docs/envoy/latest/version_history/v1.18/v1.18.0.html
+      - title: Remove xDS V2 support in ExternalFilter
+        type: change
+        body: >-
+          $productName$ no longer supports the xDS V2 transport protocol. `ExternalFilter`s
+          targeting <code>grpc</code> must not explicitly set the <code>protocol_version</code>
+          to <code>v3</code>. If not set or if using an unsupported protocol_version then an
+          error will be returned. Before upgrading to 3.0.0 you should ugrade to $productName$ v2.3 
+          and test that your <code>ExternalFilter</code> works with the xDS v3 transport protocol.
+      - title: Helm chart and manifest set protocol_version to v3
+        type: change
+        body: >-
+          Since $productName$ no longer supports the xDS V2 transport protocol, the default Helm
+          Charts and Manifest explicilty set <code>protocol_version</code> to <code>v3</code> for 
+          the <code>RateLimitService</code> and <code>AuthService</code> provided by $productName$.
+>>>>>>> master
   - version: 2.3.1
     date: '2022-06-09'
     notes:

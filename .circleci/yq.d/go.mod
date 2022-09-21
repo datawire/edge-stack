@@ -1,6 +1,6 @@
 module github.com/datawire/build-aux/bin-go/yq
 
-go 1.17
+go 1.19
 
 require github.com/mikefarah/yq/v4 v4.25.1
 
