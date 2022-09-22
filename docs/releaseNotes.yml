@@ -66,6 +66,14 @@ items:
           or ExternalFilter between versions. This would cause undesired state to be persisted in k8s which
           would lead to validation issues when trying to kubectl apply the custom resource. This fixes these
           issues to ensure the correct data is being persisted and roundtripped properly between CRD versions.
+      - title: Add Post Logout Redirect URI support for Oauth2 Filter
+        type: feature
+        body: >- 
+          You may now define (on supported IDPs) a <code>postLogoutRedirectURI</code> to your <code>Oauth2</code> filter. 
+          This will allow you to redirect to a specific URI upon logging out. However, in order to achieve this you must 
+          define your IDP logout URL to <code>https:{{host}}/.ambassador/oauth2/post-logout-redirect</code>. Upon logout 
+          $productName$ will redirect to the custom URI which will then redirect to the URI you have defined in <code>postLogoutRedirectURI</code>.
+        docs: topics/using/filters/oauth2
   - version: 3.1.0
     date: '2022-08-01'
     notes:

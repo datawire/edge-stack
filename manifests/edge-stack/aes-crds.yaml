@@ -890,6 +890,8 @@ spec:
                       value:
                         type: boolean
                     type: object
+                  v3postLogoutRedirectURI:
+                    type: string
                 type: object
               Plugin:
                 properties:
@@ -1191,6 +1193,8 @@ spec:
                   insecureTLS:
                     type: boolean
                   maxStale:
+                    type: string
+                  postLogoutRedirectURI:
                     type: string
                   protectedOrigins:
                     items:

@@ -102,6 +102,12 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
   This fixes these issues to ensure the correct data is being persisted and roundtripped properly
   between CRD versions.
 
+- Feature: You may now define (on supported IDPs) a `postLogoutRedirectURI` to your `Oauth2` filter.  This
+  will allow you to redirect to a specific URI upon logging out. However, in order to achieve this
+  you must  define your IDP logout URL to `https:{{host}}/.ambassador/oauth2/post-logout-redirect`.
+  Upon logout  Ambassador Edge Stack will redirect to the custom URI which will then redirect to the
+  URI you have defined in `postLogoutRedirectURI`.
+
 ## [3.1.0] 2022-08-01
 [3.1.0]: https://github.com/datawire/edge-stack/releases/v3.1.0
 
