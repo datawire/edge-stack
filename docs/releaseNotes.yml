@@ -189,6 +189,63 @@ items:
         type: security
         body: >-
           Upgrade jwt-go to latest commit to resolve CVE-2020-26160.
+  - version: 3.0.0
+    date: '2022-06-29'
+    notes:
+      - title: upgrade to Emissary-ingress 3.0.0
+        type: change
+        body: >-
+          $productName$ is now built on top of Emissary-ingress 3.0.0 which updates
+          Envoy Proxy from v1.17 to v1.22. This provides $productName$ with the latest
+          security patches, performances enhancments, and features offered by Envoy Proxy.
+          One notable change that will effect users is the removal of support for
+          the V2 xDS tranport protocol. See the Emissary-ingress changelog for more details.
+        docs: https://github.com/emissary-ingress/emissary/blob/master/CHANGELOG.md
+      - title: Envoy http header behavior change
+        type: change
+        body: >-
+          In Envoy Proxy 1.18, two behavior changes were made in the way headers are attached
+          to request. First, the `:scheme` header is now attached to upstream requests over
+          HTTP/1.1 to align with http/2 and is used by HTTP Filters. The second behavior change
+          is that the `content-length: 0` will no longer be added to upstream request that
+          have no body.
+        docs: https://www.envoyproxy.io/docs/envoy/latest/version_history/v1.18/v1.18.0.html
+      - title: Remove xDS V2 support in ExternalFilter
+        type: change
+        body: >-
+          $productName$ no longer supports the xDS V2 transport protocol. `ExternalFilter`s
+          targeting <code>grpc</code> must not explicitly set the <code>protocol_version</code>
+          to <code>v3</code>. If not set or if using an unsupported protocol_version then an
+          error will be returned. Before upgrading to 3.0.0 you should ugrade to $productName$ v2.3 
+          and test that your <code>ExternalFilter</code> works with the xDS v3 transport protocol.
+      - title: Helm chart and manifest set protocol_version to v3
+        type: change
+        body: >-
+          Since $productName$ no longer supports the xDS V2 transport protocol, the default Helm
+          Charts and Manifest explicilty set <code>protocol_version</code> to <code>v3</code> for
+          the <code>RateLimitService</code> and <code>AuthService</code> provided by $productName$.
+  - version: 2.4.0
+    date: '2022-09-19'
+    notes:
+      - title: Add support for Host resources using secrets from different namespaces
+        type: feature
+        body: >-
+          Previously the <code>Host</code> resource could only use secrets that are in the namespace as the
+          Host. The <code>tlsSecret</code> field in the Host has a new subfield <code>namespace</code> that will allow
+          the use of secrets from different namespaces.
+      - title: Allow bypassing of EDS for manual endpoint insertion
+        type: change
+        body: >-
+          Set `AMBASSADOR_EDS_BYPASS` to `true` to bypass EDS handling of endpoints and have endpoints be
+          inserted to clusters manually. This can help resolve with `503 UH` caused by certification rotation relating to
+          a delay between EDS + CDS. The default is `false`.
+      - title: Properly convert FilterPolicy and ExternalFilter between CRD versions
+        type: bugfix
+        body: >-
+          Previously, $productName$ would incorrectly include empty fields when converting a FilterPolicy
+          or ExternalFilter between versions. This would cause undesired state to be persisted in k8s which
+          would lead to validation issues when trying to kubectl apply the custom resource. This fixes these
+          issues to ensure the correct data is being persisted and roundtripped properly between CRD versions.
   - version: 2.3.2
     date: '2022-08-01'
     notes:
@@ -242,42 +299,6 @@ items:
         type: security
         body: >-
           Upgrade jwt-go to latest commit to resolve CVE-2020-26160.
-
-  - version: 3.0.0
-    date: '2022-06-29'
-    notes:
-      - title: upgrade to Emissary-ingress 3.0.0
-        type: change
-        body: >-
-          $productName$ is now built on top of Emissary-ingress 3.0.0 which updates
-          Envoy Proxy from v1.17 to v1.22. This provides $productName$ with the latest 
-          security patches, performances enhancments, and features offered by Envoy Proxy. 
-          One notable change that will effect users is the removal of support for 
-          the V2 xDS tranport protocol. See the Emissary-ingress changelog for more details.
-        docs: https://github.com/emissary-ingress/emissary/blob/master/CHANGELOG.md
-      - title: Envoy http header behavior change
-        type: change
-        body: >-
-          In Envoy Proxy 1.18, two behavior changes were made in the way headers are attached
-          to request. First, the `:scheme` header is now attached to upstream requests over
-          HTTP/1.1 to align with http/2 and is used by HTTP Filters. The second behavior change
-          is that the `content-length: 0` will no longer be added to upstream request that
-          have no body.
-        docs: https://www.envoyproxy.io/docs/envoy/latest/version_history/v1.18/v1.18.0.html
-      - title: Remove xDS V2 support in ExternalFilter
-        type: change
-        body: >-
-          $productName$ no longer supports the xDS V2 transport protocol. `ExternalFilter`s
-          targeting <code>grpc</code> must not explicitly set the <code>protocol_version</code>
-          to <code>v3</code>. If not set or if using an unsupported protocol_version then an
-          error will be returned. Before upgrading to 3.0.0 you should ugrade to $productName$ v2.3 
-          and test that your <code>ExternalFilter</code> works with the xDS v3 transport protocol.
-      - title: Helm chart and manifest set protocol_version to v3
-        type: change
-        body: >-
-          Since $productName$ no longer supports the xDS V2 transport protocol, the default Helm
-          Charts and Manifest explicilty set <code>protocol_version</code> to <code>v3</code> for 
-          the <code>RateLimitService</code> and <code>AuthService</code> provided by $productName$.
   - version: 2.3.1
     date: '2022-06-09'
     notes:
