@@ -521,8 +521,9 @@ spec:
       serviceAccountName: edge-stack-agent
       containers:
       - name: agent
-        image: docker.io/ambassador/ambassador-agent:0.0.7
+        image: docker.io/emissaryingress/emissary:3.1.0
         imagePullPolicy: IfNotPresent
+        command: [agent]
         ports:
         - containerPort: 8080
           name: http
