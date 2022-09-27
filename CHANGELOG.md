@@ -77,6 +77,14 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.4.1] 2022-09-27
+[2.4.1]: https://github.com/datawire/edge-stack/releases/v2.4.1
+
+## Ambassador Edge Stack
+
+- Bugfix: During the Ambassador Edge Stack 2.4.0 release process there was an issue with the Emissary
+  binary. This has been patched and resolved.
+
 ## [2.4.0] 2022-09-19
 [2.4.0]: https://github.com/datawire/edge-stack/releases/v2.4.0
 
