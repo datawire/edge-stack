@@ -71,7 +71,8 @@ generate:
 
 generate-clean:
 	rm -rf $(generate/files)
-.PHONY: generate
+	rm -rf $(EDGE_STACK_HOME)/charts/edge-stack/charts/
+.PHONY: generate-clean
 
 $(EDGE_STACK_HOME)/CHANGELOG.md: $(EDGE_STACK_HOME)/docs/CHANGELOG.tpl $(EDGE_STACK_HOME)/docs/releaseNotes.yml
 	docker run --rm \

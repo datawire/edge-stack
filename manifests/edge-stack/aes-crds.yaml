@@ -131,12 +131,17 @@ spec:
                             type: object
                             x-kubernetes-preserve-unknown-fields: true
                           ifRequestHeader:
+                            description: HeaderFieldSelector allows for matching on
+                              header fields using an exact match value or using a
+                              regular expression match.
                             properties:
                               name:
                                 type: string
                               negate:
                                 type: boolean
                               value:
+                                description: Value is an exact match, empty is a valid
+                                  value
                                 type: string
                               valueRegex:
                                 type: string
@@ -198,14 +203,21 @@ spec:
                             type: object
                             x-kubernetes-preserve-unknown-fields: true
                           ifRequestHeader:
+                            description: HeaderFieldSelector allows for matching on
+                              header fields using an exact match value or using a
+                              regular expression match.
                             properties:
                               name:
                                 type: string
                               negate:
                                 type: boolean
                               value:
+                                description: Value will do an exact match on header
+                                  value, empty is a valid value
                                 type: string
                               valueRegex:
+                                description: ValueRegex will do a match on the header
+                                  value based on the provide header regular expression
                                 type: string
                             required:
                             - name
@@ -339,10 +351,10 @@ spec:
                 type: object
               JWT:
                 description: "FilterJWT \n Currently supported algorithms: \n - RSA
-                  \  * \"RS256\"   * \"RS384\"   * \"RS512\" - RSA-PSS   * \"PS256\"
-                  \  * \"PS384\"   * \"PS512\" - ECDSA   * \"ES256\"   * \"ES384\"
-                  \  * \"ES512\" - HMAC-SHA   * \"HS256\"   * \"HS384\"   * \"HS512\"
-                  - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go
+                  \  - \"RS256\"   - \"RS384\"   - \"RS512\" \n - RSA-PSS   - \"PS256\"
+                  \  - \"PS384\"   - \"PS512\" \n - ECDSA   - \"ES256\"   - \"ES384\"
+                  \  - \"ES512\" \n - HMAC-SHA   - \"HS256\"   - \"HS384\"   - \"HS512\"
+                  \n - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go
                   v3.2.0.  Keep this list in sync if we pull in a jwt-go update. More
                   algorithms can be added with jwt.RegistersigningMethod(). \n Haha,
                   JK, our JWKS parser only understands RSA keys."
@@ -545,12 +557,17 @@ spec:
                   useSessionCookies:
                     properties:
                       ifRequestHeader:
+                        description: HeaderFieldSelector allows for matching on header
+                          fields using an exact match value or using a regular expression
+                          match.
                         properties:
                           name:
                             type: string
                           negate:
                             type: boolean
                           value:
+                            description: Value is an exact match, empty is a valid
+                              value
                             type: string
                           valueRegex:
                             type: string
@@ -647,10 +664,10 @@ spec:
                 type: object
               JWT:
                 description: "FilterJWT \n Currently supported algorithms: \n - RSA
-                  \  * \"RS256\"   * \"RS384\"   * \"RS512\" - RSA-PSS   * \"PS256\"
-                  \  * \"PS384\"   * \"PS512\" - ECDSA   * \"ES256\"   * \"ES384\"
-                  \  * \"ES512\" - HMAC-SHA   * \"HS256\"   * \"HS384\"   * \"HS512\"
-                  - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go
+                  \  - \"RS256\"   - \"RS384\"   - \"RS512\" \n - RSA-PSS   - \"PS256\"
+                  \  - \"PS384\"   - \"PS512\" \n - ECDSA   - \"ES256\"   - \"ES384\"
+                  \  - \"ES512\" \n - HMAC-SHA   - \"HS256\"   - \"HS384\"   - \"HS512\"
+                  \n - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go
                   v3.2.0.  Keep this list in sync if we pull in a jwt-go update. More
                   algorithms can be added with jwt.RegistersigningMethod(). \n Haha,
                   JK, our JWKS parser only understands RSA keys."
@@ -853,12 +870,17 @@ spec:
                   useSessionCookies:
                     properties:
                       ifRequestHeader:
+                        description: HeaderFieldSelector allows for matching on header
+                          fields using an exact match value or using a regular expression
+                          match.
                         properties:
                           name:
                             type: string
                           negate:
                             type: boolean
                           value:
+                            description: Value is an exact match, empty is a valid
+                              value
                             type: string
                           valueRegex:
                             type: string
@@ -868,11 +890,30 @@ spec:
                       value:
                         type: boolean
                     type: object
+                  v3postLogoutRedirectURI:
+                    type: string
                 type: object
               Plugin:
                 properties:
                   name:
                     type: string
+                type: object
+              v3APIKey:
+                description: FilterAPIKey enforce a set of API Keys.
+                properties:
+                  httpHeader:
+                    type: string
+                  keys:
+                    items:
+                      description: APIKeyItem defines how to resolve the values of
+                        the keys.
+                      properties:
+                        secretName:
+                          type: string
+                      type: object
+                    type: array
+                required:
+                - keys
                 type: object
             type: object
             x-kubernetes-preserve-unknown-fields: true
@@ -897,6 +938,23 @@ spec:
             type: object
           spec:
             properties:
+              APIKey:
+                description: FilterAPIKey enforce a set of API Keys.
+                properties:
+                  httpHeader:
+                    type: string
+                  keys:
+                    items:
+                      description: APIKeyItem defines how to resolve the values of
+                        the keys.
+                      properties:
+                        secretName:
+                          type: string
+                      type: object
+                    type: array
+                required:
+                - keys
+                type: object
               External:
                 description: FilterExternal closely mimics AuthService.getambassador.io.
                 properties:
@@ -958,10 +1016,10 @@ spec:
                 type: object
               JWT:
                 description: "FilterJWT \n Currently supported algorithms: \n - RSA
-                  \  * \"RS256\"   * \"RS384\"   * \"RS512\" - RSA-PSS   * \"PS256\"
-                  \  * \"PS384\"   * \"PS512\" - ECDSA   * \"ES256\"   * \"ES384\"
-                  \  * \"ES512\" - HMAC-SHA   * \"HS256\"   * \"HS384\"   * \"HS512\"
-                  - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go
+                  \  - \"RS256\"   - \"RS384\"   - \"RS512\" \n - RSA-PSS   - \"PS256\"
+                  \  - \"PS384\"   - \"PS512\" \n - ECDSA   - \"ES256\"   - \"ES384\"
+                  \  - \"ES512\" \n - HMAC-SHA   - \"HS256\"   - \"HS384\"   - \"HS512\"
+                  \n - \"none\" \n This is this list of algos built-in to github.com/dgrijalva/jwt-go
                   v3.2.0.  Keep this list in sync if we pull in a jwt-go update. More
                   algorithms can be added with jwt.RegistersigningMethod(). \n Haha,
                   JK, our JWKS parser only understands RSA keys."
@@ -1136,6 +1194,8 @@ spec:
                     type: boolean
                   maxStale:
                     type: string
+                  postLogoutRedirectURI:
+                    type: string
                   protectedOrigins:
                     items:
                       properties:
@@ -1164,14 +1224,21 @@ spec:
                   useSessionCookies:
                     properties:
                       ifRequestHeader:
+                        description: HeaderFieldSelector allows for matching on header
+                          fields using an exact match value or using a regular expression
+                          match.
                         properties:
                           name:
                             type: string
                           negate:
                             type: boolean
                           value:
+                            description: Value will do an exact match on header value,
+                              empty is a valid value
                             type: string
                           valueRegex:
+                            description: ValueRegex will do a match on the header
+                              value based on the provide header regular expression
                             type: string
                         required:
                         - name
@@ -1744,7 +1811,7 @@ spec:
               ambassador_id:
                 description: "AmbassadorID declares which Ambassador instances should
                   pay attention to this resource. If no value is provided, the default
-                  is: \n    ambassador_id:    - \"default\" \n TODO(lukeshu): In v3alpha2,
+                  is: \n \tambassador_id: \t- \"default\" \n TODO(lukeshu): In v3alpha2,
                   consider renaming all of the `ambassador_id` (singular) fields to
                   `ambassador_ids` (plural)."
                 items:
@@ -1963,7 +2030,7 @@ spec:
               ambassador_id:
                 description: "AmbassadorID declares which Ambassador instances should
                   pay attention to this resource. If no value is provided, the default
-                  is: \n    ambassador_id:    - \"default\" \n TODO(lukeshu): In v3alpha2,
+                  is: \n \tambassador_id: \t- \"default\" \n TODO(lukeshu): In v3alpha2,
                   consider renaming all of the `ambassador_id` (singular) fields to
                   `ambassador_ids` (plural)."
                 items:
@@ -2020,14 +2087,14 @@ spec:
     schema:
       openAPIV3Schema:
         description: "DevPortal is the Schema for the DevPortals API \n DevPortal
-          resources specify the `what` and `how` is shown in a DevPortal: \n * `what`
-          is in a DevPortal can be controlled with   - a `selector`, that can be used
-          for filtering `Mappings`.   - a `docs` listing of (services, url) * `how`
-          is a pointer to some `contents` (a checkout of a Git repository   with go-templates/markdown/css).
-          \n Multiple `DevPortal`s can exist in the cluster, and the Dev Portal server
-          will show them at different endpoints. A `DevPortal` resource with a special
-          name, `ambassador`, will be used for configuring the default Dev Portal
-          (served at `/docs/` by default)."
+          resources specify the `what` and `how` is shown in a DevPortal: \n  1. `what`
+          is in a DevPortal can be controlled with \n     - a `selector`, that can
+          be used for filtering `Mappings`. \n     - a `docs` listing of (services,
+          url) \n  2. `how` is a pointer to some `contents` (a checkout of a Git repository
+          \    with go-templates/markdown/css). \n Multiple `DevPortal`s can exist
+          in the cluster, and the Dev Portal server will show them at different endpoints.
+          A `DevPortal` resource with a special name, `ambassador`, will be used for
+          configuring the default Dev Portal (served at `/docs/` by default)."
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -2133,14 +2200,14 @@ spec:
     schema:
       openAPIV3Schema:
         description: "DevPortal is the Schema for the DevPortals API \n DevPortal
-          resources specify the `what` and `how` is shown in a DevPortal: \n * `what`
-          is in a DevPortal can be controlled with   - a `selector`, that can be used
-          for filtering `Mappings`.   - a `docs` listing of (services, url) * `how`
-          is a pointer to some `contents` (a checkout of a Git repository   with go-templates/markdown/css).
-          \n Multiple `DevPortal`s can exist in the cluster, and the Dev Portal server
-          will show them at different endpoints. A `DevPortal` resource with a special
-          name, `ambassador`, will be used for configuring the default Dev Portal
-          (served at `/docs/` by default)."
+          resources specify the `what` and `how` is shown in a DevPortal: \n  1. `what`
+          is in a DevPortal can be controlled with \n     - a `selector`, that can
+          be used for filtering `Mappings`. \n     - a `docs` listing of (services,
+          url) \n  2. `how` is a pointer to some `contents` (a checkout of a Git repository
+          \    with go-templates/markdown/css). \n Multiple `DevPortal`s can exist
+          in the cluster, and the Dev Portal server will show them at different endpoints.
+          A `DevPortal` resource with a special name, `ambassador`, will be used for
+          configuring the default Dev Portal (served at `/docs/` by default)."
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -2160,7 +2227,7 @@ spec:
               ambassador_id:
                 description: "AmbassadorID declares which Ambassador instances should
                   pay attention to this resource. If no value is provided, the default
-                  is: \n    ambassador_id:    - \"default\" \n TODO(lukeshu): In v3alpha2,
+                  is: \n \tambassador_id: \t- \"default\" \n TODO(lukeshu): In v3alpha2,
                   consider renaming all of the `ambassador_id` (singular) fields to
                   `ambassador_ids` (plural)."
                 items:
@@ -2493,22 +2560,18 @@ spec:
                     type: string
                 type: object
               tlsSecret:
-                description: "Name of the Kubernetes secret into which to save generated
+                description: Name of the Kubernetes secret into which to save generated
                   certificates.  If ACME is enabled (see $acmeProvider), then the
-                  default is $hostname; otherwise the default is \"\".  If the value
-                  is \"\", then we do not do TLS for this Host. \n Note that this
-                  is a native-Kubernetes-style core.v1.LocalObjectReference, not an
-                  Ambassador-style `{name}.{namespace}` string.  Because we're opinionated,
-                  it does not support referencing a Secret in another namespace (because
-                  most native Kubernetes resources don't support that), but if we
-                  ever abandon that opinion and decide to support non-local references
-                  it, it would be by adding a `namespace:` field by changing it from
-                  a core.v1.LocalObjectReference to a core.v1.SecretReference, not
-                  by adopting the `{name}.{namespace}` notation."
+                  default is $hostname; otherwise the default is "".  If the value
+                  is "", then we do not do TLS for this Host.
                 properties:
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    description: Name is unique within a namespace to reference a
+                      secret resource.
+                    type: string
+                  namespace:
+                    description: Namespace defines the space within which the secret
+                      name must be unique.
                     type: string
                 type: object
             type: object
@@ -2825,22 +2888,18 @@ spec:
                     type: string
                 type: object
               tlsSecret:
-                description: "Name of the Kubernetes secret into which to save generated
+                description: Name of the Kubernetes secret into which to save generated
                   certificates.  If ACME is enabled (see $acmeProvider), then the
-                  default is $hostname; otherwise the default is \"\".  If the value
-                  is \"\", then we do not do TLS for this Host. \n Note that this
-                  is a native-Kubernetes-style core.v1.LocalObjectReference, not an
-                  Ambassador-style `{name}.{namespace}` string.  Because we're opinionated,
-                  it does not support referencing a Secret in another namespace (because
-                  most native Kubernetes resources don't support that), but if we
-                  ever abandon that opinion and decide to support non-local references
-                  it, it would be by adding a `namespace:` field by changing it from
-                  a core.v1.LocalObjectReference to a core.v1.SecretReference, not
-                  by adopting the `{name}.{namespace}` notation."
+                  default is $hostname; otherwise the default is "".  If the value
+                  is "", then we do not do TLS for this Host.
                 properties:
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    description: Name is unique within a namespace to reference a
+                      secret resource.
+                    type: string
+                  namespace:
+                    description: Namespace defines the space within which the secret
+                      name must be unique.
                     type: string
                 type: object
             type: object
@@ -2988,7 +3047,7 @@ spec:
               ambassador_id:
                 description: "AmbassadorID declares which Ambassador instances should
                   pay attention to this resource. If no value is provided, the default
-                  is: \n    ambassador_id:    - \"default\" \n TODO(lukeshu): In v3alpha2,
+                  is: \n \tambassador_id: \t- \"default\" \n TODO(lukeshu): In v3alpha2,
                   consider renaming all of the `ambassador_id` (singular) fields to
                   `ambassador_ids` (plural)."
                 items:
@@ -3093,7 +3152,7 @@ spec:
               ambassador_id:
                 description: "AmbassadorID declares which Ambassador instances should
                   pay attention to this resource. If no value is provided, the default
-                  is: \n    ambassador_id:    - \"default\" \n TODO(lukeshu): In v3alpha2,
+                  is: \n \tambassador_id: \t- \"default\" \n TODO(lukeshu): In v3alpha2,
                   consider renaming all of the `ambassador_id` (singular) fields to
                   `ambassador_ids` (plural)."
                 items:
@@ -3178,7 +3237,7 @@ spec:
               ambassador_id:
                 description: "AmbassadorID declares which Ambassador instances should
                   pay attention to this resource. If no value is provided, the default
-                  is: \n    ambassador_id:    - \"default\" \n TODO(lukeshu): In v3alpha2,
+                  is: \n \tambassador_id: \t- \"default\" \n TODO(lukeshu): In v3alpha2,
                   consider renaming all of the `ambassador_id` (singular) fields to
                   `ambassador_ids` (plural)."
                 items:
@@ -3426,7 +3485,7 @@ spec:
               ambassador_id:
                 description: "AmbassadorID declares which Ambassador instances should
                   pay attention to this resource. If no value is provided, the default
-                  is: \n    ambassador_id:    - \"default\" \n TODO(lukeshu): In v3alpha2,
+                  is: \n \tambassador_id: \t- \"default\" \n TODO(lukeshu): In v3alpha2,
                   consider renaming all of the `ambassador_id` (singular) fields to
                   `ambassador_ids` (plural)."
                 items:
@@ -3983,7 +4042,7 @@ spec:
               ambassador_id:
                 description: "AmbassadorID declares which Ambassador instances should
                   pay attention to this resource. If no value is provided, the default
-                  is: \n    ambassador_id:    - \"default\" \n TODO(lukeshu): In v3alpha2,
+                  is: \n \tambassador_id: \t- \"default\" \n TODO(lukeshu): In v3alpha2,
                   consider renaming all of the `ambassador_id` (singular) fields to
                   `ambassador_ids` (plural)."
                 items:
@@ -4595,7 +4654,7 @@ spec:
               ambassador_id:
                 description: "AmbassadorID declares which Ambassador instances should
                   pay attention to this resource. If no value is provided, the default
-                  is: \n    ambassador_id:    - \"default\" \n TODO(lukeshu): In v3alpha2,
+                  is: \n \tambassador_id: \t- \"default\" \n TODO(lukeshu): In v3alpha2,
                   consider renaming all of the `ambassador_id` (singular) fields to
                   `ambassador_ids` (plural)."
                 items:
@@ -4678,6 +4737,10 @@ spec:
             properties:
               domain:
                 type: string
+              failure_mode_deny:
+                description: FailureModeDeny when set to true, envoy will deny traffic
+                  if it is unable to communicate with the rate limit service.
+                type: boolean
               protocol_version:
                 enum:
                 - v2
@@ -4723,6 +4786,10 @@ spec:
                 type: array
               domain:
                 type: string
+              failure_mode_deny:
+                description: FailureModeDeny when set to true, envoy will deny traffic
+                  if it is unable to communicate with the rate limit service.
+                type: boolean
               protocol_version:
                 description: ProtocolVersion is the envoy api transport protocol version
                 enum:
@@ -4925,7 +4992,7 @@ spec:
               ambassador_id:
                 description: "AmbassadorID declares which Ambassador instances should
                   pay attention to this resource. If no value is provided, the default
-                  is: \n    ambassador_id:    - \"default\" \n TODO(lukeshu): In v3alpha2,
+                  is: \n \tambassador_id: \t- \"default\" \n TODO(lukeshu): In v3alpha2,
                   consider renaming all of the `ambassador_id` (singular) fields to
                   `ambassador_ids` (plural)."
                 items:
@@ -5163,7 +5230,7 @@ spec:
               ambassador_id:
                 description: "AmbassadorID declares which Ambassador instances should
                   pay attention to this resource. If no value is provided, the default
-                  is: \n    ambassador_id:    - \"default\" \n TODO(lukeshu): In v3alpha2,
+                  is: \n \tambassador_id: \t- \"default\" \n TODO(lukeshu): In v3alpha2,
                   consider renaming all of the `ambassador_id` (singular) fields to
                   `ambassador_ids` (plural)."
                 items:
@@ -5333,6 +5400,51 @@ spec:
                 items:
                   type: string
                 type: array
+              v3CustomTags:
+                items:
+                  description: TracingCustomTag provides a data structure for capturing
+                    envoy's `type.tracing.v3.CustomTag`
+                  properties:
+                    environment:
+                      description: Environment explicitly specifies the protocol stack
+                        to set up. Exactly one of Literal, Environment or Header must
+                        be supplied.
+                      properties:
+                        default_value:
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    literal:
+                      description: Literal explicitly specifies the protocol stack
+                        to set up. Exactly one of Literal, Environment or Header must
+                        be supplied.
+                      properties:
+                        value:
+                          type: string
+                      required:
+                      - value
+                      type: object
+                    request_header:
+                      description: Header explicitly specifies the protocol stack
+                        to set up. Exactly one of Literal, Environment or Header must
+                        be supplied.
+                      properties:
+                        default_value:
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    tag:
+                      type: string
+                  required:
+                  - tag
+                  type: object
+                type: array
               v3StatsName:
                 type: string
             required:
@@ -5366,7 +5478,7 @@ spec:
               ambassador_id:
                 description: "AmbassadorID declares which Ambassador instances should
                   pay attention to this resource. If no value is provided, the default
-                  is: \n    ambassador_id:    - \"default\" \n TODO(lukeshu): In v3alpha2,
+                  is: \n \tambassador_id: \t- \"default\" \n TODO(lukeshu): In v3alpha2,
                   consider renaming all of the `ambassador_id` (singular) fields to
                   `ambassador_ids` (plural)."
                 items:
@@ -5404,6 +5516,51 @@ spec:
                   trace_id_128bit:
                     type: boolean
                 type: object
+              custom_tags:
+                items:
+                  description: TracingCustomTag provides a data structure for capturing
+                    envoy's `type.tracing.v3.CustomTag`
+                  properties:
+                    environment:
+                      description: Environment explicitly specifies the protocol stack
+                        to set up. Exactly one of Literal, Environment or Header must
+                        be supplied.
+                      properties:
+                        default_value:
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    literal:
+                      description: Literal explicitly specifies the protocol stack
+                        to set up. Exactly one of Literal, Environment or Header must
+                        be supplied.
+                      properties:
+                        value:
+                          type: string
+                      required:
+                      - value
+                      type: object
+                    request_header:
+                      description: Header explicitly specifies the protocol stack
+                        to set up. Exactly one of Literal, Environment or Header must
+                        be supplied.
+                      properties:
+                        default_value:
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    tag:
+                      type: string
+                  required:
+                  - tag
+                  type: object
+                type: array
               driver:
                 enum:
                 - lightstep
@@ -5424,6 +5581,9 @@ spec:
               stats_name:
                 type: string
               tag_headers:
+                description: 'Deprecated: tag_headers is deprecated. Use custom_tags
+                  instead. `tag_headers: ["header"]` can be defined as `custom_tags:
+                  [{"request_header": {"name": "header"}}]`.'
                 items:
                   type: string
                 type: array
@@ -5619,7 +5779,7 @@ spec:
       serviceAccountName: emissary-apiext
       containers:
         - name: emissary-apiext
-          image: docker.io/datawire/aes:3.0.0
+          image: docker.io/datawire/aes:3.2.0
           imagePullPolicy: IfNotPresent
           command: [ "apiext", "emissary-apiext" ]
           ports:

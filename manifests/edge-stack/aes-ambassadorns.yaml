@@ -358,6 +358,9 @@ rules:
 - apiGroups: ['']
   resources: [configmaps]
   verbs: [get, list, watch]
+- apiGroups: ['']
+  resources: [secrets]
+  verbs: [get, create, delete, patch, watch]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -518,7 +521,7 @@ spec:
       serviceAccountName: edge-stack-agent
       containers:
       - name: agent
-        image: docker.io/datawire/aes:3.0.0
+        image: docker.io/emissaryingress/emissary:3.1.0
         imagePullPolicy: IfNotPresent
         command: [agent]
         ports:
@@ -593,7 +596,7 @@ spec:
 
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.0.0
+        image: docker.io/datawire/aes:3.2.0
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
