@@ -10,6 +10,9 @@ Ambassador Edge Stack [![Build Status][build-status]][build-pages]
 [slack-url]:     https://a8r.io/slack
 [slack-join]:    https://img.shields.io/badge/slack-join-orange.svg
 
+> **Disclaimer**: This repository is in a read only state. We do not monitor issues or pull requests. Questions and issues should either be direct to the [Ambassador Labs community slack](https://a8r.io/slack) or the [Emissary-ingress](https://github.com/emissary-ingress/emissary/) repository. <br/> Information regarding specific edge-stack releases can be found in matching `rel/{release version}` branches. Example Edge-stack v3.2.0 information is at [rel/v3.2.0](https://github.com/datawire/edge-stack/tree/rel/v3.2.0).
+
+
 The Ambassador Edge Stack is a complete superset of the OSS Emissary Ingress project that offers additional functionality. Edge Stack is designed to easily expose, secure, and manage traffic to your Kubernetes microservices of any type. Edge Stack was built around the ideas of self-service (enabling GitOps-style management) and comprehensiveness (so it works with your situations and technology solutions).
 
 Emissary-Ingress (formerly known as the [Ambassador API Gateway](https://www.getambassador.io)) is an open-source Kubernetes-native API Gateway + Layer 7 load balancer + Kubernetes Ingress built on [Envoy Proxy](https://www.envoyproxy.io). Emissary Ingress is an CNCF incubation project.
