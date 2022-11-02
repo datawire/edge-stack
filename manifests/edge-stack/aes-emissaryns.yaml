@@ -358,6 +358,9 @@ rules:
 - apiGroups: ['']
   resources: [configmaps]
   verbs: [get, list, watch]
+- apiGroups: ['']
+  resources: [secrets]
+  verbs: [get, create, delete, patch, watch]
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/ambassador-agent.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -518,7 +521,7 @@ spec:
       serviceAccountName: edge-stack-agent
       containers:
       - name: agent
-        image: docker.io/datawire/aes:3.0.0
+        image: docker.io/emissaryingress/emissary:3.1.0
         imagePullPolicy: IfNotPresent
         command: [agent]
         ports:
@@ -535,6 +538,10 @@ spec:
           value: https://app.getambassador.io/
         - name: AES_SNAPSHOT_URL
           value: http://edge-stack-admin.emissary:8005/snapshot-external
+        - name: AES_REPORT_DIAGNOSTICS_TO_CLOUD
+          value: 'true'
+        - name: AES_DIAGNOSTICS_URL
+          value: http://edge-stack-admin.emissary:8877/ambassador/v0/diag/?json=true
   progressDeadlineSeconds: 600
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/deployment.yaml
@@ -593,7 +600,7 @@ spec:
 
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.0.0
+        image: docker.io/datawire/aes:3.3.0-rc.0
         imagePullPolicy: IfNotPresent
         ports:
         - name: http

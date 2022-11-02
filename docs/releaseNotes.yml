@@ -32,6 +32,324 @@
 
 changelog: https://github.com/datawire/edge-stack/blob/$branch$/CHANGELOG.md
 items:
+  - version: 3.3.0
+    date: '2022-11-02'
+    notes:
+      - title: Update Golang to 1.19.2
+        type: security
+        body: >-
+          Updated Golang to 1.19.2 to address the CVEs: CVE-2022-2879, CVE-2022-2880, CVE-2022-41715.
+
+      - title: Update golang.org/x/net
+        type: security
+        body: >-
+          Updated golang.org/x/net to address the CVE: CVE-2022-27664.
+
+      - title: Update golang.org/x/text
+        type: security
+        body: >-
+          Updated golang.org/x/text to address the CVE: CVE-2022-32149.
+
+      - title: Update JWT library
+        type: security
+        body: >-
+          Updated our JWT library from https://github.com/dgrijalva/jwt-go to https://github.com/golang-jwt/jwt in order to address spurious complaints about CVE-2020-26160. Edge Stack has never been affected by CVE-2020-26160.
+
+      - title: Propagate trace headers to http external filter
+        type: change
+        body: >-
+          Previously, tracing headers were not propagated to an ExternalFilter configured with 
+          `proto: http`. Now, adding supported tracing headers (b3, etc...) to the 
+          `spec.allowed_request_headers` will propagate them to the configured service.
+        github:
+        - title: "#3078"
+          link: https://github.com/datawire/apro/issues/3078
+        
+      - title: Fix regression in http to https redirects with AuthService
+        type: bugfix
+        body: >-
+          By default $productName$ adds routes for http to https redirection. When
+          an AuthService is applied in v2.Y of $productName$, Envoy would skip the
+          ext_authz call for non-tls http request and would perform the https
+          redirect. In Envoy 1.20+ the behavior has changed where Envoy will
+          always call the ext_authz filter and must be disabled on a per route
+          basis.
+
+          This new behavior change introduced a regression in v3.0 of
+          $productName$ when it was upgraded to Envoy 1.22. The http to https
+          redirection no longer works when an AuthService was applied. This fix
+          restores the previous behavior by disabling the ext_authz call on the
+          https redirect routes.
+        github:
+        - title: "#4620"
+          link: https://github.com/emissary-ingress/emissary/issues/4620
+
+      - title: Fix regression in host_redirects with AuthService
+        type: bugfix
+        body: >-
+          When an AuthService is applied in v2.Y of $productName$,
+          Envoy would skip the ext_authz call for all redirect routes and
+          would perform the redirect. In Envoy 1.20+ the behavior has changed
+          where Envoy will always call the ext_authz filter so it must be
+          disabled on a per route basis.
+
+          This new behavior change introduced a regression in v3.0 of
+          $productName$ when it was upgraded to Envoy 1.22. The host_redirect
+          would call an AuthService prior to redirect if applied. This fix
+          restores the previous behavior by disabling the ext_authz call on the
+          host_redirect routes.
+        github:
+        - title: "#4640"
+          link: https://github.com/emissary-ingress/emissary/issues/4640
+
+      - title: Fixed finding ingress resource tls secrets
+        type: bugfix
+        body: >-
+          Previous versions of $productName$ required a workaround using <code>TLSContexts</code> to find tls secrets referenced from
+          <code>Ingress</code> resources. Now tls secrets referenced are properly detected without requiring an additional <code>TLSContext</code> to
+          reference them.
+          (Thanks to <a href="https://github.com/olemarkus">Ole Markus</a>!).
+  
+  - version: 3.2.0
+    date: '2022-09-27'
+    notes:
+      - title: Envoy upgraded to 1.23
+        type: change
+        body: >-
+          The envoy version included in $productName$ has been upgraded from 1.22 to the latest patch
+          release of 1.23. This provides $productName$ with the latest security patches, performances enhancments,
+          and features offered by the envoy proxy.
+        docs: https://www.envoyproxy.io/docs/envoy/latest/version_history/v1.23/v1.23.0
+      - title: Fixed <code>mappingSelector</code> associating <code>Hosts</code> with <code>Mappings</code>
+        type: change
+        body: >-
+          Changes to label matching will change how <code>Hosts</code> are associated with <code>Mappings</code>. There was a bug with label
+          selectors that was causing <code>Hosts</code> to be incorrectly being associated with more <code>Mappings</code> than intended.
+          If any single label from the selector was matched then the <code>Host</code> would be associated with the <code>Mapping</code>.
+          Now it has been updated to correctly only associate a <code>Host</code> with a <code>Mapping</code> if <b>all</b> labels required by
+          the selector are present. This brings the <code>mappingSelector</code> field in-line with how label selectors are used
+          in Kubernetes. To avoid unexpected behaviour after the upgrade, add all labels that Hosts have in their
+          <code>mappingSelector</code> to <code>Mappings</code> you want to associate with the <code>Host</code>. You can opt-out of the new behaviour
+          by setting the environment variable <code>DISABLE_STRICT_LABEL_SELECTORS</code> to <code>"true"</code> (default: <code>"false"</code>).
+          (Thanks to <a href="https://github.com/f-herceg">Filip Herceg</a> and <a href="https://github.com/dynajoe">Joe Andaverde</a>!).      
+      - title: Add support for Host resources using secrets from different namespaces
+        type: feature
+        body: >-
+          Previously the <code>Host</code> resource could only use secrets that are in the namespace as the
+          Host. The <code>tlsSecret</code> field in the Host has a new subfield <code>namespace</code> that will allow
+          the use of secrets from different namespaces.
+      - title: Allow bypassing of EDS for manual endpoint insertion
+        type: change
+        body: >-
+          Set `AMBASSADOR_EDS_BYPASS` to `true` to bypass EDS handling of endpoints and have endpoints be
+          inserted to clusters manually. This can help resolve with `503 UH` caused by certification rotation relating to
+          a delay between EDS + CDS. The default is `false`.     
+      - title: Correctly manage cluster names when service names are very long
+        type: bugfix
+        body: >-
+          Distinct services with names that are the same in the first forty characters
+          will no longer be incorrectly mapped to the same cluster.
+        github:
+        - title: "#4354"
+          link: https://github.com/emissary-ingress/emissary/issues/4354
+      - title: Add failure_mode_deny option to the RateLimitService
+        type: feature
+        body: >-
+          By default, when Envoy is unable to communicate with the configured
+          RateLimitService then it will allow traffic through. The
+          <code>RateLimitService</code> resource now exposes the
+          <a href="https://www.envoyproxy.io/docs/envoy/v1.23.0/configuration/http/http_filters/rate_limit_filter">failure_mode_deny</a>
+          option. Set <code>failure_mode_deny: true</code>, then Envoy will
+          deny traffic when it is unable to communicate to the RateLimitService
+          returning a 500.
+        docs: https://www.getambassador.io/docs/emissary/latest/topics/running/services/rate-limit-service/
+      - title: Properly populate alt_state_name for Tracing, Auth and RateLimit Services
+        type: bugfix
+        body: >-
+          Previously, setting the <code>stats_name</code> for the <code>TracingService</code>, <code>RateLimitService</code>
+          or the <code>AuthService</code> would have no affect because it was not being properly passed to the Envoy cluster
+          config. This has been fixed and the <code>alt_stats_name</code> field in the cluster config is now set correctly.
+          (Thanks to <a href="https://github.com/psalaberria002">Paul</a>!)
+      - title: Add support for config change batch window before reconfiguring Envoy
+        type: feature
+        body: >-
+          The <code>AMBASSADOR_RECONFIG_MAX_DELAY</code> env var can be optionally set to batch changes for the specified
+          non-negative window period in seconds before doing an Envoy reconfiguration. Default is "1" if not set.
+      - title: Diagnostics stats properly handles parsing envoy metrics with colons
+        type: bugfix
+        body: >-
+          If a <code>Host</code> or <code>TLSContext</code> contained a hostname with a <code>:</code> when using the
+          diagnostics endpoints <code>ambassador/v0/diagd</code> then an error would be thrown due to the parsing logic not
+          being able to handle the extra colon. This has been fixed and $productName$ will not throw an error when parsing
+          envoy metrics for the diagnostics user interface.
+      - title: Allow setting custom_tags for traces
+        type: feature
+        body: >-
+          It is now possible to set <code>custom_tags</code> in the
+          <code>TracingService</code>. Trace tags can be set based on
+          literal values, environment variables, or request headers.
+          (Thanks to <a href="https://github.com/psalaberria002">Paul</a>!)
+        github:
+        - title: "#4181"
+          link: https://github.com/emissary-ingress/emissary/pull/4181
+      - title: TCPMappings use correct SNI configuration
+        type: bugfix
+        body: >-
+          $productName$ 2.0.0 introduced a bug where a <code>TCPMapping</code> that uses SNI,
+          instead of using the hostname glob in the <code>TCPMapping</code>, uses the hostname glob
+          in the <code>Host</code> that the TLS termination configuration comes from.
+      - title: TCPMappings configure TLS termination without a Host resource
+        type: bugfix
+        body: >-
+          $productName$ 2.0.0 introduced a bug where a <code>TCPMapping</code> that terminates TLS
+          must have a corresponding <code>Host</code> that it can take the TLS configuration from.
+          This was semi-intentional, but didn't make much sense.  You can now use a
+          <code>TLSContext</code> without a <code>Host</code>as in $productName$ 1.y releases, or a
+          <code>Host</code> with or without a <code>TLSContext</code> as in prior 2.y releases.
+      - title: TCPMappings and HTTP Hosts can coexist on Listeners that terminate TLS
+        type: bugfix
+        body: >-
+          Prior releases of $productName$ had the arbitrary limitation that a
+          <code>TCPMapping</code> cannot be used on the same port that HTTP is served on, even if
+          TLS+SNI would make this possible.  $productName$ now allows <code>TCPMappings</code> to be
+          used on the same <code>Listener</code> port as HTTP <code>Hosts</code>, as long as that
+          <code>Listener</code> terminates TLS.
+      - title: Update Golang to 1.19.1
+        type: security
+        body: >-
+          Updated Golang to 1.19.1 to address the CVEs: CVE-2022-27664, CVE-2022-32190.
+      - title: Properly convert FilterPolicy and ExternalFilter between CRD versions
+        type: bugfix
+        body: >-
+          Previously, $productName$ would incorrectly include empty fields when converting a FilterPolicy
+          or ExternalFilter between versions. This would cause undesired state to be persisted in k8s which
+          would lead to validation issues when trying to kubectl apply the custom resource. This fixes these
+          issues to ensure the correct data is being persisted and roundtripped properly between CRD versions.
+      - title: Add Post Logout Redirect URI support for Oauth2 Filter
+        type: feature
+        body: >- 
+          You may now define (on supported IDPs) a <code>postLogoutRedirectURI</code> to your <code>Oauth2</code> filter. 
+          This will allow you to redirect to a specific URI upon logging out. However, in order to achieve this you must 
+          define your IDP logout URL to <code>https:{{host}}/.ambassador/oauth2/post-logout-redirect</code>. Upon logout 
+          $productName$ will redirect to the custom URI which will then redirect to the URI you have defined in <code>postLogoutRedirectURI</code>.
+        docs: topics/using/filters/oauth2
+
+  - version: 3.1.0
+    date: '2022-08-01'
+    notes:
+      - title: Add new Filter to support authenticating APIKey's
+        type: feature
+        body: >-
+          A new <code>Fitler</code> has been added to support validating APIKey's on incoming requests.
+          The new <code>APIKeyFilter</code> when applied with a <code>FilterPolicy</code> will check to 
+          see if the incoming requests has a valid API Key in the request header. $productName$ uses
+          Kubernetes <code>Secret</code>'s to lookup valid keys for authorizing requests.
+      - title: Add support to watch for secrets with APIKey's
+        type: feature
+        body: >-
+          Emissary-ingress has been taught to watch for APIKey secrets when $productName$ is running and
+          makes them available to be used with the new <code>APIKeyFilter</code>.
+      - title: A new experimental Redis driver for use with the OAuth2 Filter
+        type: feature
+        body: >-
+          A new opt-in feature flag has been added that allows $productName$ to use a new Redis 
+          driver when storing state between requests for the OAuth2 Filter. The new driver has 
+          better connection pool handling, shares connections and supports the Redis RESP3 protocol. 
+          Set <code>AES_REDIS_EXPERIMENTAL_DRIVER_ENABLED=true</code> to enable the experimental feature.
+          Most of the standard Redis configuration fields (e.g.<code>REDIS_*</code>) can be used with the driver.
+          Howeever, due to the drivers better connection handling the new driver no longer supports setting 
+          <code>REDIS_SURGE_LIMIT_INTERVAL</code>, <code>REDIS_SURGE_LIMIT_AFTER</code>, <code>REDIS_SURGE_POOL_SIZE</code>,
+          <code>REDIS_SURGE_POOL_DRAIN_INTERVAL</code> and these will be ignored.
+
+          Note: Other $productName$ features such as the <code>RateLimitService</code> will continue to use the current
+          Redis driver and in future releases we plan to roll out the new driver for those features as well.
+      - title: Add support for injecting a valid synthetic RateLimitService
+        type: change
+        body: >-
+          If $productName$ is running then Emissary-ingress ensures that only a single RateLimitService is active.
+          If a user doesn't provide one or provides an invalid one then a synthetic RateLimitService will be
+          injected. If the <code>protocol_version</code> field is not set or set to an invalid value then it will
+          automatically get upgraded <code>protocol_version: v3</code>. 
+          
+          This matches the existing behavior that was introduced in $productName$ v3.0.0 for the 
+          <code>AuthService</code>. For new installs a valid <code>RateLimitService</code> will be added but this 
+          change ensures a smooth upgrade from $productName$ to v2.3.Z to v3.Y for users who use the manifest
+          in a GitOps scenario.
+      - title: Add Agent support for OpenAPI 2 contracts
+        type: feature
+        body: >-
+          The agent is now able to parse api contracts using swagger 2, and to convert them to OpenAPI 3, making them
+          available for use in the dev portal.
+      - title: Default YAML enables the diagnostics interface from non-local clients on the admin service port
+        type: change
+        body: >-
+          In the standard published <code>.yaml</code> files, the <code>Module</code> resource enables serving
+          remote client requests to the <code>:8877/ambassador/v0/diag/</code> endpoint.
+          The associated Helm chart release also now enables it by default.
+      - title: Correct cookies for mixed HTTP/HTTPS OAuth2 origins
+        type: bugfix
+        body: >-
+          When an <code>OAuth2</code> filter sets cookies for a <code>protectedOrigin</code>, it
+          should set a cookie's "Secure" flag to true for <code>https://</code> origins and false
+          for <code>http://</code> origins.  However, for filters with multiple origins, it set the
+          cookie's flag based on the first origin listen in the Filter, rather than the origin that
+          the cookie is actually for.
+      - title: Correctly handle refresh tokens for OAuth2 filters with multiple origins
+        type: bugfix
+        body: >-
+          When an <code>OAuth2</code> filter with multiple <code>protectedOrigins</code> needs to
+          adjust the cookies for an active login (which only happens when using a refresh token), it
+          would erroneously redirect the web browser to the last origin listed, rather than
+          returning to the original URL.  This has been fixed.
+      - title: Correctly handle CORS and CORs preflight request within the OAuth2 Fitler known endpoints
+        type: bugfix
+        body: >-
+          Previously, the <code>OAuth2</code> filter's known endpoints <code>/.ambassador/oauth2/logout</code>
+          and <code>/.ambassador/oauth2/multicookie</code> did not understand CORS or CORS preflight request
+          which would cause the browser to reject the request. This has now been fixed and these endpoints will
+          attach the appropriate CORS headers to the response.
+      - title: Fix regression in the agent for the metrics transfer.
+        type: bugfix
+        body: >-
+          A regression was introduced in 2.3.0 causing the agent to miss some of the metrics coming from
+          emissary ingress before sending them to Ambassador cloud. This issue has been resolved to ensure
+          that all the nodes composing the emissary ingress cluster are reporting properly.
+      - title: Handle long cluster names for injected acme-challenge route.
+        type: bugfix
+        body: >-
+          Previously, we would inject an upstream route for acme-challenge that was targeting the localhost
+          auth service cluster. This route is injected to make Envoy configuration happy and the AuthService
+          that is shipped with $productName$ will handle it properly. However, if the cluster name is longer
+          than 60 characters due to a long namespace, etc... then $productName$ will truncate it and make 
+          sure it is unique. When this happens the name of the cluster assigned to the acme-challenge route
+          would get out-of-sync and would introduce invalid Envoy configuration. 
+
+          To avoid this $productName$ will now inject a route that returns a direct <code>404</code> response
+          rather than pointing at an arbitrary cluster. This matches existing behavior and is a transparent
+          change to the user.
+      - title: Update Golang to 1.17.12
+        type: security
+        body: >-
+          Updated Golang to 1.17.12 to address the CVEs: CVE-2022-23806, CVE-2022-28327, CVE-2022-24675,
+          CVE-2022-24921, CVE-2022-23772.
+      - title: Update Curl to 7.80.0-r2
+        type: security
+        body: >-
+          Updated Curl to 7.80.0-r2 to address the CVEs: CVE-2022-32207, CVE-2022-27782, CVE-2022-27781,
+          CVE-2022-27780.
+      - title: Update openSSL-dev to 1.1.1q-r0
+        type: security
+        body: >-
+          Updated openSSL-dev to 1.1.1q-r0 to address CVE-2022-2097.
+      - title: Update ncurses to 1.1.1q-r0
+        type: security
+        body: >-
+          Updated ncurses to 1.1.1q-r0 to address CVE-2022-29458
+      - title: Upgrade jwt-go
+        type: security
+        body: >-
+          Upgrade jwt-go to latest commit to resolve CVE-2020-26160.
+
   - version: 3.0.0
     date: '2022-06-29'
     notes:
@@ -39,9 +357,9 @@ items:
         type: change
         body: >-
           $productName$ is now built on top of Emissary-ingress 3.0.0 which updates
-          Envoy Proxy from v1.17 to v1.22. This provides $productName$ with the latest 
-          security patches, performances enhancments, and features offered by Envoy Proxy. 
-          One notable change that will effect users is the removal of support for 
+          Envoy Proxy from v1.17 to v1.22. This provides $productName$ with the latest
+          security patches, performances enhancments, and features offered by Envoy Proxy.
+          One notable change that will effect users is the removal of support for
           the V2 xDS tranport protocol. See the Emissary-ingress changelog for more details.
         docs: https://github.com/emissary-ingress/emissary/blob/master/CHANGELOG.md
       - title: Envoy http header behavior change
@@ -65,8 +383,86 @@ items:
         type: change
         body: >-
           Since $productName$ no longer supports the xDS V2 transport protocol, the default Helm
-          Charts and Manifest explicilty set <code>protocol_version</code> to <code>v3</code> for 
+          Charts and Manifest explicilty set <code>protocol_version</code> to <code>v3</code> for
           the <code>RateLimitService</code> and <code>AuthService</code> provided by $productName$.
+
+  - version: 2.4.0
+    date: '2022-09-19'
+    notes:
+      - title: Add support for Host resources using secrets from different namespaces
+        type: feature
+        body: >-
+          Previously the <code>Host</code> resource could only use secrets that are in the namespace as the
+          Host. The <code>tlsSecret</code> field in the Host has a new subfield <code>namespace</code> that will allow
+          the use of secrets from different namespaces.
+      - title: Allow bypassing of EDS for manual endpoint insertion
+        type: change
+        body: >-
+          Set `AMBASSADOR_EDS_BYPASS` to `true` to bypass EDS handling of endpoints and have endpoints be
+          inserted to clusters manually. This can help resolve with `503 UH` caused by certification rotation relating to
+          a delay between EDS + CDS. The default is `false`.
+      - title: Properly convert FilterPolicy and ExternalFilter between CRD versions
+        type: bugfix
+        body: >-
+          Previously, $productName$ would incorrectly include empty fields when converting a FilterPolicy
+          or ExternalFilter between versions. This would cause undesired state to be persisted in k8s which
+          would lead to validation issues when trying to kubectl apply the custom resource. This fixes these
+          issues to ensure the correct data is being persisted and roundtripped properly between CRD versions.
+
+  - version: 2.3.2
+    date: '2022-08-01'
+    notes:
+      - title: Correct cookies for mixed HTTP/HTTPS OAuth2 origins
+        type: bugfix
+        body: >-
+          When an <code>OAuth2</code> filter sets cookies for a <code>protectedOrigin</code>, it
+          should set a cookie's "Secure" flag to true for <code>https://</code> origins and false
+          for <code>http://</code> origins.  However, for filters with multiple origins, it set the
+          cookie's flag based on the first origin listen in the Filter, rather than the origin that
+          the cookie is actually for.
+      - title: Correctly handle refresh tokens for OAuth2 filters with multiple origins
+        type: bugfix
+        body: >-
+          When an <code>OAuth2</code> filter with multiple <code>protectedOrigins</code> needs to
+          adjust the cookies for an active login (which only happens when using a refresh token), it
+          would erroneously redirect the web browser to the last origin listed, rather than
+          returning to the original URL.  This has been fixed.
+      - title: Correctly handle CORS and CORs preflight request within the OAuth2 Fitler known endpoints
+        type: bugfix
+        body: >-
+          Previously, the <code>OAuth2</code> filter's known endpoints <code>/.ambassador/oauth2/logout</code>
+          and <code>/.ambassador/oauth2/multicookie</code> did not understand CORS or CORS preflight request
+          which would cause the browser to reject the request. This has now been fixed and these endpoints will
+          attach the appropriate CORS headers to the response.
+      - title: Fix regression in the agent for the metrics transfer.
+        type: bugfix
+        body: >-
+          A regression was introduced in 2.3.0 causing the agent to miss some of the metrics coming from
+          emissary ingress before sending them to Ambassador cloud. This issue has been resolved to ensure
+          that all the nodes composing the emissary ingress cluster are reporting properly.
+      - title: Update Golang to 1.17.12
+        type: security
+        body: >-
+          Updated Golang to 1.17.12 to address the CVEs: CVE-2022-23806, CVE-2022-28327, CVE-2022-24675,
+          CVE-2022-24921, CVE-2022-23772.
+      - title: Update Curl to 7.80.0-r2
+        type: security
+        body: >-
+          Updated Curl to 7.80.0-r2 to address the CVEs: CVE-2022-32207, CVE-2022-27782, CVE-2022-27781,
+          CVE-2022-27780.
+      - title: Update openSSL-dev to 1.1.1q-r0
+        type: security
+        body: >-
+          Updated openSSL-dev to 1.1.1q-r0 to address CVE-2022-2097.
+      - title: Update ncurses to 1.1.1q-r0
+        type: security
+        body: >-
+          Updated ncurses to 1.1.1q-r0 to address CVE-2022-29458
+      - title: Upgrade jwt-go
+        type: security
+        body: >-
+          Upgrade jwt-go to latest commit to resolve CVE-2020-26160.
+
   - version: 2.3.1
     date: '2022-06-09'
     notes:
@@ -88,6 +484,7 @@ items:
           href="https://github.com/emissary-ingress/emissary/issues/2846">does not support internal
           redirects</a>, and does not use Envoy's built-in OAuth2 filter.
         docs: https://groups.google.com/g/envoy-announce/c/8nP3Kn4jV7k
+
   - version: 2.3.0
     date: '2022-06-06'
     notes:
