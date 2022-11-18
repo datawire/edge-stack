@@ -77,6 +77,24 @@ Please see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest
 
 ## RELEASE NOTES
 
+## [2.5.0] 2022-11-03
+[2.5.0]: https://github.com/datawire/edge-stack/releases/v2.5.0
+
+## Ambassador Edge Stack
+
+- Change: Previously, tracing headers were not propagated to an ExternalFilter configured with  `proto:
+  http`. Now, adding supported tracing headers (b3, etc...) to the  `spec.allowed_request_headers`
+  will propagate them to the configured service. ([#3078])
+
+- Bugfix: If a `Host` or `TLSContext` contained a hostname with a `:` then when using the  diagnostics
+  endpoints `ambassador/v0/diagd` then an error would be thrown due to the parsing logic not  being
+  able to handle the extra colon. This has been fixed and Ambassador Edge Stack will not throw an
+  error when parsing envoy metrics for the diagnostics user interface.
+
+- Security: Bump Go from 1.17.12 to 1.19.2. This is to keep the Go version current.
+
+[#3078]: https://github.com/datawire/apro/issues/3078
+
 ## [2.4.0] 2022-09-19
 [2.4.0]: https://github.com/datawire/edge-stack/releases/v2.4.0
 
