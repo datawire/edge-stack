@@ -18,6 +18,12 @@ namespaceOverride: ''
 emissary-ingress: # +doc-gen:break
   test:
     enabled: false
+
+  module:
+    diagnostics:
+      enabled: false
+      allow_non_local: true
+
   service:
     type: LoadBalancer
 
@@ -70,7 +76,7 @@ emissary-ingress: # +doc-gen:break
 
   image:
     repository: docker.io/datawire/aes
-    tag: 3.3.0-rc.0
+    tag: 3.4.0
     pullPolicy: IfNotPresent
 
 rbac:

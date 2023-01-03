@@ -521,9 +521,8 @@ spec:
       serviceAccountName: edge-stack-agent
       containers:
       - name: agent
-        image: docker.io/emissaryingress/emissary:3.1.0
+        image: docker.io/ambassador/ambassador-agent:1.0.3
         imagePullPolicy: IfNotPresent
-        command: [agent]
         ports:
         - containerPort: 8080
           name: http
@@ -600,7 +599,7 @@ spec:
 
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.3.0-rc.0
+        image: docker.io/datawire/aes:3.4.0
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -792,3 +791,23 @@ metadata:
 spec:
   service: 127.0.0.1:8500
   protocol_version: v3
+---
+# Source: edge-stack/charts/emissary-ingress/templates/module.yaml
+apiVersion: getambassador.io/v2
+kind: Module
+metadata:
+  name: ambassador
+  namespace: ambassador
+  labels:
+    app.kubernetes.io/name: edge-stack
+
+    app.kubernetes.io/instance: edge-stack
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/managed-by: getambassador.io
+    app.kubernetes.io/component: edge-stack-ratelimit
+    product: aes
+spec:
+  config:
+    diagnostics:
+      allow_non_local: true
+      enabled: false

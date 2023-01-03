@@ -14,7 +14,6 @@ generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-emissaryns.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-emissaryns-agent.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/aes-emissaryns-migration.yaml
 generate/files += $(EDGE_STACK_HOME)/manifests/edge-stack/resources-migration.yaml
-generate/files += $(EDGE_STACK_HOME)/CHANGELOG.md
 generate/files += $(EDGE_STACK_HOME)/.circleci/config.yml
 
 $(EDGE_STACK_HOME)/venv:
@@ -73,12 +72,6 @@ generate-clean:
 	rm -rf $(generate/files)
 	rm -rf $(EDGE_STACK_HOME)/charts/edge-stack/charts/
 .PHONY: generate-clean
-
-$(EDGE_STACK_HOME)/CHANGELOG.md: $(EDGE_STACK_HOME)/docs/CHANGELOG.tpl $(EDGE_STACK_HOME)/docs/releaseNotes.yml
-	docker run --rm \
-	  -v $(EDGE_STACK_HOME)/docs/CHANGELOG.tpl:/tmp/CHANGELOG.tpl \
-	  -v $(EDGE_STACK_HOME)/docs/releaseNotes.yml:/tmp/releaseNotes.yml \
-	  hairyhenderson/gomplate --verbose --file /tmp/CHANGELOG.tpl --datasource relnotes=/tmp/releaseNotes.yml > CHANGELOG.md
 
 $(EDGE_STACK_HOME)/.circleci/yq: $(EDGE_STACK_HOME)/.circleci/yq.d/go.mod
 	cd $(<D) && go build -o $(abspath $@) github.com/mikefarah/yq/v4

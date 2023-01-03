@@ -3,6 +3,12 @@
 This file documents all notable changes to Edge Stack Helm Chart. The release
 numbering uses [semantic versioning](http://semver.org).
 
+## v8.4.0 - Next Version
+
+- Update Edge Stack chart image to version v3.4.0: [CHANGELOG](https://github.com/datawire/edge-stack/blob/master/CHANGELOG.md)
+
+- The Ambassador agent that was previously embedded in Emissary Ingress has been moved to a standalone container.
+
 ## v8.3.0
 
 - Update Edge Stack chart image to version v3.3.0: [CHANGELOG](https://github.com/datawire/edge-stack/blob/master/CHANGELOG.md)

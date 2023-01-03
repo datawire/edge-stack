@@ -513,9 +513,8 @@ spec:
       serviceAccountName: edge-stack-agent
       containers:
       - name: agent
-        image: docker.io/emissaryingress/emissary:3.1.0
+        image: docker.io/ambassador/ambassador-agent:1.0.3
         imagePullPolicy: IfNotPresent
-        command: [agent]
         ports:
         - containerPort: 8080
           name: http
@@ -592,7 +591,7 @@ spec:
 
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.3.0-rc.0
+        image: docker.io/datawire/aes:3.4.0
         imagePullPolicy: IfNotPresent
         ports:
         - name: http

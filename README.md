@@ -1,8 +1,9 @@
-# Ambassador Edge Stack
-
+Ambassador Edge Stack [![Build Status][build-status]][build-pages]
  [![Docker Repository][docker-latest]][docker-repo] ![Docker Pulls][docker-pulls] [![Join Slack][slack-join]][slack-url]
+==========
 
-
+[build-pages]:   https://travis-ci.org/datawire/ambassador
+[build-status]:  https://travis-ci.org/datawire/ambassador.png?branch=master
 [docker-repo]:   https://hub.docker.com/repository/docker/datawire/aes
 [docker-latest]: https://img.shields.io/docker/v/datawire/aes?sort=semver
 [docker-pulls]:  https://img.shields.io/docker/pulls/datawire/aes
@@ -27,6 +28,7 @@ Ambassador Edge Stack enables its users to:
 
 See the full list of [features](https://www.getambassador.io/features/) here. Learn [Why the Ambassador Edge Stack?](https://www.getambassador.io/docs/edge-stack/latest/about/why-ambassador/#why-the-ambassador-edge-stack)
 
+Refer to [Ambassador EdgeStack Release Notes](https://www.getambassador.io/docs/edge-stack/latest/release-notes/) for the changelog.
 
 Architecture
 ============
