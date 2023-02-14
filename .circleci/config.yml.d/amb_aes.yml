@@ -1,0 +1,81 @@
+version: 2.1
+
+jobs:
+  "aes-generate":
+    executor: aes-linux
+    steps:
+      - job-generate
+
+  "aes-chart":
+    executor: aes-linux
+    steps:
+      - job-chart
+
+  "aes-chart-publish":
+    executor: aes-linux
+    environment:
+      PUBLISH_GIT_RELEASE: "true"
+    steps:
+      - job-chart-publish
+
+  "aes-manifest-publish":
+    environment:
+      BUMP_STABLE: "true"
+    executor: "aes-linux"
+    steps:
+      - job-manifests-publish
+
+_anchors:
+  # All of these filters assume that "Only build pull requests" is turned on at
+  # https://app.circleci.com/settings/project/github/datawire/ambassador/advanced
+
+  # chart release will create a tag IFF there are changes to the chart version
+  "filter-chart-release-only": &filter-chart-release-only
+    filters:
+      tags:
+        only: /^chart\-v[0-9]+\.[0-9]+\.[0-9]+-(ea)?$/
+      branches:
+        ignore: /.*/
+
+  "filter-prerelease-only": &filter-prerelease-only
+    filters:
+      tags:
+        only: /^v[0-9]+\.[0-9]+\.[0-9]+-(rc|ea)\.[0-9]+$/
+      branches:
+        ignore: /.*/
+
+  "filter-rc-only": &filter-rc-only
+    filters:
+      tags:
+        only: /^v[0-9]+\.[0-9]+\.[0-9]+-rc\.[0-9]+$/
+      branches:
+        ignore: /.*/
+
+  "filter-ga-only": &filter-ga-only
+    filters:
+      tags:
+        only: /^v[0-9]+\.[0-9]+\.[0-9]+(-ea)?$/
+      branches:
+        ignore: /.*/
+
+workflows:
+
+  "AES: Dev":
+    # Run this workflow on just 'master' and PRs.
+    jobs:
+      - "aes-generate":
+          name: "aes-dev-generate"
+      - "aes-chart":
+          name: "aes-dev-chart"
+
+  "AES: Chart Release":
+    jobs:
+      - "aes-chart-publish":
+          <<: *filter-chart-release-only
+          name: "aes-release-chart"
+
+  "AES: Manifests Release":
+    jobs:
+      - "aes-manifest-publish":
+          <<: *filter-chart-release-only
+          name: "aes-release-manifests-publish"

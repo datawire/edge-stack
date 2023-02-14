@@ -1,0 +1,32 @@
+resources:
+ - { kind: Namespace,          name: ambassador                                         }
+ - { kind: ServiceAccount,     name: edge-stack-agent,            namespace: ambassador }
+ - { kind: ServiceAccount,     name: edge-stack,                  namespace: ambassador }
+ - { kind: Secret,             name: edge-stack,                  namespace: ambassador }
+ - { kind: ClusterRole,        name: edge-stack-agent                                   }
+ - { kind: ClusterRole,        name: edge-stack-agent-pods                              }
+ - { kind: ClusterRole,        name: edge-stack-agent-deployments                       }
+ - { kind: ClusterRole,        name: edge-stack-agent-endpoints                         }
+ - { kind: ClusterRole,        name: edge-stack-agent-configmaps                        }
+ - { kind: ClusterRole,        name: edge-stack-agent-rollouts                          }
+ - { kind: ClusterRole,        name: edge-stack-agent-applications                      }
+ - { kind: ClusterRole,        name: edge-stack                                         }
+ - { kind: ClusterRole,        name: edge-stack-crd                                     }
+ - { kind: ClusterRole,        name: edge-stack-watch                                   }
+ - { kind: ClusterRole,        name: edge-stack-aes                                     }
+ - { kind: ClusterRoleBinding, name: edge-stack-agent                                   }
+ - { kind: ClusterRoleBinding, name: edge-stack                                         }
+ - { kind: Role,               name: edge-stack-agent-config,     namespace: ambassador }
+ - { kind: RoleBinding,        name: edge-stack-agent-config,     namespace: ambassador }
+ - { kind: Service,            name: edge-stack-admin,            namespace: ambassador }
+ - { kind: Service,            name: edge-stack,                  namespace: ambassador }
+ - { kind: Service,            name: edge-stack-redis,            namespace: ambassador }
+ - { kind: Deployment,         name: edge-stack-agent,            namespace: ambassador }
+ - { kind: Deployment,         name: edge-stack,                  namespace: ambassador }
+ - { kind: Deployment,         name: edge-stack-redis,            namespace: ambassador }
+ - { kind: AuthService,        name: edge-stack-auth,             namespace: ambassador }
+ - { kind: Mapping,            name: edge-stack-devportal,        namespace: ambassador }
+ - { kind: Mapping,            name: edge-stack-devportal-assets, namespace: ambassador }
+ - { kind: Mapping,            name: edge-stack-devportal-demo,   namespace: ambassador }
+ - { kind: Mapping,            name: edge-stack-devportal-api,    namespace: ambassador }
+ - { kind: RateLimitService,   name: edge-stack-ratelimit,        namespace: ambassador }

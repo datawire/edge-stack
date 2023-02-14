@@ -1,0 +1,39 @@
+emissary-ingress:
+  replicaCount: 1
+  createNamespace: true
+  deploymentTool: getambassador.io
+  env:
+    POLL_EVERY_SECS: '60'
+    AMBASSADOR_INTERNAL_URL: 'https://127.0.0.1:8443'
+    AMBASSADOR_DRAIN_TIME: '600'
+  podAnnotations:
+    consul.hashicorp.com/connect-inject: 'false'
+    sidecar.istio.io/inject: 'false'
+  containerNameOverride: aes
+  restartPolicy: Always
+  terminationGracePeriodSeconds: "0"
+  service:
+    type: LoadBalancer
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              service: ambassador
+          topologyKey: kubernetes.io/hostname
+        weight: 100
+
+registry:
+  create: true
+devportal:
+  docsPrefix: "/docs/"
+authService:
+  optional_configurations:
+    allow_request_body: false
+    status_on_error:
+      code: 504
+redis:
+  serviceSelector:
+    service: ambassador-redis
+deploymentTool: getambassador.io
