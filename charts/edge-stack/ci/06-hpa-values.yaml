@@ -1,0 +1,11 @@
+emissary-ingress:
+  createDefaultListeners: true
+
+  deploymentStrategy:
+    type: Recreate
+
+  service:
+    type: NodePort
+
+  autoscaling:
+    enabled: true
