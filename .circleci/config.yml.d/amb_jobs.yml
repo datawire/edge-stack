@@ -1,0 +1,81 @@
+version: 2.1
+
+# Secure environment variables set from the Web UI:
+#
+# - AWS_ACCESS_KEY_ID (AWS S3)
+# - AWS_SECRET_ACCESS_KEY (AWS S3)
+#
+# - DEV_REGISTRY (DockerHub)
+# - DOCKER_BUILD_USERNAME (DockerHub)
+# - DOCKER_BUILD_PASSWORD (DockerHub)
+#
+# - RELEASE_REGISTRY (DockerHub)
+# - DOCKER_RELEASE_USERNAME (DockerHub)
+# - DOCKER_RELEASE_PASSWORD (DockerHub)
+
+commands:
+
+  ######################################################################
+  # Commands that are complete jobs                                    #
+  ######################################################################
+
+  "job-chart":
+    steps:
+      - amb-linux-install
+      - amb-checkout
+      - install-k3d
+      # We might need to be logged in the registry to pull the Envoy
+      # image or the builder-base image.
+      - amb-config-registry
+      # main
+      - run: make chart/test
+
+  "job-chart-publish":
+    steps:
+      - amb-linux-install
+      - amb-checkout
+      - amb-skip-if-bad-chart-version
+      - install-k3d
+      # We might need to be logged in the registry to pull the Envoy
+      # image or the builder-base image.
+      - amb-config-registry
+      # main
+      - run: make chart/test
+      - run: make release/chart/ga-push
+
+  "job-manifests-publish":
+    steps:
+      - amb-linux-install
+      - amb-checkout
+      - amb-config-registry
+      - run:
+          name: "Publishing manifests"
+          command: |
+            make push-manifests
+
+  "job-publish-rc-manifests":
+    steps:
+      - amb-linux-install
+      - amb-checkout
+      - amb-config-registry
+      - run:
+          name: "Publishing manifests for RC"
+          command: |
+            make release/rc-manifests
+
+  "job-generate":
+    steps:
+      # setup
+      - amb-linux-install
+      - amb-checkout
+      # We might need to be logged in the registry to pull the Envoy
+      # image or the builder-base image.
+      - amb-config-registry
+      - install-helm
+      # main
+      - run: make generate
+      - dirty-check
+      # Run it again to make sure that it is possible to run it twice
+      # in a row.
+      - run: make generate
+      - dirty-check
