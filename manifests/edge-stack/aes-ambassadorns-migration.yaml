@@ -140,7 +140,7 @@ spec:
 
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.5.2-rc.0
+        image: docker.io/datawire/aes:3.5.2
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
