@@ -296,4 +296,7 @@ spec:
           value: 'true'
         - name: AES_DIAGNOSTICS_URL
           value: http://edge-stack-admin.default:8877/ambassador/v0/diag/?json=true
+
+  
+  
   progressDeadlineSeconds: 600

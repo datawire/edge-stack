@@ -1,7 +1,7 @@
 # GENERATED FILE: edits made by hand will not be preserved.
 ---
 # Source: edge-stack/templates/aes-ratelimit.yaml
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: RateLimitService
 metadata:
   name: edge-stack-ratelimit
@@ -12,7 +12,7 @@ spec:
   protocol_version: v3
 ---
 # Source: edge-stack/templates/aes-authservice.yaml
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: AuthService
 metadata:
   name: edge-stack-auth
@@ -28,7 +28,7 @@ spec:
 ---
 # Source: edge-stack/templates/aes-internal.yaml
 # Configure DevPortal
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
@@ -36,18 +36,20 @@ metadata:
   labels:
     product: aes
 spec:
+  hostname: '*'
   prefix: /documentation/
   rewrite: /docs/
   service: 127.0.0.1:8500
 ---
 # Source: edge-stack/templates/aes-internal.yaml
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: edge-stack-devportal-assets
   labels:
     product: aes
 spec:
+  hostname: '*'
   prefix: /documentation/(assets|styles)/(.*)(.css)
   prefix_regex: true
   regex_rewrite:
@@ -60,7 +62,7 @@ spec:
       append: false
 ---
 # Source: edge-stack/templates/aes-internal.yaml
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   # This Mapping name is what the demo uses. Sigh.
@@ -68,12 +70,13 @@ metadata:
   labels:
     product: aes
 spec:
+  hostname: '*'
   prefix: /docs/
   rewrite: /docs/
   service: 127.0.0.1:8500
 ---
 # Source: edge-stack/templates/aes-internal.yaml
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
@@ -81,6 +84,7 @@ metadata:
   labels:
     product: aes
 spec:
+  hostname: '*'
   prefix: /openapi/
   rewrite: ''
   service: 127.0.0.1:8500

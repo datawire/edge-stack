@@ -3,12 +3,12 @@
 This file documents all notable changes to Edge Stack Helm Chart. The release
 numbering uses [semantic versioning](http://semver.org).
 
-## v8.6.0 - TBD
+## v8.6.0
 
 - Update Edge Stack chart image to version v3.6.0: [CHANGELOG](https://github.com/datawire/edge-stack/blob/master/CHANGELOG.md)
+- Update Edge Stack CRD resource apiVersions to `getambassador.io/v3alpha1`
 
 ## v8.5.0
-
 
 - Added new securityContext fields to the Redis and Agent helm charts, allowing users to further manage privilege and access control settings which can be used for tools such as PodSecurityPolicy.
 - Adds support for configuring a startupProbe on the edge-stack deployments. This is useful when a larger number of resources are used and the initial startup needs additional time. See for details <https://github.com/emissary-ingress/emissary/pull/4649>.

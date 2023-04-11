@@ -1,7 +1,7 @@
 {{ if .Values.createDevPortalMappings }}
 ---
 # Configure DevPortal
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
@@ -24,14 +24,16 @@ metadata:
 spec:
   {{- if .Values.env }}
   {{- if hasKey .Values.env "AMBASSADOR_ID" }}
-  ambassador_id: {{ .Values.env.AMBASSADOR_ID | quote }}
+  ambassador_id:
+  - {{ .Values.env.AMBASSADOR_ID | quote }}
   {{- end }}
   {{- end }}
+  hostname: "*"
   prefix: {{ .Values.devportal.docsPrefix }}
   rewrite: "/docs/"
   service: "127.0.0.1:8500"
 ---
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: {{ include "ambassador.fullname" . }}-devportal-assets
@@ -53,9 +55,11 @@ metadata:
 spec:
   {{- if .Values.env }}
   {{- if hasKey .Values.env "AMBASSADOR_ID" }}
-  ambassador_id: {{ .Values.env.AMBASSADOR_ID | quote }}
+  ambassador_id:
+  - {{ .Values.env.AMBASSADOR_ID | quote }}
   {{- end }}
   {{- end }}
+  hostname: "*"
   prefix: /documentation/(assets|styles)/(.*)(.css)
   prefix_regex: true
   regex_rewrite:
@@ -67,7 +71,7 @@ spec:
       value: "public, max-age=3600, immutable"
       append: false
 ---
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   # This Mapping name is what the demo uses. Sigh.
@@ -90,14 +94,16 @@ metadata:
 spec:
   {{- if .Values.env }}
   {{- if hasKey .Values.env "AMBASSADOR_ID" }}
-  ambassador_id: {{ .Values.env.AMBASSADOR_ID | quote }}
+  ambassador_id:
+  - {{ .Values.env.AMBASSADOR_ID | quote }}
   {{- end }}
   {{- end }}
+  hostname: "*"
   prefix: /docs/
   rewrite: "/docs/"
   service: "127.0.0.1:8500"
 ---
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
@@ -120,9 +126,11 @@ metadata:
 spec:
   {{- if .Values.env }}
   {{- if hasKey .Values.env "AMBASSADOR_ID" }}
-  ambassador_id: {{ .Values.env.AMBASSADOR_ID | quote }}
+  ambassador_id:
+  - {{ .Values.env.AMBASSADOR_ID | quote }}
   {{- end }}
   {{- end }}
+  hostname: "*"
   prefix: /openapi/
   rewrite: ""
   service: "127.0.0.1:8500"

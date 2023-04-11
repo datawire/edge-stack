@@ -1,14 +1,12 @@
 apiVersion: v2
-appVersion: 3.6.0-dev
+appVersion: 3.6.0-rc.1
 description: A Helm chart for Ambassador Edge Stack
 name: edge-stack
-version: 8.6.0-dev
-# TODO: change these to whatever the appropriate things are
+version: 8.6.0-rc.1
 icon: https://www.getambassador.io/images/logo.png
 home: https://www.getambassador.io/
 sources:
-  - https://github.com/datawire/ambassador
-  - https://github.com/prometheus/statsd_exporter
+  - https://github.com/datawire/edge-stack
 keywords:
   - api gateway
   - ambassador
@@ -16,16 +14,16 @@ keywords:
   - envoy
   - edge stack
 maintainers:
-  - name: flydiverny
-    email: markus@maga.se
-  - name: kflynn
-    email: flynn@datawire.io
-  - name: nbkrause
-    email: nkrause@datawire.io
-  - name: lukeshu
-    email: lukeshu@datawire.io
+  - name: Alice Wasko
+    email: alicewasko@datawire.io
+  - name: Hamzah Qudsi
+    email: hqudsi@datawire.io
+  - name: Lance Austin
+    email: laustin@datawire.io
+  - name: Tenshin Higashi
+    email: thigashi@datawire.io
 engine: gotpl
 dependencies:
   - name: emissary-ingress
-    version: 8.6.0-dev.0.20230221211704-de4f9dae69fe
+    version: 8.6.0-rc.1
     repository: https://s3.amazonaws.com/datawire-static-files/charts-dev

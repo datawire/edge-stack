@@ -1,6 +1,6 @@
 {{ if .Values.authService.create }}
 ---
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: AuthService
 metadata:
   name: {{ include "ambassador.fullname" . }}-{{ .Values.authService.deploymentExtraName | default "auth" }}
@@ -24,7 +24,8 @@ spec:
   protocol_version: v3
   {{- if .Values.env }}
   {{- if hasKey .Values.env "AMBASSADOR_ID" }}
-  ambassador_id: {{ .Values.env.AMBASSADOR_ID | quote }}
+  ambassador_id:
+  - {{ .Values.env.AMBASSADOR_ID | quote }}
   {{- end }}
   {{- end }}
   auth_service: 127.0.0.1:8500

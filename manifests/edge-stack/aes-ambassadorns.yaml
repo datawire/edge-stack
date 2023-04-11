@@ -541,6 +541,9 @@ spec:
           value: 'true'
         - name: AES_DIAGNOSTICS_URL
           value: http://edge-stack-admin.ambassador:8877/ambassador/v0/diag/?json=true
+
+  
+  
   progressDeadlineSeconds: 600
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/deployment.yaml
@@ -599,7 +602,7 @@ spec:
 
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.6.0-dev
+        image: docker.io/datawire/aes:3.6.0-rc.1
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -702,7 +705,7 @@ spec:
       restartPolicy: Always
 ---
 # Source: edge-stack/templates/aes-authservice.yaml
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: AuthService
 metadata:
   name: edge-stack-auth
@@ -719,7 +722,7 @@ spec:
 ---
 # Source: edge-stack/templates/aes-internal.yaml
 # Configure DevPortal
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
@@ -728,12 +731,13 @@ metadata:
   labels:
     product: aes
 spec:
+  hostname: '*'
   prefix: /docs/
   rewrite: /docs/
   service: 127.0.0.1:8500
 ---
 # Source: edge-stack/templates/aes-internal.yaml
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: edge-stack-devportal-assets
@@ -741,6 +745,7 @@ metadata:
   labels:
     product: aes
 spec:
+  hostname: '*'
   prefix: /documentation/(assets|styles)/(.*)(.css)
   prefix_regex: true
   regex_rewrite:
@@ -753,7 +758,7 @@ spec:
       append: false
 ---
 # Source: edge-stack/templates/aes-internal.yaml
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   # This Mapping name is what the demo uses. Sigh.
@@ -762,12 +767,13 @@ metadata:
   labels:
     product: aes
 spec:
+  hostname: '*'
   prefix: /docs/
   rewrite: /docs/
   service: 127.0.0.1:8500
 ---
 # Source: edge-stack/templates/aes-internal.yaml
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   # This Mapping name is referenced by convention, it's important to leave as-is.
@@ -776,12 +782,13 @@ metadata:
   labels:
     product: aes
 spec:
+  hostname: '*'
   prefix: /openapi/
   rewrite: ''
   service: 127.0.0.1:8500
 ---
 # Source: edge-stack/templates/aes-ratelimit.yaml
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: RateLimitService
 metadata:
   name: edge-stack-ratelimit
