@@ -76,7 +76,7 @@ emissary-ingress: # +doc-gen:break
 
   image:
     repository: docker.io/datawire/aes
-    tag: 3.6.0-rc.1
+    tag: 3.6.0
     pullPolicy: IfNotPresent
 
   ## Configures a startupProbe on the Ambassador Edge Stack deployment pods.
