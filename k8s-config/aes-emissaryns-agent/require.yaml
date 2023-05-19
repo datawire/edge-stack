@@ -1,0 +1,14 @@
+resources:
+  - { kind: ServiceAccount,     name: edge-stack-agent,            namespace: emissary }
+  - { kind: ClusterRole,        name: edge-stack-agent                                 }
+  - { kind: ClusterRole,        name: edge-stack-agent-pods                            }
+  - { kind: ClusterRole,        name: edge-stack-agent-deployments                     }
+  - { kind: ClusterRole,        name: edge-stack-agent-endpoints                       }
+  - { kind: ClusterRole,        name: edge-stack-agent-configmaps                      }
+  - { kind: ClusterRole,        name: edge-stack-agent-rollouts                        }
+  - { kind: ClusterRole,        name: edge-stack-agent-applications                    }
+  - { kind: ClusterRoleBinding, name: edge-stack-agent                                 }
+  - { kind: Role,               name: edge-stack-agent-config,     namespace: emissary }
+  - { kind: RoleBinding,        name: edge-stack-agent-config,     namespace: emissary }
+  - { kind: Service,            name: edge-stack-admin,            namespace: emissary }
+  - { kind: Deployment,         name: edge-stack-agent,            namespace: emissary }
