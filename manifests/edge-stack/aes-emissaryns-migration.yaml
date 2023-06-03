@@ -140,7 +140,7 @@ spec:
 
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.7.0-rc.0
+        image: docker.io/datawire/aes:3.7.0-rc.1
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -354,7 +354,7 @@ rules:
   - endpoints
   verbs: [get, list, watch]
 
-- apiGroups: [getambassador.io]
+- apiGroups: [getambassador.io, gateway.getambassador.io]
   resources: ['*']
   verbs: [get, list, watch, update, patch, create, delete]
 
