@@ -1726,7 +1726,11 @@ spec:
   preserveUnknownFields: false
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=="Valid")].reason
+      name: Status
+      type: string
+    name: v1alpha1
     schema:
       openAPIV3Schema:
         description: "WebApplicationFirewallPolicy provides a way to apply Web Application
@@ -1749,15 +1753,16 @@ spec:
           metadata:
             type: object
           spec:
-            description: Spec defines the desired user configuration for a WebApplicationFirewall
-              that contains the set of rules.
+            description: Defines the desired user configuration for a WebApplicationFirewallPolicy
+              that contains a set of rules that configure which WebApplicationFirewallPolicy
+              to use for requests.
             properties:
               ambassadorSelector:
                 default:
                   ambassadorIds:
                   - default
-                description: AmbassadorSelector can be optionally used to limit which
-                  instances of Edge Stack can make use of this resource
+                description: Optional field that can be used to limit which instances
+                  of Edge Stack can make use of this resource
                 properties:
                   ambassadorIds:
                     default:
@@ -1770,97 +1775,98 @@ spec:
                     type: array
                 type: object
               rules:
-                description: Rules are a set of matching rules that are checked against
-                  incoming request to determine which set of WebApplicationFirewalls
-                  to apply. If no matches are found then the request is allowed through
-                  to the upstream service.
+                description: Set of matching rules that are checked against incoming
+                  request to determine which set of WebApplicationFirewalls to apply.
+                  If no matches are found then the request is allowed through to the
+                  upstream service.
                 items:
-                  description: WAFRule defines web application firewall rules object.
+                  description: Defines criteria for matching requests to a WebApplicationFirewall
                   properties:
                     host:
                       default: '*'
-                      description: Host is a "glob-string" that matches on the `:authority`
+                      description: A "glob-string" that matches on the `:authority`
                         header of the incoming request. If not set it will match on
                         all incoming requests.
                       type: string
                     ifRequestHeader:
-                      description: IfRequestHeader checks if exact or regular expression
-                        matches a value in a request Header to determine if the WebApplicationFirewall
+                      description: Checks if exact or regular expression matches a
+                        value in a request Header to determine if the WebApplicationFirewall
                         is executed or not.
                       properties:
                         name:
-                          description: Name is the name of the HTTP Header to be matched.
-                            Name matching MUST be case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
+                          description: "Name of the HTTP Header to be matched. Name
+                            matching MUST be case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
+                            \n Valid values include: \n * \"Authorization\" * \"Set-Cookie\"
+                            \n Invalid values include: \n - \":method\" - \":\" is
+                            an invalid character. This means that HTTP/2 pseudo headers
+                            are not currently supported by this type. - \"/invalid\"
+                            - \"/\" is an invalid character"
                           type: string
                         negate:
-                          description: "Negate allows the match criteria to be negated
-                            or flipped. \n For example, you can have a regex that
-                            checks for any non-empty string which would indicate would
-                            translate to if header exists on request then match on
-                            it. With negate turned on this would translate to match
-                            on any request that doesn't have a header."
+                          description: "Allows the match criteria to be negated or
+                            flipped. \n For example, you can have a regex that checks
+                            for any non-empty string which would indicate would translate
+                            to if header exists on request then match on it. With
+                            negate turned on this would translate to match on any
+                            request that doesn't have a header."
                           type: boolean
                         type:
                           default: Exact
-                          description: Type specifies how to match against the value
-                            of the header.
+                          description: "Specifies the semantics of how HTTP header
+                            values should be compared. Valid HeaderMatchType values
+                            are: \n * \"Exact\" * \"RegularExpression\""
                           enum:
                           - Exact
                           - RegularExpression
                           type: string
                         value:
-                          description: "Value is the value of HTTP Header to be matched.
-                            \n if type is RegularExpression then this must be a valid
-                            regex with length being at least 1"
+                          description: "Value of HTTP Header to be matched. \n if
+                            type is RegularExpression then this must be a valid regex
+                            with length being at least 1"
                           maxLength: 4096
                           type: string
                       required:
                       - name
                       type: object
                     onError:
-                      description: OnRuleError provides a way to configure how requests
-                        are handled when a request matches the rule but there is a
-                        configuration or runtime error. By default requests are allowed
-                        when this field is not configured.
+                      description: Provides a way to configure how requests are handled
+                        when a request matches the rule but there is a configuration
+                        or runtime error. When this field is not configured, the default
+                        behavior is to allow the request.
                       properties:
                         statusCode:
-                          description: Status code to use when denying the request.
+                          description: statusCode sets the HTTP status code to use
+                            when denying the request.
                           maximum: 599
                           minimum: 400
                           type: integer
                       type: object
                     path:
                       default: '*'
-                      description: Path is a "glob-string" that matches on the request
-                        path. If not provided then it will match on all incoming requests.
+                      description: A "glob-string" that matches on the request path.
+                        If not provided then it will match on all incoming requests.
                       type: string
                     precedence:
-                      description: Precedence allows forcing a precedence ordering
-                        on the rules. By default the rules are evaluated in the order
-                        they are in the `WebApplicationFirewallPolicy.spec.rules`
-                        field. However, multiple WebApplicationFirewallPolicys can
-                        be applied to a cluster. To ensure that a specific ordering
-                        is enforced then using a precedence on rules ensures a specific
-                        ordering.
+                      description: Allows forcing a precedence ordering on the rules.
+                        By default the rules are evaluated in the order they are in
+                        the `WebApplicationFirewallPolicy.spec.rules` field. However,
+                        multiple WebApplicationFirewallPolicys can be applied to a
+                        cluster. To ensure that a specific ordering is enforced then
+                        using a precedence on rules ensures a specific ordering.
                       type: integer
                     wafRef:
-                      description: "WAFRefs are a list of references to the WebApplicationFirewall
-                        that will be applied to the incoming request. WebApplicationFirewalls
-                        will be applied to the request in the order they are listed.
-                        \n If no WebApplicationFirewall is provided then the request
-                        will be allowed through to the upstream service (pending execution
-                        of any Filters/Filterpolicies) without any additional WAF
-                        processing."
+                      description: References a WebApplicationFirewall that will be
+                        applied to the incoming request.
                       properties:
                         name:
-                          description: Name that identifies the WebApplicationFirewall
+                          description: Name of the WebApplicationFirewall
                           minLength: 1
                           type: string
                         namespace:
-                          description: "Namespace refers to a Kubernetes namespace
-                            that the WebApplicationFirewall resides. It must be a
-                            RFC 1123 label. \n This validation is based off of the
-                            corresponding Kubernetes validation: https://github.com/kubernetes/apimachinery/blob/02cfb53916346d085a6c6c7c66f882e3c6b0eca6/pkg/util/validation/validation.go#L187
+                          description: "Namespace that the WebApplicationFirewall
+                            resides in. It must be a RFC 1123 label. \n This validation
+                            is based off of the corresponding Kubernetes validation:
+                            https://github.com/kubernetes/apimachinery/blob/02cfb53916346d085a6c6c7c66f882e3c6b0eca6/pkg/util/validation/validation.go#L187
                             \n This is used for Namespace name validation here: https://github.com/kubernetes/apimachinery/blob/02cfb53916346d085a6c6c7c66f882e3c6b0eca6/pkg/api/validation/generic.go#L63
                             \n Valid values include: \n * \"example\" \n Invalid values
                             include: \n * \"example.com\" - \".\" is an invalid character"
@@ -1880,11 +1886,12 @@ spec:
             - rules
             type: object
           status:
-            description: Status defines the current state of WebApplicationFirewallPolicy
-              that provides users feedback on whether it is configured correctly.
+            description: Provides a list of conditions that describe the current state
+              of the WebApplicationFirewallPolicy for fast feedback on whether the
+              resource is configured correctly or not.
             properties:
               conditions:
-                description: "Conditions describe the current conditions of the WebApplicationFirewallPolicy
+                description: "Describes the current state of the WebApplicationFirewallPolicy
                   Known condition types are: \n * \"Accepted\" * \"Ready\" * \"Rejected\"
                   - if any rules have an error then the whole WebApplicationFirewallPolicy
                   will be rejected."
@@ -1960,15 +1967,11 @@ spec:
                 - type
                 x-kubernetes-list-type: map
               ruleStatuses:
-                description: RuleStatuses provides status for each unique Rule defined
-                  in the Spec.
                 items:
-                  description: WAFRuleStatus is the status associated to a Rule within
-                    a WebApplicationFirewallPolicy.
+                  description: Describes the status of a Rule within a WebApplicationFirewallPolicy.
                   properties:
                     conditions:
-                      description: Conditions describe the current condition of this
-                        Rule.
+                      description: conditions describe the current state of this Rule.
                       items:
                         description: "Condition contains details for one aspect of
                           the current state of this API Resource. --- This struct
@@ -2046,14 +2049,14 @@ spec:
                       - type
                       x-kubernetes-list-type: map
                     host:
-                      description: Host to help identify the rule with the error.
+                      description: host of the rule with the error.
                       type: string
                     index:
-                      description: Index provides the zero-based index in the list
-                        of Rules to help identify the rule with an error
+                      description: Provides the zero-based index in the list of Rules
+                        to help identify the rule with an error
                       type: integer
                     path:
-                      description: Path to help identify the rule with the error.
+                      description: path of the rule with the error.
                       type: string
                   required:
                   - conditions
@@ -2101,12 +2104,16 @@ spec:
   preserveUnknownFields: false
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=="Valid")].reason
+      name: Status
+      type: string
+    name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: WebApplicationFirewall provides the desired configuration for
-          a Web Application Firewall that can be referenced within WebFirewallPolicies
-          and applied to incoming requests.
+        description: Provides the desired configuration for a Web Application Firewall
+          that can be referenced within WebFirewallPolicies and applied to incoming
+          requests.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -2121,16 +2128,33 @@ spec:
           metadata:
             type: object
           spec:
-            description: Spec defines the desired user configuration for a WebApplicationFirewall.
+            description: Defines the desired user configuration for the WebApplicationFirewall.
             properties:
+              ambassadorSelector:
+                default:
+                  ambassadorIds:
+                  - default
+                description: Optional field that can be used to limit which instances
+                  of Edge Stack can make use of this resource
+                properties:
+                  ambassadorIds:
+                    default:
+                    - default
+                    description: limits this resource to be used only by instances
+                      of Edge Stack that have an AMBASSADOR_ID matching one of the
+                      ids in the list
+                    items:
+                      type: string
+                    type: array
+                type: object
               firewallRules:
                 items:
-                  description: WAFRulesSource contains configuration for where to
-                    load rules for a specific WebApplicationFirewall.
+                  description: Contains configuration for where to load rules for
+                    a specific WebApplicationFirewall.
                   properties:
                     configMapRef:
-                      description: ConfigMapRef contains a name and namespace reference
-                        to a Kubernetes ConfigMap and a key to pull data from
+                      description: Contains a name and namespace reference to a Kubernetes
+                        ConfigMap and a key to pull data from
                       properties:
                         key:
                           description: Key for the field in the configmap that should
@@ -2159,20 +2183,24 @@ spec:
                       - name
                       type: object
                     file:
+                      description: Provides a path to a file or directory on the Edge
+                        Stack pod to load rules configuration from
                       type: string
                     http:
-                      description: WAFRulesHTTPSource provides config for downloading
-                        the WebApplicationFirewall's rules via an HTTP request.
+                      description: Configures downloading firewall rules from the
+                        internet via an HTTP request
                       properties:
                         url:
+                          description: Provides the address to download the firewall
+                            rules from.
                           maxLength: 255
                           minLength: 1
                           pattern: ^(?:http[s]?):\/\/([a-z0-9_\-.]+)(?:\:([0-9]+))?(\/[^\?\s]*)?(?:\?(\S+))?
                           type: string
                       type: object
                     sourceType:
-                      description: SourceType indicates the method that we will use
-                        to load rules configuration for the WebApplicationFirewall
+                      description: Indicates the method that we will use to load rules
+                        configuration for the WebApplicationFirewall
                       enum:
                       - file
                       - configmap
@@ -2182,16 +2210,38 @@ spec:
                   - sourceType
                   type: object
                 type: array
+              logging:
+                description: Provides a way to configure additional logging in the
+                  Edge Stack pods for the WebApplicationFirewall. This is in addition
+                  to the logging config that is available via the firewall configuration
+                  files. The following logs will always be output to the container
+                  logs when enabled.
+                properties:
+                  onInterrupt:
+                    description: Controls logging behavior when the WebApplicationFirewall
+                      interrupts a request.
+                    properties:
+                      enabled:
+                        description: Configures whether the container should output
+                          logs. These additional logs are not enabled unless this
+                          is set to `true`
+                        type: boolean
+                    required:
+                    - enabled
+                    type: object
+                required:
+                - onInterrupt
+                type: object
             required:
             - firewallRules
             type: object
           status:
-            description: Status defines the current state of a WebApplicationFirewall
-              that provides user feedback on whether it is configured correctly or
-              not.
+            description: Provides a list of conditions that describe the current state
+              of the WebApplicationFirewall for fast feedback on whether the resource
+              is configured correctly or not.
             properties:
               conditions:
-                description: "Conditions describe the current conditions of the WebApplicationFirewall
+                description: "Describes the current state of the WebApplicationFirewall
                   Known condition types are: \n * \"Accepted\" * \"Ready\" * \"Rejected\"
                   - if any rules have an error then the whole WebApplicationFirewall
                   will be rejected."
@@ -6595,7 +6645,7 @@ spec:
       serviceAccountName: emissary-apiext
       containers:
         - name: emissary-apiext
-          image: docker.io/datawire/aes:3.7.0-rc.2
+          image: docker.io/datawire/aes:3.7.0-rc.3
           imagePullPolicy: IfNotPresent
           command: [ "apiext", "emissary-apiext" ]
           ports:

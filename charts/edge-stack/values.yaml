@@ -45,8 +45,6 @@ emissary-ingress: # +doc-gen:break
   nameOverride: edge-stack
   singleNamespace: false
   envRaw: |
-    - name: GO_FILTER_OBJECT_FILE
-      value: /ambassador/filter.so
     - name: REDIS_URL
       {{- if .Values.redisURL }}
       value: {{ .Values.redisURL }}
@@ -78,7 +76,7 @@ emissary-ingress: # +doc-gen:break
 
   image:
     repository: docker.io/datawire/aes
-    tag: 3.7.0-rc.2
+    tag: 3.7.0-rc.3
     pullPolicy: IfNotPresent
 
   ## Configures a startupProbe on the Ambassador Edge Stack deployment pods.

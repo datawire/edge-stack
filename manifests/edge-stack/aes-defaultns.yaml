@@ -594,7 +594,7 @@ spec:
 
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.7.0-rc.2
+        image: docker.io/datawire/aes:3.7.0-rc.3
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -622,8 +622,6 @@ spec:
           value: https://127.0.0.1:8443
         - name: POLL_EVERY_SECS
           value: '60'
-        - name: GO_FILTER_OBJECT_FILE
-          value: /ambassador/filter.so
         - name: REDIS_URL
           value: edge-stack-redis:6379
 
