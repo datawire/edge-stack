@@ -594,7 +594,7 @@ spec:
 
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.7.0-rc.3
+        image: docker.io/datawire/aes:3.7.0-rc.4
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -631,16 +631,16 @@ spec:
           httpGet:
             path: /ambassador/v0/check_alive
             port: admin
-          failureThreshold: 3
-          initialDelaySeconds: 30
-          periodSeconds: 3
+          failureThreshold: 5
+          initialDelaySeconds: 60
+          periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /ambassador/v0/check_ready
             port: admin
-          failureThreshold: 3
-          initialDelaySeconds: 30
-          periodSeconds: 3
+          failureThreshold: 5
+          initialDelaySeconds: 60
+          periodSeconds: 10
         volumeMounts:
         - name: ambassador-pod-info
           mountPath: /tmp/ambassador-pod-info
