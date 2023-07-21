@@ -1,0 +1,31 @@
+resources:
+ - { kind: ServiceAccount,     name: edge-stack-agent,            namespace: default }
+ - { kind: ServiceAccount,     name: edge-stack,                  namespace: default }
+ - { kind: Secret,             name: edge-stack,                  namespace: default }
+ - { kind: ClusterRole,        name: edge-stack-agent                                }
+ - { kind: ClusterRole,        name: edge-stack-agent-pods                           }
+ - { kind: ClusterRole,        name: edge-stack-agent-deployments                    }
+ - { kind: ClusterRole,        name: edge-stack-agent-endpoints                      }
+ - { kind: ClusterRole,        name: edge-stack-agent-configmaps                     }
+ - { kind: ClusterRole,        name: edge-stack-agent-rollouts                       }
+ - { kind: ClusterRole,        name: edge-stack-agent-applications                   }
+ - { kind: ClusterRole,        name: edge-stack                                      }
+ - { kind: ClusterRole,        name: edge-stack-crd                                  }
+ - { kind: ClusterRole,        name: edge-stack-watch                                }
+ - { kind: ClusterRole,        name: edge-stack-aes                                  }
+ - { kind: ClusterRoleBinding, name: edge-stack-agent                                }
+ - { kind: ClusterRoleBinding, name: edge-stack                                      }
+ - { kind: Role,               name: edge-stack-agent-config,     namespace: default }
+ - { kind: RoleBinding,        name: edge-stack-agent-config,     namespace: default }
+ - { kind: Service,            name: edge-stack-admin,            namespace: default }
+ - { kind: Service,            name: edge-stack,                  namespace: default }
+ - { kind: Service,            name: edge-stack-redis,            namespace: default }
+ - { kind: Deployment,         name: edge-stack-agent,            namespace: default }
+ - { kind: Deployment,         name: edge-stack,                  namespace: default }
+ - { kind: Deployment,         name: edge-stack-redis,            namespace: default }
+ - { kind: AuthService,        name: edge-stack-auth,             namespace: default }
+ - { kind: Mapping,            name: edge-stack-devportal,        namespace: default }
+ - { kind: Mapping,            name: edge-stack-devportal-assets, namespace: default }
+ - { kind: Mapping,            name: edge-stack-devportal-demo,   namespace: default }
+ - { kind: Mapping,            name: edge-stack-devportal-api,    namespace: default }
+ - { kind: RateLimitService,   name: edge-stack-ratelimit,        namespace: default }
