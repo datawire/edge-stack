@@ -3,9 +3,9 @@
 This file documents all notable changes to Edge Stack Helm Chart. The release
 numbering uses [semantic versioning](http://semver.org).
 
-## v8.7.2-rc.0
+## v8.7.2-rc.1
 
-- Update Edge Stack chart image to version v3.7.2-rc.0: [CHANGELOG](https://github.com/datawire/edge-stack/blob/master/CHANGELOG.md)
+- Update Edge Stack chart image to version v3.7.2-rc.1: [CHANGELOG](https://github.com/datawire/edge-stack/blob/master/CHANGELOG.md)
 
 ## v8.7.1
 
