@@ -602,7 +602,7 @@ spec:
 
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.7.2-rc.1
+        image: docker.io/datawire/aes:3.7.2
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
