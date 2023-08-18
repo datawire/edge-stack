@@ -22,6 +22,9 @@ Eg branch `release/v1.14` for the latest 1.14 chart, `release/v1.13` for 1.13 an
 
 As of version 2.0, Emissary-Ingress and Ambassador Edge Stack have separate charts. The helm chart for Emissary-ingress 2.X can be found in the `master` branch of the Emissary-Ingress repository linked above, and the chart for Ambassador Edge Stack 2.X lives in this repository.
 
+As of version 3.8.0 (Helm chart v8.8.0) Edge Stack requires an Ambassador Labs license key _or_ Cloud Connect token to operate. A license key is entered using `licenseKey.value`,
+and a Cloud Connect token is entered using `emissary-ingress.agent.cloudConnectToken`.
+Please see our [Helm installation documentation](https://www.getambassador.io/docs/edge-stack/latest/topics/install/helm) for instructions on how to obtain these if you do not have them.
 
 ## Prerequisites
 

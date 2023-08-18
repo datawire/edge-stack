@@ -590,7 +590,7 @@ spec:
             path: labels
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.8.0-rc.0
+        image: docker.io/datawire/aes:3.8.0-rc.1
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -600,12 +600,6 @@ spec:
         - name: admin
           containerPort: 8877
         env:
-        - name: AMBASSADOR_GRPC_METRICS_SINK
-          value: edge-stack-agent:80
-        - name: HOST_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.hostIP
         - name: AMBASSADOR_NAMESPACE
           valueFrom:
             fieldRef:
