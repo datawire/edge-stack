@@ -16,6 +16,10 @@ namespaceOverride: ''
 # Example:
 # setting `emissary-ingress.service.type=NodePort` will pass `service.type=NodePort` to the underlying emissary chart
 emissary-ingress: # +doc-gen:break
+  
+  agent:
+    # Set cloudConnectToken to obtain a License from Ambassador Cloud and/or authenticate Ambassador Agent with Ambassador Cloud.
+    # cloudConnectToken:
   test:
     enabled: false
 
@@ -64,7 +68,7 @@ emissary-ingress: # +doc-gen:break
 
   image:
     repository: docker.io/datawire/aes
-    tag: 3.8.0-rc.1
+    tag: 3.8.0-rc.2
     pullPolicy: IfNotPresent
 
   readinessProbe:

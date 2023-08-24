@@ -1,13 +1,12 @@
 -------------------------------------------------------------------------------
 Congratulations! You have successfully installed The Ambassador Edge Stack!
 
-{{- if empty .Values.licenseKey.value }}
+{{- if and (empty .Values.licenseKey.value) (empty (index .Values "emissary-ingress" "agent" "cloudConnectToken")) }}
 -------------------------------------------------------------------------------
-NOTE: You are currently running The Ambassador Edge Stack in EVALUATION MODE.
+NOTE: Ambassador Edge Stack requires an Ambassador Labs license key or a Cloud Connect token to operate.
 
-Request a free community license key at https://SERVICE_IP/edge_stack_admin/#dashboard
-to unlock all the features of The Ambassador Edge Stack and update the value of
-licenseKey.value in your values.yaml file.
+A license key is entered using "licenseKey.value", and a Cloud Connect token is entered using "emissary-ingress.agent.cloudConnectToken".
+Please see https://www.getambassador.io/docs/edge-stack/latest/topics/install/helm for instructions on how to obtain these if you do not have them.
 {{- end }}
 
 {{- if or .Values.authService.create .Values.rateLimit.create }}

@@ -3,10 +3,10 @@
 This file documents all notable changes to Edge Stack Helm Chart. The release
 numbering uses [semantic versioning](http://semver.org).
 
-## v8.8.0-rc.1
+## v8.8.0-rc.2
 
-- Update Edge Stack chart image to version v3.8.0-rc.1: [CHANGELOG](https://github.com/datawire/edge-stack/blob/master/CHANGELOG.md)
-- Update Emissary-ingress sub-chart to v3.8.0-rc.1
+- Update Edge Stack chart image to version v3.8.0-rc.2: [CHANGELOG](https://github.com/datawire/edge-stack/blob/master/CHANGELOG.md)
+- Update Emissary-ingress sub-chart to v3.8.0-rc.2
 - Remove Ambassador secret volume mounts - License must be provided via in-cluster Secret
 
 ## v8.7.0

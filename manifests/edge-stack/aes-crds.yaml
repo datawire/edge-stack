@@ -6645,7 +6645,7 @@ spec:
       serviceAccountName: emissary-apiext
       containers:
         - name: emissary-apiext
-          image: docker.io/datawire/aes:3.8.0-rc.1
+          image: docker.io/datawire/aes:3.8.0-rc.2
           imagePullPolicy: IfNotPresent
           command: [ "apiext", "emissary-apiext" ]
           ports:
