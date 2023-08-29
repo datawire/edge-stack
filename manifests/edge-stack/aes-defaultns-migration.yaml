@@ -136,7 +136,7 @@ spec:
             path: labels
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.8.0-rc.3
+        image: docker.io/datawire/aes:3.8.0
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
