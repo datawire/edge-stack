@@ -1,0 +1,13 @@
+resources:
+  # everything else
+  - { kind: Service,            name: edge-stack-redis,     namespace: ambassador }
+  - { kind: Deployment,         name: edge-stack-redis,     namespace: ambassador }
+  - { kind: Secret,             name: edge-stack,           namespace: ambassador }
+  - { kind: Service,            name: test-aes,             namespace: ambassador }
+  - { kind: Deployment,         name: aes,                  namespace: ambassador }
+  - { kind: ServiceAccount,     name: edge-stack,           namespace: ambassador }
+  - { kind: ClusterRoleBinding, name: edge-stack                                  }
+  - { kind: ClusterRole,        name: edge-stack                                  }
+  - { kind: ClusterRole,        name: edge-stack-aes                              }
+  - { kind: ClusterRole,        name: edge-stack-crd                              }
+  - { kind: ClusterRole,        name: edge-stack-watch                            }
