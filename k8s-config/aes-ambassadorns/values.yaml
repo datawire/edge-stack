@@ -23,6 +23,9 @@ emissary-ingress:
               service: ambassador
           topologyKey: kubernetes.io/hostname
         weight: 100
+  waitForApiext:
+    enabled: true
+    createRoles: true
 
 registry:
   create: true

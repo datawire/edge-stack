@@ -25,6 +25,9 @@ emissary-ingress:
   service:
     type: LoadBalancer
   deploymentNameOverride: aes
+  waitForApiext:
+    enabled: true
+    createRoles: true
 
 enableTestService: true
 

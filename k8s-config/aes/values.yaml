@@ -27,6 +27,9 @@ emissary-ingress:
     diagnostics:
       enabled: false
       allow_non_local: true
+  waitForApiext:
+    enabled: true
+    createRoles: true
 
 registry:
   create: true

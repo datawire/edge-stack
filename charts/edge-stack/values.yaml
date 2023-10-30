@@ -23,6 +23,10 @@ emissary-ingress: # +doc-gen:break
   test:
     enabled: false
 
+  waitForApiext:
+    enable: true
+    createRoles: true
+
   module:
     diagnostics:
       enabled: false
@@ -68,7 +72,7 @@ emissary-ingress: # +doc-gen:break
 
   image:
     repository: docker.io/datawire/aes
-    tag: 3.9.0-rc.0
+    tag: 3.9.0-rc.1
     pullPolicy: IfNotPresent
 
   readinessProbe:

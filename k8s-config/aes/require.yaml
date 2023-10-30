@@ -18,6 +18,8 @@ resources:
  - { kind: ClusterRoleBinding, name: edge-stack                                         }
  - { kind: Role,               name: edge-stack-agent-config,     namespace: ambassador }
  - { kind: RoleBinding,        name: edge-stack-agent-config,     namespace: ambassador }
+ - { kind: Role,               name: edge-stack-apiext,           namespace: emissary-system }
+ - { kind: RoleBinding,        name: edge-stack-apiext,           namespace: emissary-system }
  - { kind: Service,            name: edge-stack-admin,            namespace: ambassador }
  - { kind: Service,            name: edge-stack,                  namespace: ambassador }
  - { kind: Service,            name: edge-stack-redis,            namespace: ambassador }

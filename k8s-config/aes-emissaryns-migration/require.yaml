@@ -11,3 +11,5 @@ resources:
   - { kind: ClusterRole,        name: edge-stack-aes                            }
   - { kind: ClusterRole,        name: edge-stack-crd                            }
   - { kind: ClusterRole,        name: edge-stack-watch                          }
+  - { kind: Role,               name: edge-stack-apiext,    namespace: emissary-system }
+  - { kind: RoleBinding,        name: edge-stack-apiext,    namespace: emissary-system }

@@ -17,6 +17,8 @@ resources:
  - { kind: ClusterRoleBinding, name: edge-stack                                      }
  - { kind: Role,               name: edge-stack-agent-config,     namespace: default }
  - { kind: RoleBinding,        name: edge-stack-agent-config,     namespace: default }
+ - { kind: Role,               name: edge-stack-apiext,           namespace: emissary-system }
+ - { kind: RoleBinding,        name: edge-stack-apiext,           namespace: emissary-system }
  - { kind: Service,            name: edge-stack-admin,            namespace: default }
  - { kind: Service,            name: edge-stack,                  namespace: default }
  - { kind: Service,            name: edge-stack-redis,            namespace: default }

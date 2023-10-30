@@ -175,7 +175,7 @@ spec:
           done
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.9.0-rc.0
+        image: docker.io/datawire/aes:3.9.0-rc.1
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -405,3 +405,45 @@ rules:
 - apiGroups: [extensions, networking.k8s.io]
   resources: [ingresses/status]
   verbs: [update]
+---
+# Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: edge-stack-apiext
+  namespace: emissary-system
+  labels:
+    app.kubernetes.io/name: edge-stack
+
+    app.kubernetes.io/instance: edge-stack
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/managed-by: getambassador.io
+    product: aes
+    rbac.getambassador.io/role-group: edge-stack
+rules:
+- apiGroups: [apps]
+  resources:
+  - deployments
+  verbs: [get, list, watch]
+---
+# Source: edge-stack/charts/emissary-ingress/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: edge-stack-apiext
+  namespace: emissary-system
+  labels:
+    app.kubernetes.io/name: edge-stack
+
+    app.kubernetes.io/instance: edge-stack
+    app.kubernetes.io/part-of: edge-stack
+    app.kubernetes.io/managed-by: getambassador.io
+    product: aes
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: edge-stack-apiext
+subjects:
+- name: edge-stack
+  namespace: ambassador
+  kind: ServiceAccount
