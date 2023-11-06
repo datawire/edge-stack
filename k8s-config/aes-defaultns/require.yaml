@@ -6,7 +6,6 @@ resources:
  - { kind: ClusterRole,        name: edge-stack-agent-pods                           }
  - { kind: ClusterRole,        name: edge-stack-agent-deployments                    }
  - { kind: ClusterRole,        name: edge-stack-agent-endpoints                      }
- - { kind: ClusterRole,        name: edge-stack-agent-configmaps                     }
  - { kind: ClusterRole,        name: edge-stack-agent-rollouts                       }
  - { kind: ClusterRole,        name: edge-stack-agent-applications                   }
  - { kind: ClusterRole,        name: edge-stack                                      }

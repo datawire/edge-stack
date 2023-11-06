@@ -16,8 +16,23 @@ namespaceOverride: ''
 # Example:
 # setting `emissary-ingress.service.type=NodePort` will pass `service.type=NodePort` to the underlying emissary chart
 emissary-ingress: # +doc-gen:break
-  
+
+  # ambassador-agent Values.
+  # all values under agent key are passed to [the ambassador-agent chart](https://github.com/datawire/ambassador-agent/tree/master/helm/ambassador-agent)
   agent:
+    # If `true`, installs the ambassador-agent Deployment enabling the Ambassador Cloud connectivity.
+    enabled: true
+
+    rpcAddress: "https://app.getambassador.io/"
+
+    edgestack:
+      agent:
+        name: "edge-stack"
+        namespace: "ambassador"
+        snapshotPort: 8005
+        diagnosticsPort: 8877
+        reportDiagnostics: "true"
+
     # Set cloudConnectToken to obtain a License from Ambassador Cloud and/or authenticate Ambassador Agent with Ambassador Cloud.
     # cloudConnectToken:
   test:
@@ -72,7 +87,7 @@ emissary-ingress: # +doc-gen:break
 
   image:
     repository: docker.io/datawire/aes
-    tag: 3.9.0-rc.1
+    tag: 3.9.0-rc.2
     pullPolicy: IfNotPresent
 
   readinessProbe:
@@ -120,7 +135,7 @@ global:
 ################################################################################
 
 # The Ambassador Edge Stack requires a valid Enterprise license or Community
-# license to start up. 
+# license to start up.
 # Go to https://www.getambassador.io/docs/edge-stack/latest/topics/using/licenses
 # for instructions on obtaining a license.
 
