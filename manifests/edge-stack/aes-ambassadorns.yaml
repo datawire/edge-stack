@@ -16,8 +16,8 @@ metadata:
   namespace: ambassador
   labels:
     app.kubernetes.io/name: agent
-    helm.sh/chart: agent-1.0.18
-    app.kubernetes.io/version: 1.0.18
+    helm.sh/chart: agent-1.0.20
+    app.kubernetes.io/version: 1.0.20
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: edge-stack
 ---
@@ -52,8 +52,8 @@ metadata:
   name: edge-stack-agent
   labels:
     app.kubernetes.io/name: agent
-    helm.sh/chart: agent-1.0.18
-    app.kubernetes.io/version: 1.0.18
+    helm.sh/chart: agent-1.0.20
+    app.kubernetes.io/version: 1.0.20
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: edge-stack
 aggregationRule:
@@ -70,8 +70,8 @@ metadata:
   labels:
     rbac.getambassador.io/role-group: edge-stack-agent
     app.kubernetes.io/name: agent
-    helm.sh/chart: agent-1.0.18
-    app.kubernetes.io/version: 1.0.18
+    helm.sh/chart: agent-1.0.20
+    app.kubernetes.io/version: 1.0.20
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: edge-stack
 rules:
@@ -87,8 +87,8 @@ metadata:
   labels:
     rbac.getambassador.io/role-group: edge-stack-agent
     app.kubernetes.io/name: agent
-    helm.sh/chart: agent-1.0.18
-    app.kubernetes.io/version: 1.0.18
+    helm.sh/chart: agent-1.0.20
+    app.kubernetes.io/version: 1.0.20
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: edge-stack
 rules:
@@ -104,8 +104,8 @@ metadata:
   labels:
     rbac.getambassador.io/role-group: edge-stack-agent
     app.kubernetes.io/name: agent
-    helm.sh/chart: agent-1.0.18
-    app.kubernetes.io/version: 1.0.18
+    helm.sh/chart: agent-1.0.20
+    app.kubernetes.io/version: 1.0.20
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: edge-stack
 rules:
@@ -121,8 +121,8 @@ metadata:
   labels:
     rbac.getambassador.io/role-group: edge-stack-agent
     app.kubernetes.io/name: agent
-    helm.sh/chart: agent-1.0.18
-    app.kubernetes.io/version: 1.0.18
+    helm.sh/chart: agent-1.0.20
+    app.kubernetes.io/version: 1.0.20
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: edge-stack
 rules:
@@ -138,8 +138,8 @@ metadata:
   labels:
     rbac.getambassador.io/role-group: edge-stack-agent
     app.kubernetes.io/name: agent
-    helm.sh/chart: agent-1.0.18
-    app.kubernetes.io/version: 1.0.18
+    helm.sh/chart: agent-1.0.20
+    app.kubernetes.io/version: 1.0.20
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: edge-stack
 rules:
@@ -281,8 +281,8 @@ metadata:
   name: edge-stack-agent
   labels:
     app.kubernetes.io/name: agent
-    helm.sh/chart: agent-1.0.18
-    app.kubernetes.io/version: 1.0.18
+    helm.sh/chart: agent-1.0.20
+    app.kubernetes.io/version: 1.0.20
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: edge-stack
 roleRef:
@@ -323,8 +323,8 @@ metadata:
   namespace: ambassador
   labels:
     app.kubernetes.io/name: agent
-    helm.sh/chart: agent-1.0.18
-    app.kubernetes.io/version: 1.0.18
+    helm.sh/chart: agent-1.0.20
+    app.kubernetes.io/version: 1.0.20
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: edge-stack
 rules:
@@ -343,8 +343,8 @@ metadata:
   namespace: ambassador
   labels:
     app.kubernetes.io/name: agent
-    helm.sh/chart: agent-1.0.18
-    app.kubernetes.io/version: 1.0.18
+    helm.sh/chart: agent-1.0.20
+    app.kubernetes.io/version: 1.0.20
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: edge-stack
 roleRef:
@@ -511,12 +511,12 @@ metadata:
   namespace: ambassador
   labels:
     app.kubernetes.io/name: agent
-    helm.sh/chart: agent-1.0.18
-    app.kubernetes.io/version: 1.0.18
+    helm.sh/chart: agent-1.0.20
+    app.kubernetes.io/version: 1.0.20
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: edge-stack
 spec:
-  replicas:
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: agent
@@ -531,7 +531,7 @@ spec:
       securityContext: {}
       containers:
       - name: agent
-        image: docker.io/ambassador/ambassador-agent:1.0.18
+        image: docker.io/ambassador/ambassador-agent:1.0.20
         imagePullPolicy: IfNotPresent
         securityContext: {}
         ports:
@@ -554,7 +554,7 @@ spec:
         - name: AES_DIAGNOSTICS_URL
           value: http://edge-stack-admin.ambassador:8877/ambassador/v0/diag/?json=true
         - name: AES_REPORT_DIAGNOSTICS_TO_CLOUD
-          value: true
+          value: 'true'
 ---
 # Source: edge-stack/charts/emissary-ingress/templates/deployment.yaml
 apiVersion: apps/v1
@@ -647,7 +647,7 @@ spec:
           done
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.9.0-rc.2
+        image: docker.io/datawire/aes:3.9.0-rc.3
         imagePullPolicy: IfNotPresent
         ports:
         - name: http

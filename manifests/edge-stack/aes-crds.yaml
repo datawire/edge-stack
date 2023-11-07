@@ -57,6 +57,23 @@ spec:
             description: Spec defines the desired user configuration for a FilterPolicy
               that contains the set of rules.
             properties:
+              ambassadorSelector:
+                default:
+                  ambassadorIds:
+                  - default
+                description: Optional field that can be used to limit which instances
+                  of Edge Stack can make use of this resource
+                properties:
+                  ambassadorIds:
+                    default:
+                    - default
+                    description: limits this resource to be used only by instances
+                      of Edge Stack that have an AMBASSADOR_ID matching one of the
+                      ids in the list
+                    items:
+                      type: string
+                    type: array
+                type: object
               rules:
                 description: Rules are a set of matching rules that are checked against
                   incoming request to determine which set of Filter's to apply. If
@@ -554,6 +571,9 @@ spec:
     - jsonPath: .metadata.creationTimestamp
       name: Age
       type: date
+    - jsonPath: .spec.type
+      name: Type
+      type: string
     name: v1alpha1
     schema:
       openAPIV3Schema:
@@ -576,6 +596,23 @@ spec:
           spec:
             description: Spec defines the desired user configuration for a Filter.
             properties:
+              ambassadorSelector:
+                default:
+                  ambassadorIds:
+                  - default
+                description: Optional field that can be used to limit which instances
+                  of Edge Stack can make use of this resource
+                properties:
+                  ambassadorIds:
+                    default:
+                    - default
+                    description: limits this resource to be used only by instances
+                      of Edge Stack that have an AMBASSADOR_ID matching one of the
+                      ids in the list
+                    items:
+                      type: string
+                    type: array
+                type: object
               apikey:
                 description: APIKeyFilter provides support for validation APIKeys
                 properties:
@@ -8673,7 +8710,7 @@ spec:
       serviceAccountName: emissary-apiext
       containers:
         - name: emissary-apiext
-          image: docker.io/datawire/aes:3.9.0-rc.2
+          image: docker.io/datawire/aes:3.9.0-rc.3
           imagePullPolicy: IfNotPresent
           command: [ "apiext", "emissary-apiext" ]
           ports:
