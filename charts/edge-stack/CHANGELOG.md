@@ -8,7 +8,6 @@ numbering uses [semantic versioning](http://semver.org).
 - Upgrade Edge Stack chart image version to v3.9.0 CHANGELOG](https://github.com/datawire/edge-stack/blob/master/CHANGELOG.md)
 - Feature: configure autoscaling behaviors for HorizontalPodAutoscaler in .Values.autoscaling.behavior
 - Fix: wrong autoscaling apiVersion on EKS due to EKS not following semver (see aws/containers-roadmap#1404, helm/helm#10375, helm/helm#12053)
-- Change: Ambassador Agent is now a standalone subchart of the emissary-ingress dependency.
 
 ## v8.8.0
 
