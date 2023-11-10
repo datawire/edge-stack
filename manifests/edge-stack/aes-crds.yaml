@@ -1157,7 +1157,7 @@ spec:
                               items:
                                 description: InternalOrigin is an alias over string
                                   to ensure a valid URL is provided
-                                pattern: ^(?:http[s]?):\/\/([a-z0-9_\-.]+)(?:\:([0-9]+))?(\/[^\?\s]*)?(?:\?(\S+))?
+                                pattern: ^(?:[a-z][a-z0-9+\-.]*|\*):\/\/(?:([a-z0-9_\-.]+)|\*)(?:\:([0-9]+))?(\/[^\?\s]*)?(?:\?(\S+))?
                                 type: string
                               maxItems: 16
                               type: array
@@ -8712,7 +8712,7 @@ spec:
       serviceAccountName: emissary-apiext
       containers:
         - name: emissary-apiext
-          image: docker.io/datawire/aes:3.9.0-rc.4
+          image: docker.io/datawire/aes:3.9.0-rc.5
           imagePullPolicy: IfNotPresent
           command: [ "apiext", "emissary-apiext" ]
           ports:
