@@ -73,7 +73,7 @@ emissary-ingress: # +doc-gen:break
 
   image:
     repository: docker.io/datawire/aes
-    tag: 3.10.1-rc.0
+    tag: 3.10.1-rc.1
     pullPolicy: IfNotPresent
 
   readinessProbe:
