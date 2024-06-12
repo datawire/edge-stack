@@ -1,0 +1,11 @@
+emissary-ingress:
+  createDefaultListeners: true
+  service:
+    type: NodePort
+  deploymentStrategy:
+    type: Recreate
+
+redis:
+  enabled: false
+  # Annotations for Ambassador Pro's redis instance.
+
