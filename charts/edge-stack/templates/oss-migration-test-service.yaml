@@ -1,0 +1,33 @@
+{{- if .Values.enableTestService }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-aes
+  namespace: {{ include "ambassador.namespace" . }}
+  labels:
+    product: aes
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+    {{- range (index .Values "emissary-ingress" "service" "ports") }}
+    - name: {{ .name }}
+      port: {{ int .port }}
+      {{- if .targetPort }}
+      targetPort: {{ int .targetPort }}
+      {{- end }}
+      {{- if .nodePort }}
+      nodePort: {{ int .nodePort }}
+      {{- end }}
+      {{- if .protocol }}
+      protocol: {{ .protocol }}
+      {{- end }}
+    {{- end}}
+  selector:
+    {{- if (index .Values "emissary-ingress" "service" "selector") }}
+    {{ toYaml (index .Values "emissary-ingress" "service" "selector") | nindent 6 }}
+    {{- else }}
+    app.kubernetes.io/name: {{ include "ambassador.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- end }}
+{{- end }}
