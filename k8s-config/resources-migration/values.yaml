@@ -1,0 +1,11 @@
+rateLimit:
+  deploymentExtraName: ratelimit
+authService:
+  deploymentExtraName: auth
+  optional_configurations:
+    allow_request_body: false
+    status_on_error:
+      code: 504
+emissary-ingress:
+  deploymentTool: getambassador.io
+deploymentTool: getambassador.io
