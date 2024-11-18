@@ -6217,6 +6217,9 @@ spec:
     - jsonPath: .spec.l7Depth
       name: L7Depth
       type: string
+    - jsonPath: .spec.internalAddressConfig
+      name: InternalAddressConfig
+      type: string
     name: v3alpha1
     schema:
       openAPIV3Schema:
@@ -6310,6 +6313,34 @@ spec:
                         type: object
                     type: object
                     x-kubernetes-map-type: atomic
+                type: object
+              internalAddressConfig:
+                description: InternalAddressConfig allows configuration of addresses
+                  deemed as internal
+                properties:
+                  cidrRanges:
+                    description: List of CIDR ranges that are treated as internal.
+                      If unset, then RFC1918 / RFC4193 IP addresses will be considered
+                      internal.
+                    items:
+                      description: CIDRRange represents the range of IP Addresses
+                        to be treated as internal
+                      properties:
+                        addressPrefix:
+                          description: 'AddressPrefix: IPv4 or IPv6 address, e.g.
+                            192.0.0.0 or 2001:db8::'
+                          type: string
+                        prefixLen:
+                          description: 'PrefixLength: Length of prefix, e.g. 0, 32.
+                            Defaults to 0 when unset.'
+                          format: int32
+                          type: integer
+                      type: object
+                    type: array
+                  unixSockets:
+                    description: 'UnixSockets: Whether unix socket addresses should
+                      be considered internal.'
+                    type: boolean
                 type: object
               l7Depth:
                 description: L7Depth specifies how many layer 7 load balancers are
