@@ -3,4 +3,4 @@ dependencies:
   repository: https://s3.amazonaws.com/datawire-static-files/charts-dev
   version: 8.11.2-rc.1.0.20241118152046-b8e39ca3e265
 digest: sha256:a0701d907e7765d9d3d64f4e8bf090acd041bc6f0b90162cf25cf46c2f3453ca
-generated: "2024-11-18T10:37:44.900866-05:00"
+generated: "2024-11-19T13:55:27.320121-05:00"
