@@ -1,0 +1,5 @@
+emissary-ingress:
+  createDefaultListeners: true
+  deploymentLabels:
+    label: foo
+    label2: bar

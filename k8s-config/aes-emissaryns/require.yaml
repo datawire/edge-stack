@@ -1,0 +1,32 @@
+resources:
+ - { kind: Namespace,          name: emissary                                         }
+ - { kind: ServiceAccount,     name: edge-stack-agent,            namespace: emissary }
+ - { kind: ServiceAccount,     name: edge-stack,                  namespace: emissary }
+ - { kind: Secret,             name: edge-stack,                  namespace: emissary }
+ - { kind: ClusterRole,        name: edge-stack-agent                                 }
+ - { kind: ClusterRole,        name: edge-stack-agent-pods                            }
+ - { kind: ClusterRole,        name: edge-stack-agent-deployments                     }
+ - { kind: ClusterRole,        name: edge-stack-agent-endpoints                       }
+ - { kind: ClusterRole,        name: edge-stack-agent-configmaps                      }
+ - { kind: ClusterRole,        name: edge-stack-agent-rollouts                        }
+ - { kind: ClusterRole,        name: edge-stack-agent-applications                    }
+ - { kind: ClusterRole,        name: edge-stack                                       }
+ - { kind: ClusterRole,        name: edge-stack-crd                                   }
+ - { kind: ClusterRole,        name: edge-stack-watch                                 }
+ - { kind: ClusterRole,        name: edge-stack-aes                                   }
+ - { kind: ClusterRoleBinding, name: edge-stack-agent                                 }
+ - { kind: ClusterRoleBinding, name: edge-stack                                       }
+ - { kind: Role,               name: edge-stack-agent-config,     namespace: emissary }
+ - { kind: RoleBinding,        name: edge-stack-agent-config,     namespace: emissary }
+ - { kind: Service,            name: edge-stack-admin,            namespace: emissary }
+ - { kind: Service,            name: edge-stack,                  namespace: emissary }
+ - { kind: Service,            name: edge-stack-redis,            namespace: emissary }
+ - { kind: Deployment,         name: edge-stack-agent,            namespace: emissary }
+ - { kind: Deployment,         name: edge-stack,                  namespace: emissary }
+ - { kind: Deployment,         name: edge-stack-redis,            namespace: emissary }
+ - { kind: AuthService,        name: edge-stack-auth,             namespace: emissary }
+ - { kind: Mapping,            name: edge-stack-devportal,        namespace: emissary }
+ - { kind: Mapping,            name: edge-stack-devportal-assets, namespace: emissary }
+ - { kind: Mapping,            name: edge-stack-devportal-demo,   namespace: emissary }
+ - { kind: Mapping,            name: edge-stack-devportal-api,    namespace: emissary }
+ - { kind: RateLimitService,   name: edge-stack-ratelimit,        namespace: emissary }
