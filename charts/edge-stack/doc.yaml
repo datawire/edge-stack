@@ -1,0 +1,18 @@
+project:
+  name: Edge Stack
+  shortName: AES
+  url: https://github.com/datawire/ambassador
+  description: The Ambassador Edge Stack is a self-service, comprehensive edge stack that is Kubernetes-native and built on [Envoy Proxy](https://www.envoyproxy.io/).
+  app: Edge Stack
+repository:
+  url: https://s3.amazonaws.com/datawire-static-files/charts
+  name: edge-stack
+chart:
+  name: edge-stack
+  values: "-- generate from values file --"
+  valuesExample: "-- generate from values file --"
+prerequisites:
+- "Kubernetes v1.11+"
+release:
+  name: edge-stack
+  namespace: ambassador
