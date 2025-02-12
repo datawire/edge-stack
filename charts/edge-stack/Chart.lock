@@ -1,6 +1,6 @@
 dependencies:
 - name: emissary-ingress
   repository: https://s3.amazonaws.com/datawire-static-files/charts-dev
-  version: 8.11.2-rc.1.0.20241120132612-71d81814573d
-digest: sha256:20ca88f17e0839846ce4047c7a4351c6bf8915219e89f3fa9aec197ceef69401
-generated: "2024-11-20T16:48:55.195394Z"
+  version: 8.12.3-0.20250206185449-1300eba5ff75
+digest: sha256:84eca29505ab60cadb64b460a7c5e81a58b6a05cdbb8e94ed26b75024253498c
+generated: "2025-02-06T17:28:57.894335-05:00"

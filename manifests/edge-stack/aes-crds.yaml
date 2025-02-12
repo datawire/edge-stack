@@ -825,6 +825,17 @@ spec:
                       it will be considered valid even if it doesn't match the audience
                       value. To enforce that a token has the aud claim, then set `requireAudience=true`."
                     type: string
+                  audiences:
+                    description: "Audiences identifies the recipient that the JWT
+                      is intended for and will be used to validate the provided token
+                      is intended for the configured audience. \n If not provided
+                      then `aud` claim on incoming token is not validated and will
+                      be considered valid. If `aud` is unset on the token by default
+                      it will be considered valid even if it doesn't match the audience
+                      value. To enforce that a token has the aud claim, then set `requireAudience=true`."
+                    items:
+                      type: string
+                    type: array
                   errorResponse:
                     description: ErrorResponse allows setting a custom Response when
                       an invalid JWT is received.
@@ -6217,7 +6228,7 @@ spec:
     - jsonPath: .spec.l7Depth
       name: L7Depth
       type: string
-    - jsonPath: .spec.internalAddressConfig
+    - jsonPath: .spec.internal_address_config
       name: InternalAddressConfig
       type: string
     name: v3alpha1
@@ -6314,11 +6325,11 @@ spec:
                     type: object
                     x-kubernetes-map-type: atomic
                 type: object
-              internalAddressConfig:
+              internal_address_config:
                 description: InternalAddressConfig allows configuration of addresses
                   deemed as internal
                 properties:
-                  cidrRanges:
+                  cidr_ranges:
                     description: List of CIDR ranges that are treated as internal.
                       If unset, then RFC1918 / RFC4193 IP addresses will be considered
                       internal.
@@ -6326,18 +6337,18 @@ spec:
                       description: CIDRRange represents the range of IP Addresses
                         to be treated as internal
                       properties:
-                        addressPrefix:
+                        address_prefix:
                           description: 'AddressPrefix: IPv4 or IPv6 address, e.g.
                             192.0.0.0 or 2001:db8::'
                           type: string
-                        prefixLen:
+                        prefix_len:
                           description: 'PrefixLength: Length of prefix, e.g. 0, 32.
                             Defaults to 0 when unset.'
                           format: int32
                           type: integer
                       type: object
                     type: array
-                  unixSockets:
+                  unix_sockets:
                     description: 'UnixSockets: Whether unix socket addresses should
                       be considered internal.'
                     type: boolean
@@ -8994,7 +9005,7 @@ spec:
       serviceAccountName: emissary-apiext
       containers:
         - name: emissary-apiext
-          image: docker.io/datawire/aes:3.11.1
+          image: docker.io/datawire/aes:3.12.4-rc.0
           imagePullPolicy: IfNotPresent
           command: [ "apiext", "emissary-apiext" ]
           args: ["--crd-label-selector", "app.kubernetes.io/part-of=emissary-apiext"]
