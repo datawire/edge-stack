@@ -1,0 +1,8 @@
+
+emissary-ingress:
+  createDefaultListeners: true
+  service:
+    type: NodePort
+
+rateLimit:
+  create: false
