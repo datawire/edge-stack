@@ -1453,6 +1453,12 @@ spec:
                     required:
                     - clientID
                     type: object
+                  stateExpireRedirect:
+                    default: false
+                    description: stateExpireRedirect determines whether to redirect
+                      the user to the AuthorizationURL when the state has expired
+                      during login or return an error
+                    type: boolean
                 required:
                 - authorizationURL
                 - grantType
