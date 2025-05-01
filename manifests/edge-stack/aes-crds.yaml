@@ -9011,7 +9011,7 @@ spec:
       serviceAccountName: emissary-apiext
       containers:
         - name: emissary-apiext
-          image: docker.io/datawire/aes:3.12.4
+          image: docker.io/datawire/aes:3.12.5-rc.0
           imagePullPolicy: IfNotPresent
           command: [ "apiext", "emissary-apiext" ]
           args: ["--crd-label-selector", "app.kubernetes.io/part-of=emissary-apiext"]
