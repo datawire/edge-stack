@@ -964,6 +964,18 @@ spec:
                       \n false (default) => if aud claim is unset then claim is considered
                       valid true => if aud claim is unset then claim/token are invalid"
                     type: boolean
+                  requireAudienceAll:
+                    description: "RequireAudienceAll modifies the validation behavior
+                      for when the audience claim (aud) check is enabled. If set to
+                      true, then the token is considered valid if the aud claim is
+                      present and equivalent to all the values in the Audiences list.
+                      If set to false, then the token is considered valid if the aud
+                      claim is present and contains at least one of the values in
+                      the Audiences list. \n false (default) => if any of the aud
+                      claim values match the Audiences list then claim is considered
+                      valid true => if all of the aud claim values match the Audiences
+                      list then claim is considered valid"
+                    type: boolean
                   requireExpiresAt:
                     description: "RequireExpiresAt modifies the validation behavior
                       for when the expiresAt claim (exp) is unset on the incoming
@@ -9011,7 +9023,7 @@ spec:
       serviceAccountName: emissary-apiext
       containers:
         - name: emissary-apiext
-          image: docker.io/datawire/aes:3.12.5-rc.0
+          image: docker.io/datawire/aes:3.12.4
           imagePullPolicy: IfNotPresent
           command: [ "apiext", "emissary-apiext" ]
           args: ["--crd-label-selector", "app.kubernetes.io/part-of=emissary-apiext"]
