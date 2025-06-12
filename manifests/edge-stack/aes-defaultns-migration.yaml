@@ -11,8 +11,8 @@ metadata:
   annotations:
     a8r.io/owner: Ambassador Labs
     a8r.io/repository: github.com/datawire/ambassador
-    a8r.io/description: The Ambassador Edge Stack Redis store for auth and rate limiting,
-      among other things.
+    a8r.io/description: The Ambassador Edge Stack Redis store for auth and rate 
+      limiting, among other things.
     a8r.io/documentation: https://www.getambassador.io/docs/edge-stack/latest/
     a8r.io/chat: http://a8r.io/Slack
     a8r.io/bugs: https://github.com/datawire/ambassador/issues
@@ -175,7 +175,7 @@ spec:
           done
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.12.5-rc.2
+        image: docker.io/datawire/aes:3.12.5-rc.3
         imagePullPolicy: IfNotPresent
         ports:
         - name: http

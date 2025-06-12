@@ -222,8 +222,8 @@ metadata:
   annotations:
     a8r.io/owner: Ambassador Labs
     a8r.io/repository: github.com/datawire/ambassador
-    a8r.io/description: The Ambassador Edge Stack admin service for internal use and
-      health checks.
+    a8r.io/description: The Ambassador Edge Stack admin service for internal use
+      and health checks.
     a8r.io/documentation: https://www.getambassador.io/docs/edge-stack/latest/
     a8r.io/chat: http://a8r.io/Slack
     a8r.io/bugs: https://github.com/datawire/ambassador/issues
@@ -295,7 +295,8 @@ spec:
         - name: AES_REPORT_DIAGNOSTICS_TO_CLOUD
           value: 'true'
         - name: AES_DIAGNOSTICS_URL
-          value: http://edge-stack-admin.emissary:8877/ambassador/v0/diag/?json=true
+          value: 
+            http://edge-stack-admin.emissary:8877/ambassador/v0/diag/?json=true
 
   
   

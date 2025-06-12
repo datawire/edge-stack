@@ -436,8 +436,8 @@ metadata:
   annotations:
     a8r.io/owner: Ambassador Labs
     a8r.io/repository: github.com/datawire/ambassador
-    a8r.io/description: The Ambassador Edge Stack admin service for internal use and
-      health checks.
+    a8r.io/description: The Ambassador Edge Stack admin service for internal use
+      and health checks.
     a8r.io/documentation: https://www.getambassador.io/docs/edge-stack/latest/
     a8r.io/chat: http://a8r.io/Slack
     a8r.io/bugs: https://github.com/datawire/ambassador/issues
@@ -475,9 +475,9 @@ metadata:
   annotations:
     a8r.io/owner: Ambassador Labs
     a8r.io/repository: github.com/datawire/ambassador
-    a8r.io/description: The Ambassador Edge Stack goes beyond traditional API Gateways
-      and Ingress Controllers with the advanced edge features needed to support developer
-      self-service and full-cycle development.
+    a8r.io/description: The Ambassador Edge Stack goes beyond traditional API 
+      Gateways and Ingress Controllers with the advanced edge features needed to
+      support developer self-service and full-cycle development.
     a8r.io/documentation: https://www.getambassador.io/docs/edge-stack/latest/
     a8r.io/chat: http://a8r.io/Slack
     a8r.io/bugs: https://github.com/datawire/ambassador/issues
@@ -508,8 +508,8 @@ metadata:
   annotations:
     a8r.io/owner: Ambassador Labs
     a8r.io/repository: github.com/datawire/ambassador
-    a8r.io/description: The Ambassador Edge Stack Redis store for auth and rate limiting,
-      among other things.
+    a8r.io/description: The Ambassador Edge Stack Redis store for auth and rate 
+      limiting, among other things.
     a8r.io/documentation: https://www.getambassador.io/docs/edge-stack/latest/
     a8r.io/chat: http://a8r.io/Slack
     a8r.io/bugs: https://github.com/datawire/ambassador/issues
@@ -574,7 +574,8 @@ spec:
         - name: AES_REPORT_DIAGNOSTICS_TO_CLOUD
           value: 'true'
         - name: AES_DIAGNOSTICS_URL
-          value: http://edge-stack-admin.default:8877/ambassador/v0/diag/?json=true
+          value: 
+            http://edge-stack-admin.default:8877/ambassador/v0/diag/?json=true
 
   
   
@@ -671,7 +672,7 @@ spec:
           done
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.12.5-rc.2
+        image: docker.io/datawire/aes:3.12.5-rc.3
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
