@@ -1,0 +1,9 @@
+emissary-ingress:
+  createDefaultListeners: true
+  service:
+    type: NodePort
+  deploymentStrategy:
+    type: Recreate
+
+authService:
+  create: false
