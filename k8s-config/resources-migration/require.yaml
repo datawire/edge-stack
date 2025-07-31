@@ -1,0 +1,8 @@
+strip_namespace: true
+resources:
+  - { kind: RateLimitService, name: edge-stack-ratelimit,        namespace: default }
+  - { kind: AuthService,      name: edge-stack-auth,             namespace: default }
+  - { kind: Mapping,          name: edge-stack-devportal,        namespace: default }
+  - { kind: Mapping,          name: edge-stack-devportal-assets, namespace: default }
+  - { kind: Mapping,          name: edge-stack-devportal-demo,   namespace: default }
+  - { kind: Mapping,          name: edge-stack-devportal-api,    namespace: default }
