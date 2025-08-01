@@ -638,7 +638,7 @@ spec:
           done
       containers:
       - name: aes
-        image: docker.io/datawire/aes:3.12.7-rc.1
+        image: docker.io/datawire/aes:3.12.7-rc.2
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
